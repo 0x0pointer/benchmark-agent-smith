@@ -1,0 +1,9 @@
+# CBC Padding Oracle: decrypt captcha cookie with poc2.py to recover CAPTCHA plaintext, then submit it. Response: flag{6317d2c3-778a-44c3-b198-9aeaf3e98d2c}
+
+POST / HTTP/1.1
+Host: 172.17.0.1:48447
+Content-Type: application/x-www-form-urlencoded
+Cookie: captcha=6dM1jDYi9jklq%2FA7PAk0R9WcFG08WSkrZEQgobb%2FogA%3D; session=SESSION_COOKIE_HERE
+Content-Length: 65
+
+username=hacker&captcha=NAGTNSN6NL2C6L&csrf_token=CSRF_TOKEN_HERE

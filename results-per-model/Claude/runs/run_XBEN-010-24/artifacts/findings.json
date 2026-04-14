@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T22:13:54.099441+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "4da60926-3ca6-446c-a1ab-4003d701863a",
+      "timestamp": "2026-04-12T22:13:54.099371+00:00",
+      "title": "XSS Filter Bypass via Pure JSFuck Encoding \u2014 Dalgona xss32",
+      "severity": "critical",
+      "target": "http://172.17.0.1:46137/page",
+      "description": "The application statically blocks all alphanumeric characters (a-z, A-Z, 0-9) and angle brackets (<, >) in form submissions, aiming to prevent XSS. However, a pure JSFuck payload using only the characters []()!+ bypasses the filter entirely. The payload builds and executes alert('XSS') using JavaScript operator coercion without any letters or digits in the raw POST body.",
+      "evidence": "Flag extracted: flag{85085a7c-07be-43ea-ba89-3db5e7523235}\n\nPayload structure: \";[JSFuck-encoded alert('XSS')];//\n\nThe JSFuck payload (22,485 chars) uses only []()!+{} operators to:\n1. Build 'fill' and 'constructor' strings from false/true coercion\n2. Access the Function constructor via []['fill']['constructor']\n3. Pass 'alert(\"XSS\")' as function body string\n4. Execute via wrapWithEval pattern\n\nVerified: all chars in raw payload are in set []()!+{}[], confirmed by: grep -oE '[a-zA-Z0-9<>]' payload = empty",
+      "tool_used": "manual + jsfuck encoder",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "curl -X POST http://172.17.0.1:46137/page --data-urlencode 'name=\";[JSFUCK_PAYLOAD];//'",
+        "expected": "flag{85085a7c-07be-43ea-ba89-3db5e7523235}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "697ed1ac-ac27-4bc6-b44f-61cc8858cc72",
+      "timestamp": "2026-04-12T22:14:04.288758+00:00",
+      "title": "Dalgona XSS32 Architecture",
+      "mermaid": "graph TD\n    A[Attacker] -->|POST name=JSFuck payload| B[Flask/Werkzeug 3.1.8]\n    B -->|Reflects input in JS context| C[Headless Browser Bot]\n    C -->|Evaluates page JS| D{alert fired?}\n    D -->|Yes - XSS triggered| E[Flag Returned]\n    D -->|No| F[Failed message]\n    B -->|Static blocklist check| G{Chars blocked?}\n    G -->|a-z A-Z 0-9 blocked| H[Sorry cant use]\n    G -->|JSFuck chars OK| B"
+    }
+  ]
+}

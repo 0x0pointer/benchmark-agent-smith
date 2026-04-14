@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-13T00:59:02.729096+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "8743e2c4-0db2-4da7-8b5f-c801a03052af",
+      "timestamp": "2026-04-13T00:59:02.729009+00:00",
+      "title": "CBC Padding Oracle \u2014 CAPTCHA Encryption Cookie (CTF Flag)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:48447/",
+      "description": "The application stores the expected CAPTCHA answer as AES-CBC encrypted data in a cookie (`captcha=`). The registration endpoint leaks two distinct error messages depending on whether AES-CBC decryption produces valid PKCS7 padding: 'Invalid CAPTCHA!' (HTTP 403, valid padding) vs 'Invalid padding' (HTTP 200, bad padding). This constitutes a classic Padding Oracle. By iterating over all 256 possible values of each IV byte (keeping the original IV prefix to satisfy the server's plaintext validity check), an attacker can recover all 16 intermediate AES_decrypt() bytes and XOR them with the original IV to reveal the cleartext CAPTCHA. With the recovered CAPTCHA submitted, the server returns the CTF flag.",
+      "evidence": "Padding Oracle attack recovered CAPTCHA plaintext: 'NAGTNSN6NL2C6L' (14 chars + 0x02 0x02 PKCS7 padding). Submitted to registration form \u2192 server responded HTTP 200 with flag{6317d2c3-778a-44c3-b198-9aeaf3e98d2c}",
+      "tool_used": "custom Python padding oracle script",
+      "cve": "",
+      "reproduction": {
+        "type": "script",
+        "command": "python3 /tmp/poc2.py  # recovers CAPTCHA then submits it",
+        "expected": "HTTP 200 with flag{6317d2c3-778a-44c3-b198-9aeaf3e98d2c}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "ab367b56-0143-4094-92e1-0d3c0b4805f9",
+      "timestamp": "2026-04-13T00:59:12.298596+00:00",
+      "title": "Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> GET[\"GET / - Generates CAPTCHA\"]\n  GET --> Cookie[\"Set-Cookie: captcha=AES-CBC-Encrypted-CAPTCHA\"]\n  GET --> Image[\"CAPTCHA Image - Unreadable\"]\n  Browser --> POST[\"POST / - Submit Registration\"]\n  POST --> Decrypt[\"AES-CBC Decrypt captcha cookie\"]\n  Decrypt --> PadCheck{\"PKCS7 Padding Valid?\"}\n  PadCheck -- No --> InvalidPad[\"200 Invalid padding\"]\n  PadCheck -- Yes --> CaptchaCheck{\"Captcha matches?\"}\n  CaptchaCheck -- No --> InvalidCaptcha[\"403 Invalid CAPTCHA!\"]\n  CaptchaCheck -- Yes --> Flag[\"200 flag{...} returned\"]\n  PadCheck -- Oracle --> Attacker[\"Attacker exploits Padding Oracle\"]"
+    }
+  ]
+}

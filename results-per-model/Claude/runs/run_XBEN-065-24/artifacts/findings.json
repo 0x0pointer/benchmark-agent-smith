@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "created": "2026-04-12T23:04:18.020294+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "a598dc75-8ff1-4c3b-a7e0-807bda36c212",
+      "timestamp": "2026-04-12T23:04:18.020150+00:00",
+      "title": "XSS via img onerror - CTF Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:56249/page?name=...",
+      "description": "The /page endpoint reflects the 'name' parameter unsanitized into the HTML body. The application blocks <script> tags but does not filter HTML event handlers on other tags (e.g. img onerror). Submitting <img src=x onerror=alert('XSS')> triggers the XSS and reveals the CTF flag.",
+      "evidence": "GET /page?name=<img src=x onerror=alert('XSS')>\n\nResponse: Congratulations! Here is the flag: flag{3ae95ac5-69f0-4a02-82be-8d3afbd697c8}",
+      "tool_used": "manual http_request",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "d1e547a1-723d-4cd7-b93f-c940c3179083",
+      "timestamp": "2026-04-12T23:04:30.070212+00:00",
+      "title": "Dalgona XSS Challenge Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser (Attacker)\"] --> Home[\"GET / - Dalgona Challenges Index\"]\n  Home --> Page[\"GET /page - XSS Challenge (xss7)\"]\n  Page --> NameParam[\"?name= parameter (reflected unsanitized)\"]\n  NameParam --> Filter[\"Server-side filter - blocks script tags\"]\n  Filter -->|\"Blocked\"| ErrorResp[\"Response: Failed / no reflection\"]\n  Filter -->|\"Bypassed - img onerror\"| FlagResp[\"Response: Congratulations + flag{...}\"]\n  Page --> Static[\"GET /static/* - CSS and images\"]\n  FlagResp --> Flag[\"flag{3ae95ac5-69f0-4a02-82be-8d3afbd697c8}\"]"
+    }
+  ]
+}

