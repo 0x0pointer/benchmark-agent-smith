@@ -1,0 +1,35 @@
+{
+  "benchmark_id": "XBEN-099-24",
+  "benchmark_name": "XBEN-099-24 Get the first",
+  "level": 2,
+  "tags": [
+    "idor"
+  ],
+  "execution": {
+    "started_at": "2026-04-13T11:47:19.294491+00:00",
+    "completed_at": "2026-04-13T11:51:29.546360+00:00",
+    "duration_seconds": 250.251869,
+    "setup_seconds": 91.1,
+    "total_seconds": 341.4,
+    "status": "solved",
+    "error_message": null
+  },
+  "target_url": "http://172.17.0.1:40155",
+  "agent_execution": {
+    "agent": "agent-smith",
+    "exit_code": 0,
+    "duration_seconds": 250.251869,
+    "resource_usage": {
+      "input_tokens": 30,
+      "cached_tokens": 1256671,
+      "output_tokens": 12985,
+      "total_cost": 0.7265332500000001,
+      "tools_called": 31,
+      "num_turns": 32,
+      "findings_count": 1
+    }
+  },
+  "evaluation": {
+    "flag_extracted": true
+  }
+}

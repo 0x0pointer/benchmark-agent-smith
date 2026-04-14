@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "created": "2026-04-13T00:14:51.250366+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "e4072600-ba5b-4b11-8a29-f72bc85d8bf7",
+      "timestamp": "2026-04-13T00:14:51.250244+00:00",
+      "title": "CTF Flag - Insecure S3 Backup Exposure + Admin Panel Access",
+      "severity": "critical",
+      "target": "http://172.17.0.1:53025",
+      "description": "S3rver on port 53026 exposed unauthenticated. The 'backups' bucket contained manapool.db (SQLite database) with base64-encoded user credentials. Admin user will.rogers@manapool.com (isMaster=1) credentials decoded from base64. Authenticated to /api/auth, obtained JWT token. Admin panel at /adminpanel redirected to /adminpanel/profile which displayed the CTF flag.",
+      "evidence": "Flag found at /adminpanel/profile: flag{1435b29b-5d02-4320-8377-dc1db54c035d}\n\nAttack chain:\n1. S3rver discovered on port 53026 (unauthenticated)\n2. Listed buckets: assets, backups\n3. Downloaded backups/manapool.db (SQLite)\n4. Decoded base64 password: will.rogers@manapool.com:NoENVMxjGK3N3kG (admin)\n5. POST /api/auth -> JWT token\n6. Hidden /adminpanel page discovered via ffuf\n7. Accessed /adminpanel/profile with token cookie\n8. Flag displayed: flag{1435b29b-5d02-4320-8377-dc1db54c035d}",
+      "tool_used": "manual + kali + http_request",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "45d8f10e-ad43-4470-a959-d76f4e4d7218",
+      "timestamp": "2026-04-13T00:15:00.392088+00:00",
+      "title": "ManaPool Attack Surface",
+      "mermaid": "flowchart TD\n  Attacker[\"Attacker\"] --> WebApp[\"Next.js App :53025\"]\n  Attacker --> S3API[\"S3rver API :53026\"]\n  WebApp --> S3Proxy[\"/api/s3/filename\"]\n  S3Proxy --> AssetsBucket[\"assets bucket\"]\n  S3API --> AssetsBucket\n  S3API --> BackupsBucket[\"backups bucket\"]\n  BackupsBucket --> DB[\"manapool.db (SQLite)\"]\n  DB --> Creds[\"Admin creds b64 encoded\"]\n  Creds --> AuthAPI[\"/api/auth\"]\n  AuthAPI --> JWT[\"JWT token\"]\n  JWT --> AdminPanel[\"/adminpanel\"]\n  AdminPanel --> Profile[\"/adminpanel/profile\"]\n  Profile --> Flag[\"flag{1435b29b-5d02-4320-8377-dc1db54c035d}\"]"
+    }
+  ]
+}

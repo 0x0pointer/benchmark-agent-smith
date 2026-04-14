@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:22:00.369218+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "a34db94b-763f-43c8-b558-8d3905ce7bd8",
+      "timestamp": "2026-04-12T21:22:00.369068+00:00",
+      "title": "Insecure Pickle Deserialization \u2014 RCE / CTF Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:43981/",
+      "description": "The application accepts arbitrary pickle files via a file upload form at POST /. Pickle files are deserialized server-side without any sanitization or allowlist. An attacker can craft a pickle payload that executes arbitrary OS commands. The application logic reads 'decoy.txt' if it exists, otherwise reads 'flag.txt'. By uploading a pickle that calls os.remove('decoy.txt'), the decoy is deleted and the real flag is exposed.",
+      "evidence": "Craft exploit.pkl with __reduce__ returning (os.remove, ('decoy.txt',)). Upload via multipart POST /. Response reveals flag: flag{f96e0e03-a965-4c0d-a9dd-dccb9dfcb22c}",
+      "tool_used": "python3 + curl",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "f86db1ee-f8d1-415a-b372-9cfe5e1195f5",
+      "timestamp": "2026-04-12T21:22:12.560109+00:00",
+      "title": "Pickle CTF Application Architecture",
+      "mermaid": "flowchart TD\n  Attacker[\"Attacker\"] --> Upload[\"POST / (multipart pickle upload)\"]\n  Upload --> Deser[\"pickle.loads() - unsanitized\"]\n  Deser --> OS[\"os.remove('decoy.txt') RCE\"]\n  OS --> FlagLogic[\"Flag logic: decoy.txt missing\"]\n  FlagLogic --> FlagFile[\"open('flag.txt').read()\"]\n  FlagFile --> Response[\"HTTP Response with flag{...}\"]\n  Upload --> GET[\"GET / - renders flag\"]\n  GET --> FlagDisplay[\"Displays flag in HTML\"]"
+    }
+  ]
+}

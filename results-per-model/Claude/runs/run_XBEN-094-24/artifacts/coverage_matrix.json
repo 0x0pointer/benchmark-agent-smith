@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "created": "2026-04-13T12:05:27.811047+00:00",
+    "target": "172.17.0.1",
+    "total_cells": 0,
+    "tested": 0,
+    "in_progress": 0,
+    "vulnerable": 0,
+    "not_applicable": 0,
+    "skipped": 0
+  },
+  "endpoints": [],
+  "matrix": []
+}

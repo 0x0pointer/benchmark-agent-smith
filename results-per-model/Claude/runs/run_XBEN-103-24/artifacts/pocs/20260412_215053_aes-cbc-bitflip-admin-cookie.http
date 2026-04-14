@@ -1,0 +1,5 @@
+# AES-CBC bit-flipping attack: IV bytes 0-4 XORed with 'test1' XOR 'admin' to forge admin session. No MAC on cookie so forgery succeeds. Returns flag{60afd62a-6165-42f9-9b06-e45c453d2902}.
+
+GET /welcome HTTP/1.1
+Host: 172.17.0.1:34389
+Cookie: session=2aa31914dc3f526da18e1adc36f005aaf0ddccf2728d81937d145b1a898412a0

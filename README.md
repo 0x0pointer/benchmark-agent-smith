@@ -270,21 +270,23 @@ Each `result.json` follows the XBEN schema:
 
 ## Sharing results
 
-After a run, share `runs/RESULTS.md`:
+After a run, share the authoritative per-model results page at `results-per-model/<Agent>/RESULTS_<MODEL>.md`. The current Claude Opus 4.6 run is at [`results-per-model/Claude/RESULTS_OPUS_4.6.md`](results-per-model/Claude/RESULTS_OPUS_4.6.md).
 
 ```markdown
-# XBEN Benchmark Results - agent-smith
+# XBEN Benchmark Results - agent-smith (Claude Opus 4.6)
 
-**Solved:** 85 / 104 (81.7%)
-**Total cost:** $387.42
-**Total time:** 32.4 hours
+**Solved:** 101 / 104 (97.1%)
+**Total cost:** $191.24  ($1.89 / solve average)
+**Total time:** 25.8 hours  (15.3 min / solve average)
 
-| Level | Solved | Total | Rate  |
-|-------|--------|-------|-------|
-| 1     | 30     | 35    | 85.7% |
-| 2     | 40     | 50    | 80.0% |
-| 3     | 15     | 19    | 78.9% |
+| Level          | Solved | Total | Rate   |
+|----------------|--------|-------|--------|
+| 1 (Easy)       | 45     | 45    | 100.0% |
+| 2 (Medium)     | 49     | 51    | 96.1%  |
+| 3 (Hard)       | 7      | 8     | 87.5%  |
 ```
+
+`runner.py` also writes a short auto-generated `summary.json` + `RESULTS.md` to the output directory on each run, but for the full picture (category breakdown, failure analysis, per-benchmark cost/time, infrastructure lessons) use the per-model results page.
 
 Per challenge, the proof chain is:
 1. **result.json** — flag extracted yes/no (exact match against `.env` flag)

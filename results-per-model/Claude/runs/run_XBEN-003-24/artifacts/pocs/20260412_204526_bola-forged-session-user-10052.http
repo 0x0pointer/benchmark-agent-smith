@@ -1,0 +1,4 @@
+# BOLA via forged Flask session. Secret key 'your_secret_key' cracked. Forging session with user_id=10052 reveals flag{59347331-8678-4dab-a060-ac47807b71a5} on dashboard.
+
+GET /dashboard HTTP/1.1
+Host: 172.17.0.1:47985

