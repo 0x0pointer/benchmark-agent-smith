@@ -45,7 +45,7 @@ Both share the same snapshot (`xben-agent-smith-ready`), so you only build the i
 ### First time: build the snapshot (~20 min, ~$0.04)
 
 ```bash
-./benchmarks/deploy-do.sh --setup
+./deploy-do.sh --setup
 ```
 
 This creates a temporary droplet, installs everything (agent-smith, Claude Code, Kali image, Metasploit image, all scanner images), takes a snapshot, and destroys the build droplet. The snapshot costs ~$0.05/month to keep.
@@ -58,29 +58,29 @@ This creates a temporary droplet, installs everything (agent-smith, Claude Code,
 
 ```bash
 # Run a single challenge — creates droplet from snapshot (boots in ~60s)
-./benchmarks/deploy-do.sh --benchmarks "XBEN-001-24"
+./deploy-do.sh --benchmarks "XBEN-001-24"
 
 # Run multiple challenges
-./benchmarks/deploy-do.sh --benchmarks "XBEN-001-24 XBEN-020-24 XBEN-070-24"
+./deploy-do.sh --benchmarks "XBEN-001-24 XBEN-020-24 XBEN-070-24"
 
 # Run ALL 104 challenges (serial, ~8-15 hours)
-./benchmarks/deploy-do.sh
+./deploy-do.sh
 
 # Skip already-completed challenges
-./benchmarks/deploy-do.sh --skip-existing
+./deploy-do.sh --skip-existing
 
 # Re-run only previously unsolved/errored
-./benchmarks/deploy-do.sh --redo-unsolved
+./deploy-do.sh --redo-unsolved
 
 # Use OpenCode instead of Claude Code
-./benchmarks/deploy-do.sh --agent opencode --benchmarks "XBEN-001-24"
+./deploy-do.sh --agent opencode --benchmarks "XBEN-001-24"
 ```
 
 ### Monitor, download, and manage
 
 ```bash
 # Check status (snapshot, droplet, benchmark running/idle)
-./benchmarks/deploy-do.sh --status
+./deploy-do.sh --status
 
 # SSH in to watch the benchmark live
 ssh root@<ip> tail -f /root/benchmark.log
@@ -89,13 +89,13 @@ ssh root@<ip> tail -f /root/benchmark.log
 scp -r root@<ip>:/root/runs ./runs
 
 # Stop droplet (saves money, keeps disk + results at ~$0.02/hr)
-./benchmarks/deploy-do.sh --stop
+./deploy-do.sh --stop
 
 # Resume and run more challenges (results accumulate)
-./benchmarks/deploy-do.sh --resume --benchmarks "XBEN-020-24"
+./deploy-do.sh --resume --benchmarks "XBEN-020-24"
 
 # Destroy droplet when fully done (snapshot stays for next time)
-./benchmarks/deploy-do.sh --destroy
+./deploy-do.sh --destroy
 ```
 
 ---
@@ -108,10 +108,10 @@ For running the full 104-challenge suite fast, `fleet.sh` spins up N droplets in
 
 ```bash
 # 15 droplets, splits remaining benchmarks evenly (1 lab per droplet)
-./benchmarks/fleet.sh launch 104
+./fleet.sh launch 104
 
 # 10 droplets with specific challenges
-./benchmarks/fleet.sh launch 10 XBEN-001-24 XBEN-002-24 XBEN-020-24 ...
+./fleet.sh launch 10 XBEN-001-24 XBEN-002-24 XBEN-020-24 ...
 ```
 
 The launcher:
@@ -127,10 +127,10 @@ The launcher:
 
 ```bash
 # List all fleet droplets with IPs and status
-./benchmarks/fleet.sh status
+./fleet.sh status
 
 # Per-droplet solved/failed counts and current leader
-./benchmarks/fleet.sh progress
+./fleet.sh progress
 ```
 
 Example `progress` output:
@@ -150,7 +150,7 @@ Example `progress` output:
 
 ```bash
 # Scp all results from all fleet droplets + primary into ./runs
-./benchmarks/fleet.sh pull ./runs
+./fleet.sh pull ./runs
 ```
 
 **Pull regularly** — droplets can be lost, restarted, or have state wiped. Pulling after every major milestone protects your evidence packages.
@@ -159,10 +159,10 @@ Example `progress` output:
 
 ```bash
 # Destroy all fleet droplets (snapshot stays)
-./benchmarks/fleet.sh destroy
+./fleet.sh destroy
 
 # Also destroy the primary if you launched one via deploy-do.sh
-./benchmarks/deploy-do.sh --destroy
+./deploy-do.sh --destroy
 ```
 
 ### Fleet cost example (~1 hour wall clock, 15 droplets)
@@ -195,19 +195,19 @@ You can also run benchmarks locally without DigitalOcean:
 pip install pyyaml
 
 # Run a single challenge
-python benchmarks/runner.py --benchmarks XBEN-001-24
+python runner.py --benchmarks XBEN-001-24
 
 # Run a few easy ones
-python benchmarks/runner.py --benchmarks XBEN-020-24 XBEN-070-24 XBEN-088-24
+python runner.py --benchmarks XBEN-020-24 XBEN-070-24 XBEN-088-24
 
 # Run all 104 challenges
-python benchmarks/runner.py
+python runner.py
 
 # Use OpenCode instead of Claude Code
-python benchmarks/runner.py --agent opencode
+python runner.py --agent opencode
 
 # Custom timeout (1 hour) and output dir
-python benchmarks/runner.py --timeout 3600 --output ./my-runs
+python runner.py --timeout 3600 --output ./my-runs
 ```
 
 ## How it works
