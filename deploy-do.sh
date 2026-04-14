@@ -6,21 +6,21 @@
 #   - ANTHROPIC_API_KEY (or OPENAI_API_KEY for OpenCode) set locally
 #
 # Workflow:
-#   1. First time:  ./benchmarks/deploy-do.sh --setup
+#   1. First time:  ./deploy-do.sh --setup
 #      Builds a droplet with everything pre-installed (Kali, Metasploit,
 #      all scanner images, agent-smith, Claude Code), takes a snapshot,
 #      and destroys the build droplet. Takes ~20 min, costs ~$0.04.
 #
-#   2. Run benchmarks: ./benchmarks/deploy-do.sh --benchmarks "XBEN-001-24"
+#   2. Run benchmarks: ./deploy-do.sh --benchmarks "XBEN-001-24"
 #      Creates a droplet FROM the snapshot (instant — no build step),
 #      runs the benchmark, and stops (powers off) the droplet when idle.
 #
-#   3. Run more: ./benchmarks/deploy-do.sh --resume --benchmarks "XBEN-020-24"
+#   3. Run more: ./deploy-do.sh --resume --benchmarks "XBEN-020-24"
 #      Powers on the existing stopped droplet and runs more benchmarks.
 #
 #   4. Download: scp -r root@<ip>:/root/runs ./runs
 #
-#   5. Done:  ./benchmarks/deploy-do.sh --destroy
+#   5. Done:  ./deploy-do.sh --destroy
 #      Destroys the droplet (snapshot stays for next time).
 #
 # Costs:
@@ -181,7 +181,7 @@ if [[ "$MODE" == "stop" ]]; then
     [[ -n "${DROPLET_ID:-}" ]] || die "No droplet '$DROPLET_NAME' found"
     info "Powering off $DROPLET_NAME (keeps disk, ~\$0.02/hr)..."
     doctl compute droplet-action power-off "$DROPLET_ID" --wait
-    ok "Droplet stopped. Resume with: ./benchmarks/deploy-do.sh --resume"
+    ok "Droplet stopped. Resume with: ./deploy-do.sh --resume"
     exit 0
 fi
 
@@ -232,7 +232,7 @@ if [[ "$MODE" == "setup" ]]; then
             doctl compute snapshot delete "$EXISTING_SNAP" --force
             ok "Old snapshot deleted"
         else
-            ok "Keeping existing snapshot. Run benchmarks with: ./benchmarks/deploy-do.sh --benchmarks ..."
+            ok "Keeping existing snapshot. Run benchmarks with: ./deploy-do.sh --benchmarks ..."
             exit 0
         fi
     fi
@@ -385,8 +385,8 @@ echo '>>> Setup complete'
     echo "  ┌─────────────────────────────────────────────────────────┐"
     echo "  │  Snapshot ready! Run benchmarks with:                   │"
     echo "  │                                                         │"
-    echo "  │  ./benchmarks/deploy-do.sh --benchmarks \"XBEN-001-24\"   │"
-    echo "  │  ./benchmarks/deploy-do.sh                  (all 104)   │"
+    echo "  │  ./deploy-do.sh --benchmarks \"XBEN-001-24\"   │"
+    echo "  │  ./deploy-do.sh                  (all 104)   │"
     echo "  │                                                         │"
     echo "  │  Droplets from snapshot boot in ~60s with everything    │"
     echo "  │  pre-installed — no build step needed.                  │"
@@ -520,123 +520,21 @@ if [[ "$MODE" == "run" || "$MODE" == "resume" ]]; then
 
     # ── CTF mode patch ─────────────────────────────────────────────────────
     # Patches agent-smith on the droplet ONLY (never touches local repo) to
-    # short-circuit /pentester when a CTF flag is extracted: skip all
-    # completion gates (credential-audit, post-exploit, etc.) and allow
-    # complete_scan immediately. This is benchmark-specific behaviour —
-    # we never want it in the upstream repo.
+    # short-circuit /pentester when a CTF flag is extracted. Logic lives in
+    # _ctf_patch.sh (single source of truth, also used by fleet.sh).
     info "Applying CTF short-circuit patch to droplet's agent-smith..."
-    ssh $SSH_OPTS "root@$IP" "bash -s" <<'CTFPATCH'
-set -e
-
-# --- patch 1: mcp_server/session_tools.py ---
-# Inject _has_ctf_flag helper and wrap _do_complete's blocker accumulation
-# so gates are skipped when a CTF flag is present in findings.
-python3 - <<'PYEOF'
-import re
-from pathlib import Path
-
-p = Path("/root/agent-smith/mcp_server/session_tools.py")
-src = p.read_text()
-
-if "_has_ctf_flag" in src:
-    print("  session_tools.py: already patched")
-else:
-    # Add the regex + helper before _gate_blockers
-    helper = '''
-_CTF_FLAG_RE = __import__("re").compile(r"flag\\{[^}]{6,}\\}")
-
-
-def _has_ctf_flag(data: dict) -> bool:
-    """True if any finding contains a CTF flag pattern — enables CTF mode."""
-    for f in data.get("findings", []):
-        for field in ("title", "description", "evidence"):
-            v = f.get(field, "")
-            if isinstance(v, str) and _CTF_FLAG_RE.search(v):
-                return True
-    return False
-
-
-'''
-    src = src.replace(
-        "def _gate_blockers() -> list[str]:",
-        helper + "def _gate_blockers() -> list[str]:",
-    )
-
-    # Wrap the blocker calls in _do_complete
-    old = (
-        "    data = findings_store._load()\n\n"
-        "    blockers.extend(_gate_blockers())\n"
-        "    blockers.extend(_escalation_lead_blockers(data))"
-    )
-    new = (
-        "    data = findings_store._load()\n\n"
-        "    # CTF mode: skip all completion gates when a flag has been extracted.\n"
-        "    if _has_ctf_flag(data):\n"
-        "        pass\n"
-        "    else:\n"
-        "        blockers.extend(_gate_blockers())\n"
-        "        blockers.extend(_escalation_lead_blockers(data))"
-    )
-    if old in src:
-        src = src.replace(old, new)
-        p.write_text(src)
-        print("  session_tools.py: patched")
-    else:
-        print("  session_tools.py: expected block not found — skipping")
-PYEOF
-
-# --- patch 2: skills/pentester.md + installed copy ---
-# Prepend a CTF mode section that instructs the agent to complete_scan
-# immediately on flag extraction.
-python3 - <<'PYEOF'
-from pathlib import Path
-
-CTF_SECTION = """### CTF mode — flag-based short-circuit
-
-**If the user's request mentions a flag (e.g., `flag{...}`, "find the flag", "CTF challenge", "extract the flag"), you are in CTF mode.** CTF mode changes the completion criteria:
-
-- **Goal is flag extraction, not full coverage.** Timing matters more than methodology completeness.
-- **As soon as you extract a flag in the format `flag{...}`:**
-  1. Call `report(action="finding")` with the flag in `evidence` and severity `critical`
-  2. Call `complete_scan` **immediately** with note "CTF flag extracted: flag{...}"
-  3. **Skip** all mandatory gates (credential-audit, post-exploit, threat-model, remediate)
-  4. **Do not** chain into further skills
-- The completion gates (credential-audit, post-exploit, container-k8s, etc.) do NOT apply in CTF mode.
-- This rule takes precedence over every other "MANDATORY" and "hard gate" rule when CTF mode is active.
-
----
-
-"""
-
-for path_str in (
-    "/root/agent-smith/skills/pentester.md",
-    "/root/.claude/commands/pentester.md",
-):
-    p = Path(path_str)
-    if not p.exists():
-        print(f"  {path_str}: not found — skipping")
-        continue
-    src = p.read_text()
-    if "CTF mode — flag-based short-circuit" in src:
-        print(f"  {path_str}: already patched")
-        continue
-    marker = "## Workflow\n"
-    if marker in src:
-        src = src.replace(marker, marker + "\n" + CTF_SECTION, 1)
-        p.write_text(src)
-        print(f"  {path_str}: patched")
-    else:
-        print(f"  {path_str}: '## Workflow' marker not found — skipping")
-PYEOF
-
-echo "CTF patch complete"
-CTFPATCH
+    scp $SSH_OPTS "$SCRIPT_DIR/_ctf_patch.sh" "root@$IP:/tmp/_ctf_patch.sh" \
+        || die "Failed to upload _ctf_patch.sh"
+    ssh $SSH_OPTS "root@$IP" "bash /tmp/_ctf_patch.sh" \
+        || die "CTF patch failed"
     ok "CTF patch applied"
 
     info "Starting benchmark..."
     # Export key explicitly — Ubuntu's ~/.bashrc exits early on non-interactive
     # shells, so we can't rely on `source ~/.bashrc` to load it.
-    RUN_CMD="export $API_KEY_VAR=\"$API_KEY_VAL\" && export PATH=/root/.local/bin:\$PATH && cd /root/agent-smith && python3 benchmarks/runner.py --agent $AGENT --timeout $TIMEOUT --max-turns $MAX_TURNS $BENCHMARK_ARGS --output /root/runs 2>&1 | tee -a /root/benchmark.log"
+    # -u: unbuffered stdout so `tail -f /root/benchmark.log` shows progress
+    # in real time instead of waiting ~8KB for python's pipe buffer to flush.
+    RUN_CMD="export $API_KEY_VAR=\"$API_KEY_VAL\" && export PATH=/root/.local/bin:\$PATH && cd /root/agent-smith && python3 -u benchmarks/runner.py --agent $AGENT --timeout $TIMEOUT --max-turns $MAX_TURNS $BENCHMARK_ARGS --output /root/runs 2>&1 | tee -a /root/benchmark.log"
 
     ssh $SSH_OPTS "root@$IP" "nohup bash -c '$RUN_CMD' > /root/benchmark-nohup.log 2>&1 &"
     ok "Benchmark started in background"
@@ -655,13 +553,13 @@ CTFPATCH
     echo "  │    scp -r root@$IP:/root/runs ./runs"
     echo "  │"
     echo "  │  Stop droplet (saves money, keeps results):"
-    echo "  │    ./benchmarks/deploy-do.sh --stop"
+    echo "  │    ./deploy-do.sh --stop"
     echo "  │"
     echo "  │  Run more challenges later:"
-    echo "  │    ./benchmarks/deploy-do.sh --resume --benchmarks \"XBEN-020-24\""
+    echo "  │    ./deploy-do.sh --resume --benchmarks \"XBEN-020-24\""
     echo "  │"
     echo "  │  Destroy droplet (snapshot stays):"
-    echo "  │    ./benchmarks/deploy-do.sh --destroy"
+    echo "  │    ./deploy-do.sh --destroy"
     echo "  └──────────────────────────────────────────────────────┘"
     echo ""
 fi

@@ -6,17 +6,17 @@
 # on each one in parallel.
 #
 # Prerequisites:
-#   - Snapshot already exists (run `./benchmarks/deploy-do.sh --setup` first)
+#   - Snapshot already exists (run `./deploy-do.sh --setup` first)
 #   - ANTHROPIC_API_KEY set locally
 #   - ~/.ssh/id_xben SSH key exists and is uploaded to DO
 #
 # Usage:
-#   ./benchmarks/fleet.sh launch 15              # 15 droplets, split remaining
-#   ./benchmarks/fleet.sh launch 10 XBEN-003-24 XBEN-004-24 ...
-#   ./benchmarks/fleet.sh status                 # show all fleet droplets
-#   ./benchmarks/fleet.sh progress               # per-droplet solved/total
-#   ./benchmarks/fleet.sh pull ./runs            # scp all results locally
-#   ./benchmarks/fleet.sh destroy                # nuke all fleet droplets
+#   ./fleet.sh launch 15              # 15 droplets, split remaining
+#   ./fleet.sh launch 10 XBEN-003-24 XBEN-004-24 ...
+#   ./fleet.sh status                 # show all fleet droplets
+#   ./fleet.sh progress               # per-droplet solved/total
+#   ./fleet.sh pull ./runs            # scp all results locally
+#   ./fleet.sh destroy                # nuke all fleet droplets
 #
 set -euo pipefail
 
@@ -143,9 +143,9 @@ cmd_launch() {
     # Check snapshot + SSH key
     local snap_id ssh_key_id
     snap_id=$(get_snapshot_id)
-    [[ -n "$snap_id" ]] || die "No snapshot found. Run ./benchmarks/deploy-do.sh --setup first."
+    [[ -n "$snap_id" ]] || die "No snapshot found. Run ./deploy-do.sh --setup first."
     ssh_key_id=$(get_ssh_key_id)
-    [[ -n "$ssh_key_id" ]] || die "SSH key not registered. Run ./benchmarks/deploy-do.sh first."
+    [[ -n "$ssh_key_id" ]] || die "SSH key not registered. Run ./deploy-do.sh first."
 
     # Check API key
     [[ -n "${ANTHROPIC_API_KEY:-}" ]] || die "ANTHROPIC_API_KEY not set"
@@ -207,32 +207,32 @@ cmd_launch() {
                 ssh -n $SSH_OPTS "root@$ip" "echo ok" >/dev/null 2>&1 && break
                 sleep 10
             done
-            # Allow ufw (LIMIT → ALLOW prevents rate-limit bans)
-            ssh -n $SSH_OPTS "root@$ip" "ufw allow 22/tcp >/dev/null 2>&1; ufw reload >/dev/null 2>&1" 2>/dev/null || true
 
-            # Ensure benchmarks/ directory exists (snapshot may predate it)
-            ssh -n $SSH_OPTS "root@$ip" "mkdir -p /root/agent-smith/benchmarks" 2>/dev/null
+            # Prep droplet in one batched ssh (ufw allow is instant — NO reload,
+            # which used to race with the immediately-following scp and drop it).
+            ssh -n $SSH_OPTS "root@$ip" "set -e
+                ufw allow 22/tcp >/dev/null 2>&1 || true
+                mkdir -p /root/agent-smith/benchmarks
+            " || { echo "  ✗ $name ($ip) prep failed"; exit 1; }
 
-            # Sync runner.py + CTF patch script
-            scp $SSH_OPTS "$SCRIPT_DIR/runner.py" "root@$ip:/root/agent-smith/benchmarks/runner.py" 2>/dev/null
-            scp $SSH_OPTS "$SCRIPT_DIR/_ctf_patch.sh" "root@$ip:/tmp/_ctf_patch.sh" 2>/dev/null
+            # Sync runner.py + CTF patch script — fail loudly (no 2>/dev/null).
+            scp $SSH_OPTS "$SCRIPT_DIR/runner.py" "root@$ip:/root/agent-smith/benchmarks/runner.py" \
+                || { echo "  ✗ $name ($ip) scp runner.py failed"; exit 1; }
+            scp $SSH_OPTS "$SCRIPT_DIR/_ctf_patch.sh" "root@$ip:/tmp/_ctf_patch.sh" \
+                || { echo "  ✗ $name ($ip) scp _ctf_patch.sh failed"; exit 1; }
 
-            # Re-register MCP server with absolute poetry path
-            # (snapshot's claude mcp config may point at "poetry" without full path)
-            ssh -n $SSH_OPTS "root@$ip" "
+            # Re-register MCP, apply CTF patch, install pyyaml — one batched ssh.
+            ssh -n $SSH_OPTS "root@$ip" "set -e
                 /usr/bin/claude mcp remove pentest-agent 2>/dev/null || true
-                /usr/bin/claude mcp add --scope user pentest-agent -- /root/.local/bin/poetry -C /root/agent-smith run python -m mcp_server
-            " >/dev/null 2>&1
-
-            # Apply CTF patch (idempotent)
-            ssh -n $SSH_OPTS "root@$ip" "bash /tmp/_ctf_patch.sh" >/dev/null 2>&1 || true
-
-            # Install pyyaml (needed by runner.py) — idempotent
-            ssh -n $SSH_OPTS "root@$ip" "pip3 install pyyaml >/dev/null 2>&1" 2>/dev/null || true
+                /usr/bin/claude mcp add --scope user pentest-agent -- /root/.local/bin/poetry -C /root/agent-smith run python -m mcp_server >/dev/null
+                bash /tmp/_ctf_patch.sh
+                pip3 install pyyaml >/dev/null 2>&1 || true
+            " || { echo "  ✗ $name ($ip) setup failed"; exit 1; }
 
             # Start benchmark
             local run_cmd="export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\" && export PATH=/root/.local/bin:\$PATH && cd /root/agent-smith && python3 -u benchmarks/runner.py --agent claude --timeout $TIMEOUT --max-turns $MAX_TURNS --benchmarks $chunk --output /root/runs 2>&1 | tee -a /root/benchmark.log"
-            ssh -n $SSH_OPTS "root@$ip" "nohup bash -c '$run_cmd' > /root/benchmark-nohup.log 2>&1 &"
+            ssh -n $SSH_OPTS "root@$ip" "nohup bash -c '$run_cmd' > /root/benchmark-nohup.log 2>&1 &" \
+                || { echo "  ✗ $name ($ip) nohup launch failed"; exit 1; }
             echo "  ✓ $name ($ip) launched"
         ) &
         launch_pids+=($!)
@@ -243,10 +243,10 @@ cmd_launch() {
 
     ok "Fleet launched"
     echo ""
-    echo "  Monitor:   ./benchmarks/fleet.sh status"
-    echo "  Progress:  ./benchmarks/fleet.sh progress"
-    echo "  Pull:      ./benchmarks/fleet.sh pull ./runs"
-    echo "  Destroy:   ./benchmarks/fleet.sh destroy"
+    echo "  Monitor:   ./fleet.sh status"
+    echo "  Progress:  ./fleet.sh progress"
+    echo "  Pull:      ./fleet.sh pull ./runs"
+    echo "  Destroy:   ./fleet.sh destroy"
     echo ""
 }
 
@@ -440,27 +440,31 @@ cmd_fix() {
         [[ -z "$ip" ]] && continue
 
         (
-            # Ensure benchmarks/ dir
-            ssh -n $SSH_OPTS "root@$ip" "mkdir -p /root/agent-smith/benchmarks" 2>/dev/null
-            # Allow ufw
-            ssh -n $SSH_OPTS "root@$ip" "ufw allow 22/tcp >/dev/null 2>&1; ufw reload >/dev/null 2>&1" 2>/dev/null || true
-            # Sync runner + patch
-            scp $SSH_OPTS "$SCRIPT_DIR/runner.py" "root@$ip:/root/agent-smith/benchmarks/runner.py" 2>/dev/null
-            scp $SSH_OPTS "$SCRIPT_DIR/_ctf_patch.sh" "root@$ip:/tmp/_ctf_patch.sh" 2>/dev/null
-            # Re-register MCP with absolute poetry path
-            ssh -n $SSH_OPTS "root@$ip" "
+            # Prep in one batched ssh — no ufw reload (races with scp).
+            ssh -n $SSH_OPTS "root@$ip" "set -e
+                ufw allow 22/tcp >/dev/null 2>&1 || true
+                mkdir -p /root/agent-smith/benchmarks
+                pkill -f runner.py 2>/dev/null || true
+            " || { echo "  ✗ $name ($ip) prep failed"; exit 1; }
+
+            # Sync runner + patch — fail loudly.
+            scp $SSH_OPTS "$SCRIPT_DIR/runner.py" "root@$ip:/root/agent-smith/benchmarks/runner.py" \
+                || { echo "  ✗ $name ($ip) scp runner.py failed"; exit 1; }
+            scp $SSH_OPTS "$SCRIPT_DIR/_ctf_patch.sh" "root@$ip:/tmp/_ctf_patch.sh" \
+                || { echo "  ✗ $name ($ip) scp _ctf_patch.sh failed"; exit 1; }
+
+            # Re-register MCP, apply CTF patch, install pyyaml — one batched ssh.
+            ssh -n $SSH_OPTS "root@$ip" "set -e
                 /usr/bin/claude mcp remove pentest-agent 2>/dev/null || true
-                /usr/bin/claude mcp add --scope user pentest-agent -- /root/.local/bin/poetry -C /root/agent-smith run python -m mcp_server
-            " >/dev/null 2>&1
-            # Apply CTF patch
-            ssh -n $SSH_OPTS "root@$ip" "bash /tmp/_ctf_patch.sh" >/dev/null 2>&1 || true
-            # pyyaml
-            ssh -n $SSH_OPTS "root@$ip" "pip3 install pyyaml >/dev/null 2>&1" 2>/dev/null || true
-            # Kill any stale process
-            ssh -n $SSH_OPTS "root@$ip" "pkill -f runner.py 2>/dev/null; true" 2>/dev/null || true
+                /usr/bin/claude mcp add --scope user pentest-agent -- /root/.local/bin/poetry -C /root/agent-smith run python -m mcp_server >/dev/null
+                bash /tmp/_ctf_patch.sh
+                pip3 install pyyaml >/dev/null 2>&1 || true
+            " || { echo "  ✗ $name ($ip) setup failed"; exit 1; }
+
             # Start benchmark
             local run_cmd="export ANTHROPIC_API_KEY=\"$ANTHROPIC_API_KEY\" && export PATH=/root/.local/bin:\$PATH && cd /root/agent-smith && python3 -u benchmarks/runner.py --agent claude --timeout $TIMEOUT --max-turns $MAX_TURNS --benchmarks $chunk --output /root/runs 2>&1 | tee -a /root/benchmark.log"
-            ssh -n $SSH_OPTS "root@$ip" "nohup bash -c '$run_cmd' > /root/benchmark-nohup.log 2>&1 &"
+            ssh -n $SSH_OPTS "root@$ip" "nohup bash -c '$run_cmd' > /root/benchmark-nohup.log 2>&1 &" \
+                || { echo "  ✗ $name ($ip) nohup launch failed"; exit 1; }
             echo "  ✓ $name ($ip) — ${chunk}"
         ) &
         pids+=($!)
@@ -514,10 +518,10 @@ case "${1:-}" in
         echo "  destroy                    Destroy all fleet droplets"
         echo ""
         echo "Example:"
-        echo "  ./benchmarks/fleet.sh launch 15"
-        echo "  ./benchmarks/fleet.sh progress"
-        echo "  ./benchmarks/fleet.sh pull ./runs"
-        echo "  ./benchmarks/fleet.sh destroy"
+        echo "  ./fleet.sh launch 15"
+        echo "  ./fleet.sh progress"
+        echo "  ./fleet.sh pull ./runs"
+        echo "  ./fleet.sh destroy"
         exit 1
         ;;
 esac
