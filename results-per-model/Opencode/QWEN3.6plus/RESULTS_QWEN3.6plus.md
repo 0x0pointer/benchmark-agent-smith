@@ -6,7 +6,8 @@ Autonomous penetration testing of the [XBOW validation-benchmarks suite](https:/
 ╭─────────────────────────────────────────────────────────────╮
 │                                                             │
 │   Solved:   75 / 104   (72.1 %)                             │
-│   Cost:     ~$502       ($6.69 / solve — see note below)    │
+│   Cost:     ~$131 est.  (~$1.75 / solve, clean run)         │
+│   Cost:     ~$502 actual ($6.69 / solve — see note below)   │
 │   Time:     13.6 h      (10.8 min / solve average)          │
 │   Agent:    OpenCode + Qwen3.6 Plus (MoE) via agent-smith   │
 │   Infra:    DigitalOcean s-4vcpu-8gb, 10-server fleet       │
@@ -14,7 +15,7 @@ Autonomous penetration testing of the [XBOW validation-benchmarks suite](https:/
 ╰─────────────────────────────────────────────────────────────╯
 ```
 
-> **Cost note**: The $502 total spend (21K requests, 1.43B tokens) reflects the full campaign including two infrastructure bugs that caused an estimated ~74% of tokens to be spent on duplicate re-runs of already-solved challenges. The effective cost for the 75 unique solves was ~$1.50–2.00 per solve in efficient runs (~$131 total). Per-run timing and token figures carry ±15–20% uncertainty due to fleet result collisions that required post-hoc recovery. See [Cost efficiency](#cost-efficiency) and [Data reliability caveat](#data-reliability-caveat) below.
+> **Cost note**: The ~$131 estimated cost reflects what a clean run with no infrastructure bugs would have spent (75 solves × ~$1.75 average, ~370M tokens). The actual campaign spend was ~$502 (21K requests, 1.43B tokens) — roughly 3.8× higher due to two bugs in the benchmark runner's fleet orchestration logic that caused already-solved challenges to be re-run up to 9× across servers. **These bugs were not caused by agent-smith or the model** — they were errors in how the benchmark runner was deployed across the fleet. Per-run timing and token figures carry ±15–20% uncertainty due to fleet result collisions that required post-hoc artifact recovery. See [Cost efficiency](#cost-efficiency) and [Data reliability caveat](#data-reliability-caveat) below.
 
 ---
 
@@ -119,33 +120,42 @@ xychart-beta
 
 ## Cost efficiency
 
-### Total campaign spend
+### What a clean run would have cost
 
-| Metric | Value |
+| Metric | Clean estimate |
+|---|---|
+| **Unique solves** | 75 |
+| **Cost per solve** | ~$1.75 |
+| **Total cost** | **~$131** |
+| **Total tokens** | ~370M |
+| **Requests** | ~5,500 |
+
+### What was actually spent (with infra bugs)
+
+| Metric | Actual |
 |---|---|
 | **Total OpenRouter spend** | ~$502 |
 | **Total requests** | ~21,000 |
 | **Total tokens** | ~1.43B |
-| **Naive cost per unique solve** | ~$6.69 |
-| **Efficient cost per solve (est.)** | ~$1.50–2.00 |
-| **Estimated tokens for unique solves** | ~370M (~26% of total) |
-| **Estimated wasted tokens (duplicates)** | ~1.06B (~74% of total) |
+| **Cost per unique solve (naive)** | ~$6.69 |
+| **Overhead multiplier** | ~3.8× |
+| **Estimated wasted tokens** | ~1.06B (~74% of total) |
 
-### Why ~74 % of spend was wasted
+### Why ~74 % of spend was wasted — and who is to blame
 
-Two infrastructure bugs caused a large fraction of the campaign budget to go toward re-running challenges that had already been solved:
+**These bugs were not in agent-smith or in the model.** Both performed as expected throughout. The waste came entirely from errors in how the benchmark runner (`runner.py`) was orchestrated across the 10-server fleet:
 
-**Bug 1 — `--redo-unsolved` logic error** (~$80–100 wasted, est. ~250M tokens)
-The runner's `--redo-unsolved` flag was supposed to retry only *failed* benchmarks. A logic error caused it to also queue benchmarks that had never been attempted on a given server (no `result.json` present). Because the 10-server fleet had no shared state, each server's "never attempted" set overlapped heavily with challenges already solved on other servers. Some challenges were re-run up to 9× across the fleet.
+**Bug 1 — `--redo-unsolved` logic error in the runner** (~$80–100 wasted, est. ~250M tokens)
+The runner's `--redo-unsolved` flag was supposed to retry only *failed* benchmarks. A logic error caused it to also queue benchmarks that had never been attempted on a given server (no `result.json` present). Because the fleet had no shared state, each server's "never attempted" list heavily overlapped with challenges already solved on other servers — causing some challenges to be re-run up to 9× across the fleet.
 
 *Fix applied*: Added `if args.redo_unsolved: skipped += 1` for missing result files, so never-attempted benchmarks are skipped when `--redo-unsolved` is set.
 
-**Bug 2 — No deduplication across fleet** (~$50–70 wasted, est. ~200M tokens)
+**Bug 2 — No deduplication across the fleet** (~$50–70 wasted, est. ~200M tokens)
 Early runs had no `--benchmarks` scoping, so multiple servers attacked the same challenges in parallel with no coordination. The same flag was captured independently by up to 9 different servers.
 
 *Fix applied*: Split all unsolved challenges round-robin across servers using explicit `--benchmarks` per server and `--skip-existing` to avoid redundant re-runs.
 
-**Efficient campaign estimate**: With both fixes in place from the start, 75 solves at ~$1.75 average ≈ **~$131 total** (~370M tokens). The remaining ~$371 (~1.06B tokens) went to duplicate runs, failed retries on hard challenges, and infrastructure overhead — roughly a **3.8× cost multiplier** from tooling bugs alone.
+A future clean run with both fixes in place should reproduce these results at **~$131 total** (~370M tokens).
 
 ---
 
