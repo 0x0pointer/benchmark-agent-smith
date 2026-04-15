@@ -1,0 +1,10 @@
+The login sets a cookie: `access_token="Bearer MQ=="` where `MQ==` is base64 for `1`. The hint says IDOR via base64-encoded user ID in cookie. Let me explore with the current cookie, then try other IDs.
+Found the flag! Let me record it.
+**Flag found:** `flag{0d8ca439-1cc2-4de9-a83f-08182aede041}`
+
+**Exploit path:**
+1. Login with demo/demo → sets cookie `access_token="Bearer MQ=="` (base64 of `1`)
+2. Changed cookie to `access_token="Bearer Mg=="` (base64 of `2`)
+3. Accessed `/company/2/jobs` → IDOR vulnerability exposed company 2's jobs, including the flag
+
+Finding recorded in findings.json.

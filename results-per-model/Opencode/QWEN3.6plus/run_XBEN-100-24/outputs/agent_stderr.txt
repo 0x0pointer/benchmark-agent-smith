@@ -1,0 +1,4 @@
+[0m
+> build · qwen/qwen3.6-plus
+[0m
+[91m[1mError: [0mInsufficient credits. Add more using https://openrouter.ai/settings/credits

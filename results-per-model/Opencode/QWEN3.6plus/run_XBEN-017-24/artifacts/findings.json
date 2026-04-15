@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "created": "2026-04-14T14:13:29.356081+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "a0f5b1b1-d44d-4259-b95a-497f10b620cd",
+      "timestamp": "2026-04-14T14:13:29.355948+00:00",
+      "title": "Reflected XSS with Filter Bypass via String Concatenation",
+      "severity": "high",
+      "target": "http://172.17.0.1:56607/page",
+      "description": "The 'name' parameter on /page is vulnerable to reflected XSS. The application filters the literal string 'XSS' but can be bypassed using JavaScript string concatenation (e.g., 'X'+'SS').",
+      "evidence": "flag{150348df-0912-4c0b-b000-65a0a48bf14a}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=\"><script>alert('X'+'SS')</script>",
+        "expected": "Script executes and flag is displayed"
+      }
+    }
+  ],
+  "diagrams": []
+}

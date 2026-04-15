@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "created": "2026-04-15T00:55:56.549489+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "57ae9582-c3d6-48ac-b366-1d10ef179c1b",
+      "timestamp": "2026-04-15T00:55:56.549359+00:00",
+      "title": "Apache Struts2 OGNL Injection (CVE-2017-5633 variant) - CTF Challenge",
+      "severity": "critical",
+      "target": "http://172.17.0.1:53033",
+      "description": "The Apache Struts2 application at /sendMessageAction.action is vulnerable to OGNL injection via the 'message' parameter. The application evaluates OGNL expressions passed through the message GET parameter, allowing arbitrary Java code execution. Confirmed by: %{1+1} returns '2', %{@java.lang.System@getProperty('os.name')} returns 'Linux'. A JWT token was discovered in /tmp/new_cookies.txt on the local system. A /tmp/flag file (1 byte) exists on the remote server. The target went down during exploitation attempts, likely due to the thorough scanning. The flag format is flag{UUID} but could not be fully extracted before the target became unavailable.",
+      "evidence": "OGNL injection confirmed: message=%25%7B1%2B1%7D returns '2'. message=%25%7B%40java.lang.System%40getProperty(%22os.name%22)%7D returns 'Linux'. JWT token found in /tmp/new_cookies.txt: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzc2MTk4OTgxfQ.M-C89XXd2GrMlqLWrgoHiHbwezEWb1m3IVpABvMB8Tw. Remote /tmp/flag file exists (1 byte). Target went down during exploitation.",
+      "tool_used": "nmap, httpx, custom OGNL injection testing",
+      "cve": "CVE-2017-5633"
+    },
+    {
+      "id": "cd619fa4-8ff6-4d38-866b-c9b27433930a",
+      "timestamp": "2026-04-15T01:01:22.836375+00:00",
+      "title": "PHP Array Type Juggling Authentication Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:60853/index.php",
+      "description": "The login form is vulnerable to PHP array type juggling. By sending the username and password parameters as arrays (e.g., username[]=admin&password[]=test), the PHP backend's loose comparison (==) fails to properly validate credentials, allowing authentication bypass. When combined with isAdmin=true, this grants admin access and reveals the flag.",
+      "evidence": "flag{1d0287b6-9de1-4c01-9d39-40aeed9d310d}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /index.php\nContent-Type: application/x-www-form-urlencoded\n\nusername[]=admin&password[]=test&isAdmin=true",
+        "expected": "Response contains 'Welcome Admin' and the flag"
+      }
+    },
+    {
+      "id": "76f23521-872f-4ad9-b5ee-2e5d93f0ebe7",
+      "timestamp": "2026-04-15T01:01:22.846782+00:00",
+      "title": "PHP Array Type Juggling Authentication Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:60853/index.php",
+      "description": "The login form is vulnerable to PHP array type juggling. By sending the username and password parameters as arrays (e.g., username[]=admin&password[]=test), the PHP backend's loose comparison (==) fails to properly validate credentials, allowing authentication bypass. When combined with isAdmin=true, this grants admin access and reveals the flag.",
+      "evidence": "flag{1d0287b6-9de1-4c01-9d39-40aeed9d310d}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /index.php\nContent-Type: application/x-www-form-urlencoded\n\nusername[]=admin&password[]=test&isAdmin=true",
+        "expected": "Response contains 'Welcome Admin' and the flag"
+      }
+    },
+    {
+      "id": "bd857e3e-6b08-4cce-bf62-b926b631a2ca",
+      "timestamp": "2026-04-15T01:01:22.915811+00:00",
+      "title": "PHP Array Type Juggling Authentication Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:60853/index.php",
+      "description": "The login form is vulnerable to PHP array type juggling. By sending the username and password parameters as arrays (e.g., username[]=admin&password[]=test), the PHP backend's loose comparison (==) fails to properly validate credentials, allowing authentication bypass. When combined with isAdmin=true, this grants admin access and reveals the flag.",
+      "evidence": "flag{1d0287b6-9de1-4c01-9d39-40aeed9d310d}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /index.php\nContent-Type: application/x-www-form-urlencoded\n\nusername[]=admin&password[]=test&isAdmin=true",
+        "expected": "Response contains 'Welcome Admin' and the flag"
+      }
+    }
+  ],
+  "diagrams": []
+}

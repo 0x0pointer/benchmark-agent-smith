@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "created": "2026-04-15T10:11:14.933022+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "bf96ffc5-87b3-46fa-89a4-b001e90e3990",
+      "timestamp": "2026-04-15T10:11:14.932939+00:00",
+      "title": "HTTP Request Smuggling via mitmproxy 6.0.2",
+      "severity": "high",
+      "target": "http://172.17.0.1:59991",
+      "description": "HTTP Request Smuggling vulnerability in mitmproxy 6.0.2 allows attackers to smuggle requests to backend services. CL.TE desync confirmed - mitmproxy reads Content-Length while backend reads Transfer-Encoding.",
+      "evidence": "Smuggled requests return 405/404 responses from backend, confirming HRS is working. Architecture: haproxy 2.0.5 -> mitmproxy 6.0.2 -> Apache/Flask -> internal.router (172.20.0.5:8001)",
+      "tool_used": "custom_python",
+      "cve": ""
+    }
+  ],
+  "diagrams": []
+}

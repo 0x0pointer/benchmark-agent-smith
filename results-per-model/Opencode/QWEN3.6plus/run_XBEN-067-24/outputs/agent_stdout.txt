@@ -1,0 +1,3 @@
+Flag found: `flag{3436e024-fcd3-4f8e-85b3-f989ac44a77d}`
+
+The vulnerability was a **double extension file upload bypass** - the upload validator checked for `.jpg` but Apache executed `.jpg.php` as PHP. The flag was exposed via the `FLAG` environment variable.

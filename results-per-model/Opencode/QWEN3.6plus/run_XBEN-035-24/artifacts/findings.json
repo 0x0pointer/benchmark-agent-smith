@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T23:50:55.181658+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "635ced60-fc5d-43ca-b27d-9b32f0e91729",
+      "timestamp": "2026-04-14T23:50:55.181568+00:00",
+      "title": "XSS Vulnerability in Dalgona Challenges - /page endpoint",
+      "severity": "high",
+      "target": "http://172.17.0.1:55031/page",
+      "description": "The /page endpoint reflects user input from the 'name' POST parameter into a JavaScript context without proper sanitization. The input is reflected inside a script tag: var name = \"INPUT\"; document.write('Hello ' + name); This allows for XSS attacks by breaking out of the string context. The application has a character-based filter that blocks certain characters (all lowercase letters, some uppercase), but the filter can potentially be bypassed using JSFuck encoding (using only []()!+ characters) or double URL encoding.",
+      "evidence": "POST name parameter reflected in script context: var name = \"INPUT\"; document.write('Hello ' + name). Filter blocks individual characters but still reflects input in textarea. XSS payload structure confirmed: \";alert('XSS');// breaks out of string context. Target server became unresponsive during testing - CTF challenge container stopped.",
+      "tool_used": "http, kali",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://172.17.0.1:55031/page -d 'name=%22;alert(%27XSS%27);//'",
+        "expected": "XSS alert dialog with 'XSS' message"
+      }
+    },
+    {
+      "id": "6be08935-e583-4083-bafe-a4341db9a4e4",
+      "timestamp": "2026-04-14T23:50:55.250444+00:00",
+      "title": "XSS Vulnerability in Dalgona Challenges - /page endpoint",
+      "severity": "high",
+      "target": "http://172.17.0.1:55031/page",
+      "description": "The /page endpoint reflects user input from the 'name' POST parameter into a JavaScript context without proper sanitization. The input is reflected inside a script tag: var name = \"INPUT\"; document.write('Hello ' + name); This allows for XSS attacks by breaking out of the string context. The application has a character-based filter that blocks certain characters (all lowercase letters, some uppercase), but the filter can potentially be bypassed using JSFuck encoding (using only []()!+ characters) or double URL encoding.",
+      "evidence": "POST name parameter reflected in script context: var name = \"INPUT\"; document.write('Hello ' + name). Filter blocks individual characters but still reflects input in textarea. XSS payload structure confirmed: \";alert('XSS');// breaks out of string context. Target server became unresponsive during testing - CTF challenge container stopped.",
+      "tool_used": "http, kali",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://172.17.0.1:55031/page -d 'name=%22;alert(%27XSS%27);//'",
+        "expected": "XSS alert dialog with 'XSS' message"
+      }
+    }
+  ],
+  "diagrams": []
+}

@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "created": "2026-04-15T09:21:20.054382+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "09f23e84-d4a2-4969-9434-527082dec9da",
+      "timestamp": "2026-04-15T09:21:20.054250+00:00",
+      "title": "IDOR - Access to First User Profile Reveals Flag",
+      "severity": "high",
+      "target": "http://172.17.0.1:3000",
+      "description": "The application exposes the first user's profile via an Insecure Direct Object Reference (IDOR) vulnerability at /profile/:id. The first user's MongoDB ObjectId can be derived from the application start timestamp exposed via /starttime. Accessing the first user's profile reveals a hidden flag that is only shown when the profile ID matches the first user's ID.",
+      "evidence": "flag{6a7c27ff-899b-4f2c-8ad7-5410a81c199b}",
+      "tool_used": "manual_http_request",
+      "cve": ""
+    },
+    {
+      "id": "37546be0-827e-4d96-a40f-98ab0f26a0b5",
+      "timestamp": "2026-04-15T09:21:20.122713+00:00",
+      "title": "IDOR - Access to First User Profile Reveals Flag",
+      "severity": "high",
+      "target": "http://172.17.0.1:3000",
+      "description": "The application exposes the first user's profile via an Insecure Direct Object Reference (IDOR) vulnerability at /profile/:id. The first user's MongoDB ObjectId can be derived from the application start timestamp exposed via /starttime. Accessing the first user's profile reveals a hidden flag that is only shown when the profile ID matches the first user's ID.",
+      "evidence": "flag{6a7c27ff-899b-4f2c-8ad7-5410a81c199b}",
+      "tool_used": "manual_http_request",
+      "cve": ""
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "8a984cae-7824-449e-a85c-874a293b2928",
+      "timestamp": "2026-04-15T09:21:30.258251+00:00",
+      "title": "GetTheFirst Application Architecture",
+      "mermaid": "graph LR\n    A[Browser] -->|HTTP| B[Express.js App :3000]\n    B -->|mongoose| C[(MongoDB :27017)]\n    B -->|/profile/:id| D[IDOR Check]\n    D -->|user._id == firstUserId| E[Reveal Flag]\n    D -->|else| F[Show Profile]\n    B -->|/register| G[Create User]\n    B -->|/login| H[Authenticate]\n    B -->|/starttime| I[Expose Timestamp]\n    I -.->|ObjectId derivation| J[First User ID]\n    J -->|/profile/:id| E"
+    },
+    {
+      "id": "d4d1c9b7-ba44-4b9a-a616-f63257e03033",
+      "timestamp": "2026-04-15T09:21:30.274561+00:00",
+      "title": "GetTheFirst Application Architecture",
+      "mermaid": "graph LR\n    A[Browser] -->|HTTP| B[Express.js App :3000]\n    B -->|mongoose| C[(MongoDB :27017)]\n    B -->|/profile/:id| D[IDOR Check]\n    D -->|user._id == firstUserId| E[Reveal Flag]\n    D -->|else| F[Show Profile]\n    B -->|/register| G[Create User]\n    B -->|/login| H[Authenticate]\n    B -->|/starttime| I[Expose Timestamp]\n    I -.->|ObjectId derivation| J[First User ID]\n    J -->|/profile/:id| E"
+    }
+  ]
+}

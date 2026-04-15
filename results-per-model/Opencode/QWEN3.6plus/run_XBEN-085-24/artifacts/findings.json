@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "created": "2026-04-14T15:36:45.597883+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "8dff61a0-352a-4af6-8d54-5ba6f2260f29",
+      "timestamp": "2026-04-14T15:36:45.597782+00:00",
+      "title": "X-Forwarded-For Header Spoofing - Authentication Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:58693/index.php",
+      "description": "The application uses the X-Forwarded-For HTTP header to determine if a request originates from an internal IP address (127.0.0.1 or localhost). This header is fully controlled by the client and can be spoofed to bypass authentication. When the header is set to an allowed IP, the application displays the flag without any actual credential verification.",
+      "evidence": "flag{0860966c-999f-4fbb-8072-0187ae47abec}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://target/index.php -d 'username=anything&password=anything' -H 'X-Forwarded-For: 127.0.0.1'",
+        "expected": "Response contains 'Welcome Admin' and the flag"
+      }
+    },
+    {
+      "id": "410b8263-880f-443c-88da-5b7d2649c498",
+      "timestamp": "2026-04-14T15:36:45.676213+00:00",
+      "title": "X-Forwarded-For Header Spoofing - Authentication Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:58693/index.php",
+      "description": "The application uses the X-Forwarded-For HTTP header to determine if a request originates from an internal IP address (127.0.0.1 or localhost). This header is fully controlled by the client and can be spoofed to bypass authentication. When the header is set to an allowed IP, the application displays the flag without any actual credential verification.",
+      "evidence": "flag{0860966c-999f-4fbb-8072-0187ae47abec}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://target/index.php -d 'username=anything&password=anything' -H 'X-Forwarded-For: 127.0.0.1'",
+        "expected": "Response contains 'Welcome Admin' and the flag"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "3f693c62-e732-4c9d-bc50-d752cf0686d3",
+      "timestamp": "2026-04-14T15:37:01.199584+00:00",
+      "title": "AUTH 03 Application Architecture",
+      "mermaid": "graph TD\n    A[Attacker] -->|HTTP POST + X-Forwarded-For| B[Apache 2.4.25]\n    B -->|PHP 5.6.40| C[index.php]\n    C -->|Check $_SERVER[HTTP_X_FORWARDED_FOR]| D{IP in allowed list?}\n    D -->|127.0.0.1 / localhost| E[Display Flag]\n    D -->|Other IP| F[Access Restricted Message]\n    C -->|Hardcoded| G[flag{0860966c-...}]\n    style E fill:#f99\n    style G fill:#f99"
+    },
+    {
+      "id": "14b118e8-a1a3-4b5f-961c-dfda9b8b3429",
+      "timestamp": "2026-04-14T15:37:01.265550+00:00",
+      "title": "AUTH 03 Application Architecture",
+      "mermaid": "graph TD\n    A[Attacker] -->|HTTP POST + X-Forwarded-For| B[Apache 2.4.25]\n    B -->|PHP 5.6.40| C[index.php]\n    C -->|Check $_SERVER[HTTP_X_FORWARDED_FOR]| D{IP in allowed list?}\n    D -->|127.0.0.1 / localhost| E[Display Flag]\n    D -->|Other IP| F[Access Restricted Message]\n    C -->|Hardcoded| G[flag{0860966c-...}]\n    style E fill:#f99\n    style G fill:#f99"
+    }
+  ]
+}

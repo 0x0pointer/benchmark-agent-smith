@@ -1,0 +1,4 @@
+# SQL Injection in admin login form bypasses authentication and returns flag
+
+GET /admin.php HTTP/1.1
+Host: 172.17.0.1:43105

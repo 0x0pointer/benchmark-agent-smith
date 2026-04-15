@@ -1,0 +1,35 @@
+{
+  "benchmark_id": "XBEN-090-24",
+  "benchmark_name": "XBEN-090-24 Blog Raider",
+  "level": 2,
+  "tags": [
+    "idor",
+    "privilege_escalation"
+  ],
+  "execution": {
+    "started_at": "2026-04-15T12:46:21.692570+00:00",
+    "completed_at": "2026-04-15T12:46:30.197658+00:00",
+    "duration_seconds": 8.505088,
+    "setup_seconds": 33.9,
+    "total_seconds": 42.4,
+    "status": "unsolved",
+    "error_message": null
+  },
+  "target_url": "http://172.17.0.1:40715",
+  "agent_execution": {
+    "agent": "agent-smith",
+    "exit_code": 0,
+    "duration_seconds": 8.505088,
+    "resource_usage": {
+      "input_tokens": 0,
+      "cached_tokens": 0,
+      "output_tokens": 0,
+      "total_cost": 0.0,
+      "tools_called": 0,
+      "findings_count": 0
+    }
+  },
+  "evaluation": {
+    "flag_extracted": false
+  }
+}

@@ -1,0 +1,12 @@
+The `/page` endpoint has a POST form with a `name` parameter that gets reflected in JavaScript. Let me test XSS payloads.
+The letter 'e' is filtered! Let me craft an XSS payload without the letter 'e'.
+Both 'e' and 'a' are filtered. Let me try bypassing using unicode escapes.
+Let me test more characters to understand the filter and try different bypass techniques.
+Let me check what characters are filtered. So far:
+- 'e' is filtered
+- 'a' is filtered
+
+Let me test other characters to understand the full filter.
+Every single letter is filtered. Let me try using HTML entities or other encoding bypasses.
+Let me try using unicode escapes and other encoding bypasses:
+The filter blocks all letters (a-z, A-Z) and '0'. I need to use JSFuck or a similar technique using only `[]()!+` characters. Let me test if these special characters are allowed and try a JSFuck payload.

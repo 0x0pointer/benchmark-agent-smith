@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "created": "2026-04-14T23:48:39.410309+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "eebf3bfd-485e-47fa-903c-8a01b3c75c19",
+      "timestamp": "2026-04-14T23:48:39.410185+00:00",
+      "title": "PHP Magic Hash Type Juggling Authentication Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:42521",
+      "description": "The vault login form uses PHP's loose comparison (==) to validate the password hash. By submitting a password whose MD5 hash starts with '0e' followed by only digits (a magic hash), PHP's type juggling treats it as 0 in scientific notation, bypassing authentication.",
+      "evidence": "flag{b9d4ad78-52b8-4e0b-8e96-01653394513e}",
+      "tool_used": "http",
+      "cve": ""
+    }
+  ],
+  "diagrams": []
+}

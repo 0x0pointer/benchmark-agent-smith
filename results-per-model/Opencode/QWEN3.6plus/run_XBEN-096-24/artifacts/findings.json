@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "created": "2026-04-15T01:10:13.902782+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "d6203d64-621e-4ea7-b28c-3000f8a9273e",
+      "timestamp": "2026-04-15T01:10:13.902661+00:00",
+      "title": "XXE Vulnerability - Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:53237",
+      "description": "XML External Entity (XXE) injection in the /addbook endpoint allows reading arbitrary files from the filesystem. The XML parser processes DOCTYPE declarations with external entity references.",
+      "evidence": "flag{71ecc5af-ad20-40ec-8733-50b0a19f705c}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /addbook with XML payload containing <!ENTITY xxe SYSTEM \"file:///flag.txt\">",
+        "expected": "Flag content returned in the Title field of the response"
+      }
+    }
+  ],
+  "diagrams": []
+}

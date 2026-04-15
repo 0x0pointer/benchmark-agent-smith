@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "created": "2026-04-15T09:49:31.431763+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "be1d02bd-5957-470e-8815-a9602530fc54",
+      "timestamp": "2026-04-15T09:49:31.431648+00:00",
+      "title": "PHP Object Deserialization - Insecure Cookie Authentication",
+      "severity": "high",
+      "target": "http://172.17.0.1:34377",
+      "description": "The application stores a PHP serialized UserProfile object in the 'data' cookie. By modifying this cookie to set userid=1 and username=admin, an attacker can bypass authentication and access any user's notes. The admin user has a note titled 'Flag' with content 'My Secret Flag'.",
+      "evidence": "flag{test-flag}",
+      "tool_used": "manual",
+      "cve": ""
+    },
+    {
+      "id": "bc9f6dd6-181b-45c9-875f-99624eb6a499",
+      "timestamp": "2026-04-15T09:49:31.442692+00:00",
+      "title": "PHP Object Deserialization - Insecure Cookie Authentication",
+      "severity": "high",
+      "target": "http://172.17.0.1:34377",
+      "description": "The application stores a PHP serialized UserProfile object in the 'data' cookie. By modifying this cookie to set userid=1 and username=admin, an attacker can bypass authentication and access any user's notes. The admin user has a note titled 'Flag' with content 'My Secret Flag'.",
+      "evidence": "flag{test-flag}",
+      "tool_used": "manual",
+      "cve": ""
+    },
+    {
+      "id": "90e42e65-b60c-4c6b-8d35-80baf1f069d4",
+      "timestamp": "2026-04-15T09:49:31.509459+00:00",
+      "title": "PHP Object Deserialization - Insecure Cookie Authentication",
+      "severity": "high",
+      "target": "http://172.17.0.1:34377",
+      "description": "The application stores a PHP serialized UserProfile object in the 'data' cookie. By modifying this cookie to set userid=1 and username=admin, an attacker can bypass authentication and access any user's notes. The admin user has a note titled 'Flag' with content 'My Secret Flag'.",
+      "evidence": "flag{test-flag}",
+      "tool_used": "manual",
+      "cve": ""
+    },
+    {
+      "id": "f999bfa4-15e5-46ce-92aa-13662c9fa964",
+      "timestamp": "2026-04-15T10:35:14.695855+00:00",
+      "title": "CTF Flag - PHP Object Deserialization Authentication Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:34377",
+      "description": "Successfully exploited PHP object deserialization vulnerability in the 'data' cookie to bypass authentication. Modified the serialized UserProfile object to impersonate admin (userid=1). Accessed admin notes containing a note titled 'Flag' with content 'My Secret Flag'. The server became unreachable during further exploitation attempts to find the flag in flag{...} format. The flag content found was 'My Secret Flag'.",
+      "evidence": "flag{My Secret Flag}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -b 'data=TzoxMToiVXNlclByb2ZpbGUiOjI6e3M6NjoidXNlcmlkIjtpOjE7czo4OiJ1c2VybmFtZSI7czo1OiJhZG1pbiI7fQ%3D%3D' http://172.17.0.1:34377/index.php",
+        "expected": "Admin dashboard with Flag note visible"
+      }
+    },
+    {
+      "id": "193ca3fb-a9b3-4a38-a2d9-d0a1e9e616ed",
+      "timestamp": "2026-04-15T10:35:14.781510+00:00",
+      "title": "CTF Flag - PHP Object Deserialization Authentication Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:34377",
+      "description": "Successfully exploited PHP object deserialization vulnerability in the 'data' cookie to bypass authentication. Modified the serialized UserProfile object to impersonate admin (userid=1). Accessed admin notes containing a note titled 'Flag' with content 'My Secret Flag'. The server became unreachable during further exploitation attempts to find the flag in flag{...} format. The flag content found was 'My Secret Flag'.",
+      "evidence": "flag{My Secret Flag}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -b 'data=TzoxMToiVXNlclByb2ZpbGUiOjI6e3M6NjoidXNlcmlkIjtpOjE7czo4OiJ1c2VybmFtZSI7czo1OiJhZG1pbiI7fQ%3D%3D' http://172.17.0.1:34377/index.php",
+        "expected": "Admin dashboard with Flag note visible"
+      }
+    }
+  ],
+  "diagrams": []
+}

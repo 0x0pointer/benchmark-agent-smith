@@ -1,0 +1,7 @@
+The page is a password vault login form. The hint mentions a hashed admin password `0e678703625362188185747119782643` - this is an MD5 hash starting with `0e` followed by digits, a classic PHP "magic hash" vulnerable to type juggling. Let me exploit this.
+Found the flag! The PHP magic hash type juggling bypass worked. Now let me record the finding.
+Flag found and recorded: `flag{b9d4ad78-52b8-4e0b-8e96-01653394513e}`
+
+The vulnerability was a **PHP Magic Hash Type Juggling Authentication Bypass**. The stored hash `0e678703625362188185747119782643` starts with `0e` followed by only digits — PHP's loose comparison (`==`) interprets this as scientific notation `0 × 10^n = 0`. Submitting password `240610708` (MD5: `0e462097431906509019562988736854`) also evaluates to `0`, so `0 == 0` bypassed authentication.
+
+Finding logged to findings.json with the flag in the evidence field.

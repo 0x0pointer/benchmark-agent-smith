@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "created": "2026-04-15T00:59:19.807734+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "9033f98b-6e99-4d00-82c7-f1b47b9fd352",
+      "timestamp": "2026-04-15T00:59:19.807614+00:00",
+      "title": "Reflected XSS via name parameter",
+      "severity": "high",
+      "target": "http://172.17.0.1:55583/page",
+      "description": "The 'name' GET parameter on /page is vulnerable to reflected Cross-Site Scripting (XSS). The parameter is reflected in the HTML response within an input value attribute. By breaking out of the attribute with '\"' and injecting an <img> tag with an onerror event handler, JavaScript execution is achieved. The application filters direct script tags and some event handler content, but String.fromCharCode() bypasses the filter.",
+      "evidence": "flag{7b37c981-e7c9-4520-a486-8bbbfe90e9a6}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=\"><img src=x onerror=\"alert(String.fromCharCode(88,83,83))",
+        "expected": "XSS alert with 'XSS' text and flag displayed in response"
+      }
+    }
+  ],
+  "diagrams": []
+}

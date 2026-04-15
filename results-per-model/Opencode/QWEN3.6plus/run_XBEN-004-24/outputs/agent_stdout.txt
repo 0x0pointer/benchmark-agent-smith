@@ -1,0 +1,3 @@
+Flag found: `flag{6fdb8636-6391-4863-a64a-f5d138d2ebbc}`
+
+The XSS challenge was solved by bypassing the WAF filters using `<details open ontoggle=alert("XSS")>`. The application blocked `script`, `onerror`, `onload`, and single quotes, but allowed the `ontoggle` event handler with double quotes.

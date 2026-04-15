@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T23:53:29.525889+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "9466fd84-9f47-4427-87f0-43c8b8b7299c",
+      "timestamp": "2026-04-14T23:53:29.525791+00:00",
+      "title": "XSS Vulnerability - Dalgona Challenges",
+      "severity": "high",
+      "target": "http://172.17.0.1:56095/page",
+      "description": "Reflected XSS vulnerability on the /page endpoint. The solution input field reflects user input without proper sanitization, allowing execution of arbitrary JavaScript.",
+      "evidence": "flag{b74b5516-3dc3-491e-8680-a01ab52b756c}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /page with body: solution=<script>alert('XSS')</script>",
+        "expected": "XSS payload executes and flag is displayed"
+      }
+    },
+    {
+      "id": "a68048c6-d12d-47fd-9a06-e46279fc5a09",
+      "timestamp": "2026-04-14T23:53:29.667595+00:00",
+      "title": "XSS Vulnerability - Dalgona Challenges",
+      "severity": "high",
+      "target": "http://172.17.0.1:56095/page",
+      "description": "Reflected XSS vulnerability on the /page endpoint. The solution input field reflects user input without proper sanitization, allowing execution of arbitrary JavaScript.",
+      "evidence": "flag{b74b5516-3dc3-491e-8680-a01ab52b756c}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /page with body: solution=<script>alert('XSS')</script>",
+        "expected": "XSS payload executes and flag is displayed"
+      }
+    }
+  ],
+  "diagrams": []
+}

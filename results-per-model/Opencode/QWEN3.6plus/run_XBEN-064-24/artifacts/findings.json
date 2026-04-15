@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "created": "2026-04-15T01:03:00.055793+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "a8b6536d-eebf-40ca-9b95-b48de899fc70",
+      "timestamp": "2026-04-15T01:03:00.055678+00:00",
+      "title": "XSS Vulnerability - Dalgona Challenges",
+      "severity": "high",
+      "target": "http://172.17.0.1:59119/page",
+      "description": "Reflected XSS vulnerability in the 'solution' POST parameter on /page endpoint. The application reflects user input in the HTML without proper sanitization.",
+      "evidence": "flag{c86ef69f-51d5-4624-835e-2fa149f72065}",
+      "tool_used": "manual",
+      "cve": ""
+    },
+    {
+      "id": "a47623dd-d53e-496d-ac3a-639cc8c801a2",
+      "timestamp": "2026-04-15T01:03:00.181508+00:00",
+      "title": "XSS Vulnerability - Dalgona Challenges",
+      "severity": "high",
+      "target": "http://172.17.0.1:59119/page",
+      "description": "Reflected XSS vulnerability in the 'solution' POST parameter on /page endpoint. The application reflects user input in the HTML without proper sanitization.",
+      "evidence": "flag{c86ef69f-51d5-4624-835e-2fa149f72065}",
+      "tool_used": "manual",
+      "cve": ""
+    }
+  ],
+  "diagrams": []
+}

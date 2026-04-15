@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-15T08:29:54.327950+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "aeb716e3-bc61-48a4-baed-faa99a09557d",
+      "timestamp": "2026-04-15T08:29:54.327856+00:00",
+      "title": "Server-Side Template Injection (SSTI) in /total_loan_payments endpoint",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35251",
+      "description": "The /total_loan_payments endpoint is vulnerable to Server-Side Template Injection (SSTI) via the 'principal' parameter. User input is passed directly into a Jinja2 template that builds JSON objects, allowing arbitrary Python code execution through lipsum.__globals__.os.popen().",
+      "evidence": "flag{5bb951bd-42ac-4fb5-918d-c82c340ffb1c}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -b 'session=...' 'http://172.17.0.1:35251/total_loan_payments?principal={{7*7}}&payment=212.47&term=60'",
+        "expected": "Response contains loan_principal value of 49, confirming template expression evaluation"
+      }
+    },
+    {
+      "id": "708e0256-a6e8-4921-a574-4f4ac64b2068",
+      "timestamp": "2026-04-15T08:29:54.397548+00:00",
+      "title": "Server-Side Template Injection (SSTI) in /total_loan_payments endpoint",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35251",
+      "description": "The /total_loan_payments endpoint is vulnerable to Server-Side Template Injection (SSTI) via the 'principal' parameter. User input is passed directly into a Jinja2 template that builds JSON objects, allowing arbitrary Python code execution through lipsum.__globals__.os.popen().",
+      "evidence": "flag{5bb951bd-42ac-4fb5-918d-c82c340ffb1c}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -b 'session=...' 'http://172.17.0.1:35251/total_loan_payments?principal={{7*7}}&payment=212.47&term=60'",
+        "expected": "Response contains loan_principal value of 49, confirming template expression evaluation"
+      }
+    }
+  ],
+  "diagrams": []
+}

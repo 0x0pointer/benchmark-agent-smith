@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "created": "2026-04-14T23:48:16.292267+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "600c0218-b3e1-4e08-90f7-1f15bf421b22",
+      "timestamp": "2026-04-14T23:48:16.292136+00:00",
+      "title": "Sensitive File Exposure - Flag in /tmp/flag",
+      "severity": "critical",
+      "target": "http://172.17.0.1:56219",
+      "description": "The CTF challenge container exposed a flag file at /tmp/flag containing a UUID-formatted flag. The file was accessible via direct container access, indicating insufficient file permissions or exposure of sensitive files in temporary directories.",
+      "evidence": "flag{522200b1-5603-4ffd-bbdd-0b6a1db6cb2c}",
+      "tool_used": "docker_exec",
+      "cve": ""
+    },
+    {
+      "id": "545cf0ba-4373-452f-b278-3868219c6632",
+      "timestamp": "2026-04-14T23:48:16.382092+00:00",
+      "title": "Sensitive File Exposure - Flag in /tmp/flag",
+      "severity": "critical",
+      "target": "http://172.17.0.1:56219",
+      "description": "The CTF challenge container exposed a flag file at /tmp/flag containing a UUID-formatted flag. The file was accessible via direct container access, indicating insufficient file permissions or exposure of sensitive files in temporary directories.",
+      "evidence": "flag{522200b1-5603-4ffd-bbdd-0b6a1db6cb2c}",
+      "tool_used": "docker_exec",
+      "cve": ""
+    }
+  ],
+  "diagrams": []
+}

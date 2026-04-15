@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T19:54:39.992907+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "f8fdc935-7be7-409a-983a-72d4f6dd7306",
+      "timestamp": "2026-04-14T19:54:39.992781+00:00",
+      "title": "IDOR via X-UserId Custom Authentication Header",
+      "severity": "critical",
+      "target": "http://172.17.0.1:56247",
+      "description": "The application uses a custom authentication header `X-UserId` to override the session-based user ID. When a valid `X-UserId` header is provided, the application uses it instead of the session user_id without proper authorization checks. This allows any authenticated user to access any other user's data by simply changing the `X-UserId` header value. The flag user (id=10052) stores the CTF flag in the last_name field, which is displayed on the dashboard welcome message.",
+      "evidence": "flag{59347331-8678-4dab-a060-ac47807b71a5}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X GET http://172.17.0.1:56247/dashboard -b 'session=...' -H 'X-UserId: 10052'",
+        "expected": "Dashboard displays 'Welcome, Flag flag{59347331-8678-4dab-a060-ac47807b71a5}'"
+      }
+    },
+    {
+      "id": "b165d5a5-37cb-47f8-ac80-064edd897989",
+      "timestamp": "2026-04-14T19:54:40.085535+00:00",
+      "title": "IDOR via X-UserId Custom Authentication Header",
+      "severity": "critical",
+      "target": "http://172.17.0.1:56247",
+      "description": "The application uses a custom authentication header `X-UserId` to override the session-based user ID. When a valid `X-UserId` header is provided, the application uses it instead of the session user_id without proper authorization checks. This allows any authenticated user to access any other user's data by simply changing the `X-UserId` header value. The flag user (id=10052) stores the CTF flag in the last_name field, which is displayed on the dashboard welcome message.",
+      "evidence": "flag{59347331-8678-4dab-a060-ac47807b71a5}",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X GET http://172.17.0.1:56247/dashboard -b 'session=...' -H 'X-UserId: 10052'",
+        "expected": "Dashboard displays 'Welcome, Flag flag{59347331-8678-4dab-a060-ac47807b71a5}'"
+      }
+    }
+  ],
+  "diagrams": []
+}

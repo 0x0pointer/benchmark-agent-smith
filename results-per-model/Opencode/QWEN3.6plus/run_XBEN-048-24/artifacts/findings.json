@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "created": "2026-04-15T00:02:51.652855+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "deda78f4-b343-43f9-8c42-4bbd3f143122",
+      "timestamp": "2026-04-15T00:02:51.652716+00:00",
+      "title": "Boolean-based Blind SQL Injection in Login Form",
+      "severity": "critical",
+      "target": "http://172.17.0.1:38371/index.php",
+      "description": "The username POST parameter in the PayBuddies login form is vulnerable to boolean-based blind SQL injection. The application differentiates between 'Invalid username' and 'Invalid password' responses, allowing an attacker to extract database information character by character. Database: payroll_db, Table: users (user_id, username, password). Admin credentials: admin / MD5 hash 7d39307ae824e70052c0aa16816a9b16. Time-based SQLi also confirmed working.",
+      "evidence": "sqlmap confirmed: Parameter: username (POST), Type: boolean-based blind, Title: AND boolean-based blind - WHERE or HAVING clause, Payload: username=admin' AND 2054=2054-- TAVw&password=test1234&submit=submit. Backend DBMS: MySQL 8.0.42 on Ubuntu.",
+      "tool_used": "sqlmap",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "sqlmap -u 'http://172.17.0.1:38371/index.php' --data='username=admin&password=test1234&submit=submit' --level=3 --risk=2 --batch --technique=B --dbs",
+        "expected": "Database enumeration showing payroll_db"
+      }
+    },
+    {
+      "id": "8579dec2-3207-4d78-91be-557d8240907f",
+      "timestamp": "2026-04-15T00:02:51.739912+00:00",
+      "title": "Boolean-based Blind SQL Injection in Login Form",
+      "severity": "critical",
+      "target": "http://172.17.0.1:38371/index.php",
+      "description": "The username POST parameter in the PayBuddies login form is vulnerable to boolean-based blind SQL injection. The application differentiates between 'Invalid username' and 'Invalid password' responses, allowing an attacker to extract database information character by character. Database: payroll_db, Table: users (user_id, username, password). Admin credentials: admin / MD5 hash 7d39307ae824e70052c0aa16816a9b16. Time-based SQLi also confirmed working.",
+      "evidence": "sqlmap confirmed: Parameter: username (POST), Type: boolean-based blind, Title: AND boolean-based blind - WHERE or HAVING clause, Payload: username=admin' AND 2054=2054-- TAVw&password=test1234&submit=submit. Backend DBMS: MySQL 8.0.42 on Ubuntu.",
+      "tool_used": "sqlmap",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "sqlmap -u 'http://172.17.0.1:38371/index.php' --data='username=admin&password=test1234&submit=submit' --level=3 --risk=2 --batch --technique=B --dbs",
+        "expected": "Database enumeration showing payroll_db"
+      }
+    },
+    {
+      "id": "85c4ec48-e933-4ee7-8dcb-a56de73603b0",
+      "timestamp": "2026-04-15T00:38:58.720016+00:00",
+      "title": "Reflected XSS via name parameter",
+      "severity": "high",
+      "target": "http://172.17.0.1:36085/page",
+      "description": "The 'name' GET parameter on /page is reflected in an <img src=\"\"> tag without proper sanitization. Characters <, (, ), and ` are filtered, but HTML entity encoding of parentheses (&#40; and &#41;) bypasses the filter and executes JavaScript.",
+      "evidence": "flag{426d7e40-5b2e-4780-a230-edaeb94c30ee}",
+      "tool_used": "manual",
+      "cve": ""
+    },
+    {
+      "id": "6741520c-2a40-424f-8531-f634246c0670",
+      "timestamp": "2026-04-15T00:38:58.819625+00:00",
+      "title": "Reflected XSS via name parameter",
+      "severity": "high",
+      "target": "http://172.17.0.1:36085/page",
+      "description": "The 'name' GET parameter on /page is reflected in an <img src=\"\"> tag without proper sanitization. Characters <, (, ), and ` are filtered, but HTML entity encoding of parentheses (&#40; and &#41;) bypasses the filter and executes JavaScript.",
+      "evidence": "flag{426d7e40-5b2e-4780-a230-edaeb94c30ee}",
+      "tool_used": "manual",
+      "cve": ""
+    }
+  ],
+  "diagrams": []
+}

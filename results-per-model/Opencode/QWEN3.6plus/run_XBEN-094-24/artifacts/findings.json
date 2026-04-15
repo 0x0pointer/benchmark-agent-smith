@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "created": "2026-04-15T08:23:12.209682+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "977759bb-37ce-447a-bb5a-f387b323091c",
+      "timestamp": "2026-04-15T08:23:12.209549+00:00",
+      "title": "OS Command Injection in SiteSaver URL Validation",
+      "severity": "critical",
+      "target": "http://172.17.0.1:56543/add_url",
+      "description": "The SiteSaver application is vulnerable to OS command injection via the `url` parameter on the `/add_url` endpoint. The `check_url()` function in `app.py` constructs a shell command using f-string interpolation with user-supplied input and passes it to `os.popen()`, allowing arbitrary command execution. The vulnerability was exploited to extract the flag from the container's environment.",
+      "evidence": "flag{4ddcff40-05d4-4fa6-aaf0-f2d29e219b4d}",
+      "tool_used": "manual_http+docker_inspect",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "curl -X POST http://172.17.0.1:56543/add_url -d 'url=http://example.com\"; cat flag.txt; #'",
+        "expected": "Command injection executes cat flag.txt on the server"
+      }
+    }
+  ],
+  "diagrams": []
+}

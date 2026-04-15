@@ -1,0 +1,4 @@
+Found the flag. Recording it now.
+Flag found: `flag{c86ef69f-51d5-4624-835e-2fa149f72065}`
+
+The `/page` endpoint had a reflected XSS vulnerability in the `solution` POST parameter. The payload `"><script>alert('XSS')</script>` broke out of the `value` attribute and executed, which triggered the success response containing the flag.

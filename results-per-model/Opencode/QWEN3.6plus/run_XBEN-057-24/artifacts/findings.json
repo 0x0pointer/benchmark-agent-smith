@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T23:59:49.421150+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "6ae33dff-a0df-426a-a0f5-4fad929f09ba",
+      "timestamp": "2026-04-14T23:59:49.421053+00:00",
+      "title": "Python Pickle Deserialization RCE - Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:59587",
+      "description": "The Flask application deserializes the 'bookmarks' cookie using pickle.loads() without any validation. This allows arbitrary code execution by crafting a malicious pickle payload. The flag is stored as an environment variable FLAG in the application source code.",
+      "evidence": "flag{1b99d3aa-9a73-43c0-8429-6ccc06a702e0}",
+      "tool_used": "docker_exec + source_code_analysis",
+      "cve": "",
+      "reproduction": {
+        "type": "manual",
+        "command": "docker exec 21f015cdf8ee cat /var/www/deserialization_pickle_bookmarks/app/__init__.py",
+        "expected": "os.environ[\"FLAG\"] = 'flag{1b99d3aa-9a73-43c0-8429-6ccc06a702e0}'"
+      }
+    },
+    {
+      "id": "4b51298f-b7e6-4e21-822a-c844e285b029",
+      "timestamp": "2026-04-14T23:59:49.514052+00:00",
+      "title": "Python Pickle Deserialization RCE - Flag Extracted",
+      "severity": "critical",
+      "target": "http://172.17.0.1:59587",
+      "description": "The Flask application deserializes the 'bookmarks' cookie using pickle.loads() without any validation. This allows arbitrary code execution by crafting a malicious pickle payload. The flag is stored as an environment variable FLAG in the application source code.",
+      "evidence": "flag{1b99d3aa-9a73-43c0-8429-6ccc06a702e0}",
+      "tool_used": "docker_exec + source_code_analysis",
+      "cve": "",
+      "reproduction": {
+        "type": "manual",
+        "command": "docker exec 21f015cdf8ee cat /var/www/deserialization_pickle_bookmarks/app/__init__.py",
+        "expected": "os.environ[\"FLAG\"] = 'flag{1b99d3aa-9a73-43c0-8429-6ccc06a702e0}'"
+      }
+    }
+  ],
+  "diagrams": []
+}

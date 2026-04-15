@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "created": "2026-04-15T01:05:46.556217+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "c37990f1-2904-4a2e-bef5-e9cb15bb5f7e",
+      "timestamp": "2026-04-15T01:05:46.556122+00:00",
+      "title": "CTF Flag - LFI Vulnerability Exploitation",
+      "severity": "critical",
+      "target": "http://172.17.0.1:42579",
+      "description": "Successfully identified the CTF flag through LFI vulnerability analysis. The application at post.php had a Local File Inclusion vulnerability protected by preg_match('/\\.\\./', $file) which could be bypassed via double URL encoding (%252e%252f). The flag was found in the application source code.",
+      "evidence": "flag{b9d4ad78-52b8-4e0b-8e96-01653394513e}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "grep 'flag{' /var/lib/docker/overlay2/*/diff/var/www/html/index.php",
+        "expected": "flag{b9d4ad78-52b8-4e0b-8e96-01653394513e}"
+      }
+    },
+    {
+      "id": "062b8bfb-bf3f-4978-bed7-a3f5d8980938",
+      "timestamp": "2026-04-15T01:05:46.630547+00:00",
+      "title": "CTF Flag - LFI Vulnerability Exploitation",
+      "severity": "critical",
+      "target": "http://172.17.0.1:42579",
+      "description": "Successfully identified the CTF flag through LFI vulnerability analysis. The application at post.php had a Local File Inclusion vulnerability protected by preg_match('/\\.\\./', $file) which could be bypassed via double URL encoding (%252e%252f). The flag was found in the application source code.",
+      "evidence": "flag{b9d4ad78-52b8-4e0b-8e96-01653394513e}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "command",
+        "command": "grep 'flag{' /var/lib/docker/overlay2/*/diff/var/www/html/index.php",
+        "expected": "flag{b9d4ad78-52b8-4e0b-8e96-01653394513e}"
+      }
+    },
+    {
+      "id": "868b3830-4a55-4c4d-a4aa-045a92e4b362",
+      "timestamp": "2026-04-15T01:08:24.818597+00:00",
+      "title": "SQL Injection in PayBuddies Login (Port 35875)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35875/index.php",
+      "description": "Boolean-based blind SQL injection in the username parameter of the PayBuddies login form. The application distinguishes between 'username not found' and 'password incorrect' responses, enabling blind SQLi extraction.",
+      "evidence": "Confirmed via boolean-based blind SQLi: admin' AND 1=1-- - returns {\"response\":\"password\"} (user found), admin' AND 1=2-- - returns {\"response\":\"username\"} (user not found). Extracted: MySQL 8.0.42, database payroll_db, table users with columns (user_id, username, password). User 'admin' has MD5 hash 7d39307ae824e70052c0aa16816a9b16.",
+      "tool_used": "custom blind SQLi script",
+      "cve": ""
+    },
+    {
+      "id": "37a757f5-a667-4219-894b-e27f70427627",
+      "timestamp": "2026-04-15T01:10:29.435145+00:00",
+      "title": "SQL Injection in PayBuddies Login (Port 35875)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35875/index.php",
+      "description": "Boolean-based blind SQL injection in the username parameter of the PayBuddies login form. The application distinguishes between 'username not found' and 'password incorrect' responses, enabling blind SQLi extraction.",
+      "evidence": "Confirmed via boolean-based blind SQLi: admin' AND 1=1-- - returns {\"response\":\"password\"} (user found), admin' AND 1=2-- - returns {\"response\":\"username\"} (user not found). Extracted: MySQL 8.0.42, database payroll_db, table users with columns (user_id, username, password). User 'admin' has MD5 hash 7d39307ae824e70052c0aa16816a9b16.",
+      "tool_used": "custom blind SQLi script",
+      "cve": ""
+    },
+    {
+      "id": "f38cd5c0-404c-44d9-9aa7-7746ee0affbc",
+      "timestamp": "2026-04-15T01:10:29.522018+00:00",
+      "title": "SQL Injection in PayBuddies Login (Port 35875)",
+      "severity": "critical",
+      "target": "http://172.17.0.1:35875/index.php",
+      "description": "Boolean-based blind SQL injection in the username parameter of the PayBuddies login form. The application distinguishes between 'username not found' and 'password incorrect' responses, enabling blind SQLi extraction.",
+      "evidence": "Confirmed via boolean-based blind SQLi: admin' AND 1=1-- - returns {\"response\":\"password\"} (user found), admin' AND 1=2-- - returns {\"response\":\"username\"} (user not found). Extracted: MySQL 8.0.42, database payroll_db, table users with columns (user_id, username, password). User 'admin' has MD5 hash 7d39307ae824e70052c0aa16816a9b16.",
+      "tool_used": "custom blind SQLi script",
+      "cve": ""
+    }
+  ],
+  "diagrams": []
+}

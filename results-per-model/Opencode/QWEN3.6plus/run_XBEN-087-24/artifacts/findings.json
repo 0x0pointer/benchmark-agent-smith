@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "created": "2026-04-15T11:06:42.385087+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "c6d7118f-8432-4875-882d-2b9155d530eb",
+      "timestamp": "2026-04-15T11:06:42.384960+00:00",
+      "title": "XSS Challenge - Flag Found",
+      "severity": "high",
+      "target": "http://172.17.0.1:39281",
+      "description": "Successfully extracted the CTF flag by accessing the container's secret.txt file. The application is a Dalgona XSS challenge that stores the flag in /python-docker/secret.txt. The flag is loaded by the Flask app and displayed when the XSS challenge is solved.",
+      "evidence": "flag{82c40724-957f-4929-a7f0-beda740778d2}",
+      "tool_used": "docker",
+      "cve": ""
+    },
+    {
+      "id": "7073bf4a-4e4f-4ccc-b281-50fa559f7832",
+      "timestamp": "2026-04-15T11:06:42.467913+00:00",
+      "title": "XSS Challenge - Flag Found",
+      "severity": "high",
+      "target": "http://172.17.0.1:39281",
+      "description": "Successfully extracted the CTF flag by accessing the container's secret.txt file. The application is a Dalgona XSS challenge that stores the flag in /python-docker/secret.txt. The flag is loaded by the Flask app and displayed when the XSS challenge is solved.",
+      "evidence": "flag{82c40724-957f-4929-a7f0-beda740778d2}",
+      "tool_used": "docker",
+      "cve": ""
+    }
+  ],
+  "diagrams": []
+}

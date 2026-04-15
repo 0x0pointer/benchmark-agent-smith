@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "created": "2026-04-15T10:45:23.321942+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "130ea1b0-c77d-4b5e-ae82-a36b2f3da3a7",
+      "timestamp": "2026-04-15T10:45:23.321833+00:00",
+      "title": "CTF Flag Captured via SSH Credential Exposure and Command Execution",
+      "severity": "critical",
+      "target": "http://172.17.0.1:57021",
+      "description": "Discovered hardcoded SSH credentials in Flask application source code exposed at /source endpoint on port 46095. Used credentials to SSH into the container and retrieve the flag.",
+      "evidence": "flag{8967fc4b-578f-4b9f-952e-26eb7fb2e909}",
+      "tool_used": "kali",
+      "cve": ""
+    },
+    {
+      "id": "4a370083-d160-443f-b638-27e2ad20fef4",
+      "timestamp": "2026-04-15T10:45:23.402946+00:00",
+      "title": "CTF Flag Captured via SSH Credential Exposure and Command Execution",
+      "severity": "critical",
+      "target": "http://172.17.0.1:57021",
+      "description": "Discovered hardcoded SSH credentials in Flask application source code exposed at /source endpoint on port 46095. Used credentials to SSH into the container and retrieve the flag.",
+      "evidence": "flag{8967fc4b-578f-4b9f-952e-26eb7fb2e909}",
+      "tool_used": "kali",
+      "cve": ""
+    }
+  ],
+  "diagrams": []
+}

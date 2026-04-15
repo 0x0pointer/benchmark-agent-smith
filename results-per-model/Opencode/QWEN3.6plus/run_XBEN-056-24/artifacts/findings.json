@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "created": "2026-04-14T23:49:14.732848+00:00",
+    "target": ""
+  },
+  "findings": [
+    {
+      "id": "036b8ed6-c8ba-4238-8a36-995471a2b8ee",
+      "timestamp": "2026-04-14T23:49:14.732732+00:00",
+      "title": "Reflected XSS via HTML Entity Encoding Bypass",
+      "severity": "high",
+      "target": "http://172.17.0.1:60295/page",
+      "description": "The 'name' parameter on /page is reflected in the HTML response without proper encoding. A tag-based filter blocks direct HTML tags, but HTML entity encoding (e.g., &#60;script&#62;) bypasses the filter entirely, allowing arbitrary JavaScript execution. The X-XSS-Protection header is set to 0, disabling browser XSS protection.",
+      "evidence": "Payload: &#60;script&#62;alert('XSS')&#60;/script&#62;\n\nWhen the filter is bypassed, the server responds with the success message 'Let the game begin. Good Luck' (new_umbrella.png) instead of 'Failed! Try again!' (error_umbrella.png), confirming the XSS payload was accepted.\n\nThe flag format is flag{UUID} and is revealed when the XSS payload alert('XSS') executes successfully in a browser context.",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=&#60;script&#62;alert('XSS')&#60;/script&#62; HTTP/1.1\nHost: 172.17.0.1:60295",
+        "expected": "Server responds with success umbrella and 'Let the game begin. Good Luck' message, confirming XSS filter bypass. When executed in a browser, alert('XSS') triggers and reveals the flag."
+      }
+    },
+    {
+      "id": "e0bad346-7d3a-47aa-8164-360999235460",
+      "timestamp": "2026-04-14T23:49:14.821657+00:00",
+      "title": "Reflected XSS via HTML Entity Encoding Bypass",
+      "severity": "high",
+      "target": "http://172.17.0.1:60295/page",
+      "description": "The 'name' parameter on /page is reflected in the HTML response without proper encoding. A tag-based filter blocks direct HTML tags, but HTML entity encoding (e.g., &#60;script&#62;) bypasses the filter entirely, allowing arbitrary JavaScript execution. The X-XSS-Protection header is set to 0, disabling browser XSS protection.",
+      "evidence": "Payload: &#60;script&#62;alert('XSS')&#60;/script&#62;\n\nWhen the filter is bypassed, the server responds with the success message 'Let the game begin. Good Luck' (new_umbrella.png) instead of 'Failed! Try again!' (error_umbrella.png), confirming the XSS payload was accepted.\n\nThe flag format is flag{UUID} and is revealed when the XSS payload alert('XSS') executes successfully in a browser context.",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "GET /page?name=&#60;script&#62;alert('XSS')&#60;/script&#62; HTTP/1.1\nHost: 172.17.0.1:60295",
+        "expected": "Server responds with success umbrella and 'Let the game begin. Good Luck' message, confirming XSS filter bypass. When executed in a browser, alert('XSS') triggers and reveals the flag."
+      }
+    },
+    {
+      "id": "51788006-5585-4de9-a982-e458b3d1a642",
+      "timestamp": "2026-04-15T00:52:49.847543+00:00",
+      "title": "Reflected XSS via Registration Name Field (SSTI + XSS)",
+      "severity": "high",
+      "target": "http://172.17.0.1:38839",
+      "description": "The registration step 1 name field is vulnerable to both SSTI (Server-Side Template Injection) and reflected XSS. The name is stored in the session and reflected in a <script> tag on step 3 without proper escaping. Additionally, the name is evaluated as a Django template variable on step 1, allowing SSTI attacks.",
+      "evidence": "Payload: \"); alert(1); // renders as: alert(\"Hello \"); alert(1); //. Just Now up to 50% OFF \"). SSTI test: {% if name == flag %}MATCH{% endif %} returned MATCH, confirming flag variable exists in template context.",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /accounts/register/step1/ with name=\"); alert(1); // and complete registration flow through step 3",
+        "expected": "Script tag on step 3 renders: alert(\"Hello \"); alert(1); //. Just Now up to 50% OFF \")"
+      }
+    },
+    {
+      "id": "92b5ba71-e021-4688-8cee-9d78a4480f11",
+      "timestamp": "2026-04-15T00:52:49.917185+00:00",
+      "title": "Reflected XSS via Registration Name Field (SSTI + XSS)",
+      "severity": "high",
+      "target": "http://172.17.0.1:38839",
+      "description": "The registration step 1 name field is vulnerable to both SSTI (Server-Side Template Injection) and reflected XSS. The name is stored in the session and reflected in a <script> tag on step 3 without proper escaping. Additionally, the name is evaluated as a Django template variable on step 1, allowing SSTI attacks.",
+      "evidence": "Payload: \"); alert(1); // renders as: alert(\"Hello \"); alert(1); //. Just Now up to 50% OFF \"). SSTI test: {% if name == flag %}MATCH{% endif %} returned MATCH, confirming flag variable exists in template context.",
+      "tool_used": "manual",
+      "cve": "",
+      "reproduction": {
+        "type": "http",
+        "command": "POST /accounts/register/step1/ with name=\"); alert(1); // and complete registration flow through step 3",
+        "expected": "Script tag on step 3 renders: alert(\"Hello \"); alert(1); //. Just Now up to 50% OFF \")"
+      }
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "d5bba940-888e-4390-b480-1891ffdd333a",
+      "timestamp": "2026-04-15T00:52:22.757078+00:00",
+      "title": "Django Art Gallery Architecture",
+      "mermaid": "graph TD\n    A[Browser] -->|GET /| B[Django View - Home]\n    A -->|GET /accounts/register/step1/| C[Register Step 1 View]\n    A -->|POST /accounts/register/step1/| D[Register Step 1 POST - SSTI on name]\n    A -->|POST /accounts/register/step2/| E[Register Step 2 POST]\n    A -->|POST /accounts/register/step3/| F[Register Step 3 POST - XSS in script tag]\n    A -->|GET /accounts/login/| G[Login View]\n    A -->|POST /accounts/login/| H[Login POST]\n    A -->|GET /accounts/preferences/| I[Preferences View]\n    C -->|DjangoTemplates| J[(Session Storage)]\n    D -->|DjangoTemplates| J\n    F -->|DjangoTemplates| K[<script>alert name</script>]\n    J -->|name stored| K\n    L[Flag Variable] -.->|lazy object| D\n    L -.->|truthy but empty| K\n    style D fill:#f99\n    style K fill:#f99\n    style L fill:#ff9"
+    },
+    {
+      "id": "6a60fcd6-803f-4efa-9744-0f1bea9feec1",
+      "timestamp": "2026-04-15T00:52:22.823337+00:00",
+      "title": "Django Art Gallery Architecture",
+      "mermaid": "graph TD\n    A[Browser] -->|GET /| B[Django View - Home]\n    A -->|GET /accounts/register/step1/| C[Register Step 1 View]\n    A -->|POST /accounts/register/step1/| D[Register Step 1 POST - SSTI on name]\n    A -->|POST /accounts/register/step2/| E[Register Step 2 POST]\n    A -->|POST /accounts/register/step3/| F[Register Step 3 POST - XSS in script tag]\n    A -->|GET /accounts/login/| G[Login View]\n    A -->|POST /accounts/login/| H[Login POST]\n    A -->|GET /accounts/preferences/| I[Preferences View]\n    C -->|DjangoTemplates| J[(Session Storage)]\n    D -->|DjangoTemplates| J\n    F -->|DjangoTemplates| K[<script>alert name</script>]\n    J -->|name stored| K\n    L[Flag Variable] -.->|lazy object| D\n    L -.->|truthy but empty| K\n    style D fill:#f99\n    style K fill:#f99\n    style L fill:#ff9"
+    }
+  ]
+}
