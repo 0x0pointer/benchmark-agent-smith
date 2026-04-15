@@ -14,7 +14,7 @@ Autonomous penetration testing of the [XBOW validation-benchmarks suite](https:/
 ╰─────────────────────────────────────────────────────────────╯
 ```
 
-> **Cost note**: The $502 total spend (21K requests, 1.43B tokens) reflects the full campaign including two infrastructure bugs that caused significant duplicate work. The effective cost for the 75 unique solves was ~$1.50–2.00 per solve in efficient runs. See [Cost efficiency](#cost-efficiency) below.
+> **Cost note**: The $502 total spend (21K requests, 1.43B tokens) reflects the full campaign including two infrastructure bugs that caused an estimated ~74% of tokens to be spent on duplicate re-runs of already-solved challenges. The effective cost for the 75 unique solves was ~$1.50–2.00 per solve in efficient runs (~$131 total). Per-run timing and token figures carry ±15–20% uncertainty due to fleet result collisions that required post-hoc recovery. See [Cost efficiency](#cost-efficiency) and [Data reliability caveat](#data-reliability-caveat) below.
 
 ---
 
@@ -128,22 +128,24 @@ xychart-beta
 | **Total tokens** | ~1.43B |
 | **Naive cost per unique solve** | ~$6.69 |
 | **Efficient cost per solve (est.)** | ~$1.50–2.00 |
+| **Estimated tokens for unique solves** | ~370M (~26% of total) |
+| **Estimated wasted tokens (duplicates)** | ~1.06B (~74% of total) |
 
-### Why spend was ~2.5x higher than necessary
+### Why ~74 % of spend was wasted
 
-Two infrastructure bugs caused significant duplicate work during the campaign:
+Two infrastructure bugs caused a large fraction of the campaign budget to go toward re-running challenges that had already been solved:
 
-**Bug 1 — `--redo-unsolved` logic error** (~$80–100 wasted)
-The runner's `--redo-unsolved` flag was supposed to retry only *failed* benchmarks. A logic error caused it to also include benchmarks that had never been attempted on a given server (no `result.json`). This led to servers re-running challenges that had already been solved elsewhere on the fleet — up to 9× for some challenges.
+**Bug 1 — `--redo-unsolved` logic error** (~$80–100 wasted, est. ~250M tokens)
+The runner's `--redo-unsolved` flag was supposed to retry only *failed* benchmarks. A logic error caused it to also queue benchmarks that had never been attempted on a given server (no `result.json` present). Because the 10-server fleet had no shared state, each server's "never attempted" set overlapped heavily with challenges already solved on other servers. Some challenges were re-run up to 9× across the fleet.
 
 *Fix applied*: Added `if args.redo_unsolved: skipped += 1` for missing result files, so never-attempted benchmarks are skipped when `--redo-unsolved` is set.
 
-**Bug 2 — No deduplication across fleet** (~$50–70 wasted)
-Early runs had no `--benchmarks` scoping, so multiple servers attacked the same challenges in parallel. The same flag was captured by up to 9 different servers with no coordination.
+**Bug 2 — No deduplication across fleet** (~$50–70 wasted, est. ~200M tokens)
+Early runs had no `--benchmarks` scoping, so multiple servers attacked the same challenges in parallel with no coordination. The same flag was captured independently by up to 9 different servers.
 
 *Fix applied*: Split all unsolved challenges round-robin across servers using explicit `--benchmarks` per server and `--skip-existing` to avoid redundant re-runs.
 
-**Efficient campaign estimate**: With both fixes in place from the start, 75 solves at ~$1.75 average = ~$131 total. The remaining ~$371 went to duplicates, failed retries on hard challenges, and infrastructure overhead.
+**Efficient campaign estimate**: With both fixes in place from the start, 75 solves at ~$1.75 average ≈ **~$131 total** (~370M tokens). The remaining ~$371 (~1.06B tokens) went to duplicate runs, failed retries on hard challenges, and infrastructure overhead — roughly a **3.8× cost multiplier** from tooling bugs alone.
 
 ---
 
@@ -222,9 +224,13 @@ OpenCode does not auto-generate Burp-ready `.http` proof-of-concept files — th
 
 For all 75 solved runs the flag extraction is independently verifiable from `artifacts/findings.json` and `artifacts/logs/pentest.log`, which record the exact HTTP request that returned the flag and the flag value itself.
 
-### Artifact recovery note
+### Data reliability caveat
 
-During the bulk rsync that collected results from the 10-server fleet, a parallel sync race caused 16 solved `result.json` files to be overwritten by `"status": "failed"` versions from other servers that had later re-attempted the same challenge. All 16 were recovered by targeted per-challenge sync from the server that held the `"status": "solved"` copy. Final local state: **75 / 75 solved runs fully verified**.
+Because the same challenges were often attempted by multiple servers (see [Cost efficiency](#cost-efficiency)), the fleet produced overlapping result sets with no guaranteed ordering. During the bulk rsync that collected results locally, a parallel sync race caused **16 solved `result.json` files to be overwritten** by `"status": "failed"` versions from servers that had re-attempted the same challenge later.
+
+All 16 were recovered by targeted per-challenge SSH sync, pulling from whichever server held the `"status": "solved"` copy. However, some per-run metadata (timing, turn count, token usage) in those `result.json` files may reflect a later re-attempt rather than the first successful solve. Aggregate timing and cost figures in this report should be treated as **estimates with ±15–20% uncertainty** rather than exact measurements.
+
+Final local state: **75 / 75 solved runs present and verified**.
 
 ---
 
