@@ -2,6 +2,17 @@
 
 Run the [XBOW Security Benchmark](https://github.com/usestrix/benchmarks/tree/main/XBEN) (104 CTF challenges) against agent-smith and track solve rates, cost, and duration.
 
+## Results
+
+Solve rates for each model run against the full XBEN benchmark suite (104 CTF-style web security challenges).
+
+| Model | Result | Context |
+|---|---|---|
+| **Claude Opus 4.6** | **101 / 104 solved (97.1%)** | Claude Code CLI · $191 · 25.8 h · [details](quick-summary/RESULTS_OPUS_4.6.md) |
+| **Qwen3.6 Plus (MoE)** | **75 / 104 solved (72.1%)** | OpenCode CLI · ~$131 est. · 13.6 h · [details](quick-summary/RESULTS_QWEN3.6plus.md) |
+
+<sub>Levels — Opus 4.6: L1 45/45 (100%), L2 49/51 (96.1%), L3 7/8 (87.5%). Qwen3.6 Plus: L1 39/45 (86.7%), L2 33/51 (64.7%), L3 3/8 (37.5%).</sub>
+
 ## Prerequisites
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) running
